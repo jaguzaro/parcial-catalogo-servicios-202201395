@@ -9,6 +9,9 @@ import (
 	"strings"
 	"testing"
 	"testing/fstest"
+	"time"
+
+	"catalogo/internal/auth"
 )
 
 type saludFalsa struct{ err error }
@@ -21,10 +24,65 @@ var uiPrueba = fstest.MapFS{
 	"favicon.svg":   {Data: []byte("<svg/>")},
 }
 
+// nuevoSinBase arma el enrutador con un servicio de sesiones sin pool: sirve para los casos
+// que se resuelven antes de llegar a la base.
+func nuevoSinBase(salud Salud) http.Handler {
+	return Nuevo(salud, auth.Nuevo(nil, time.Hour, false), uiPrueba)
+}
+
 func pedir(h http.Handler, metodo, ruta string) *httptest.ResponseRecorder {
 	rr := httptest.NewRecorder()
 	h.ServeHTTP(rr, httptest.NewRequest(metodo, ruta, nil))
 	return rr
+}
+
+func pedirCon(h http.Handler, metodo, ruta, tipo, cuerpo string) *httptest.ResponseRecorder {
+	req := httptest.NewRequest(metodo, ruta, strings.NewReader(cuerpo))
+	if tipo != "" {
+		req.Header.Set("Content-Type", tipo)
+	}
+	rr := httptest.NewRecorder()
+	h.ServeHTTP(rr, req)
+	return rr
+}
+
+func codigoError(t *testing.T, rr *httptest.ResponseRecorder) string {
+	t.Helper()
+	var cuerpo cuerpoError
+	if err := json.Unmarshal(rr.Body.Bytes(), &cuerpo); err != nil {
+		t.Fatalf("el cuerpo no es JSON: %v (%s)", err, rr.Body.String())
+	}
+	return cuerpo.Error.Codigo
+}
+
+func TestAuthSinBase(t *testing.T) {
+	h := nuevoSinBase(saludFalsa{})
+	casos := []struct {
+		nombre, metodo, ruta, tipo, cuerpo string
+		estado                             int
+		codigo                             string
+	}{
+		{"me sin cookie", "GET", "/api/auth/me", "", "", 401, "NO_AUTENTICADO"},
+		{"logout sin cookie", "POST", "/api/auth/logout", "application/json", "{}", 401, "NO_AUTENTICADO"},
+		{"logout sin cuerpo ni Content-Type y sin cookie", "POST", "/api/auth/logout", "", "", 401, "NO_AUTENTICADO"},
+		{"login sin cuerpo ni Content-Type", "POST", "/api/auth/login", "", "", 400, "JSON_INVALIDO"},
+		{"login sin Content-Type", "POST", "/api/auth/login", "", `{"login":"a","contrasena":"b"}`, 415, "TIPO_NO_SOPORTADO"},
+		{"login como formulario", "POST", "/api/auth/login", "application/x-www-form-urlencoded", "login=a", 415, "TIPO_NO_SOPORTADO"},
+		{"login JSON roto", "POST", "/api/auth/login", "application/json", `{"login":`, 400, "JSON_INVALIDO"},
+		{"login campo desconocido", "POST", "/api/auth/login", "application/json", `{"login":"a","contrasena":"b","rol":"administrador"}`, 400, "JSON_INVALIDO"},
+		{"login vacio", "POST", "/api/auth/login", "application/json; charset=utf-8", `{"login":"","contrasena":""}`, 422, "VALIDACION"},
+	}
+	for _, c := range casos {
+		t.Run(c.nombre, func(t *testing.T) {
+			rr := pedirCon(h, c.metodo, c.ruta, c.tipo, c.cuerpo)
+			if rr.Code != c.estado {
+				t.Fatalf("estado = %d, se esperaba %d (%s)", rr.Code, c.estado, rr.Body.String())
+			}
+			if got := codigoError(t, rr); got != c.codigo {
+				t.Errorf("codigo = %s, se esperaba %s", got, c.codigo)
+			}
+		})
+	}
 }
 
 func TestHealthz(t *testing.T) {
@@ -39,7 +97,7 @@ func TestHealthz(t *testing.T) {
 	}
 	for _, c := range casos {
 		t.Run(c.nombre, func(t *testing.T) {
-			rr := pedir(Nuevo(saludFalsa{c.err}, uiPrueba), "GET", "/healthz")
+			rr := pedir(nuevoSinBase(saludFalsa{c.err}), "GET", "/healthz")
 			if rr.Code != c.estado {
 				t.Errorf("estado = %d, se esperaba %d", rr.Code, c.estado)
 			}
@@ -51,7 +109,7 @@ func TestHealthz(t *testing.T) {
 }
 
 func TestApiDesconocidaDa404JSON(t *testing.T) {
-	rr := pedir(Nuevo(saludFalsa{}, uiPrueba), "GET", "/api/no-existe")
+	rr := pedir(nuevoSinBase(saludFalsa{}), "GET", "/api/no-existe")
 	if rr.Code != 404 {
 		t.Fatalf("estado = %d, se esperaba 404", rr.Code)
 	}
@@ -65,7 +123,7 @@ func TestApiDesconocidaDa404JSON(t *testing.T) {
 }
 
 func TestInterfaz(t *testing.T) {
-	h := Nuevo(saludFalsa{}, uiPrueba)
+	h := nuevoSinBase(saludFalsa{})
 	casos := []struct {
 		ruta, contiene, cache string
 		estado                int

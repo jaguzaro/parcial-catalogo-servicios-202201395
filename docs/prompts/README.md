@@ -22,3 +22,4 @@ importacion y pruebas.
 | 02 | [`02-diseno-modelo.md`](02-diseno-modelo.md) | Modelo de datos, mapeo, reglas de negocio y arquitectura | opus | 0 | Aceptado |
 | 03 | [`03-esqueleto-docker.md`](03-esqueleto-docker.md) | Esqueleto que arranca, Docker y `make check` | sonnet | 0 (dos corridas: la primera se corto por cuota) | Aceptado |
 | 04 | [`04-esquema-migraciones.md`](04-esquema-migraciones.md) | Las 14 tablas y las restricciones puestas en la base | sonnet | 0 | Aceptado |
+| 05 | [`05-autenticacion.md`](05-autenticacion.md) y [`05-autenticacion.v2.md`](05-autenticacion.v2.md) | Autenticacion, sesiones y cuentas de evaluacion. P01 y P02 | opus, luego sonnet | **1** | v1 rechazada, v2 aceptada |

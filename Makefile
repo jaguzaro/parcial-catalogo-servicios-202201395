@@ -67,8 +67,8 @@ reset-dev: ## Destruye los datos de desarrollo (exige CONFIRMAR=si)
 import: ## (pendiente) Importa el Excel
 	@echo "make import: todavia no esta implementado"; exit 1
 
-seed-demo: ## (pendiente) Siembra los datos de demostracion
-	@echo "make seed-demo: todavia no esta implementado"; exit 1
+seed-demo: setup ## Crea la estructura DEMO y las cuentas de evaluacion (idempotente)
+	$(COMPOSE) run --rm --build app sembrar-demo
 
 test-persistence: ## (pendiente) Prueba de persistencia
 	@echo "make test-persistence: todavia no esta implementado"; exit 1

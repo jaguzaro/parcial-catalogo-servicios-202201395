@@ -1,0 +1,11 @@
+fecha_inicio: 2026-10-04T10:24:52-06:00
+prompt: docs/prompts/05-autenticacion.v2.md
+prompt_sha256: e8b09eb35de7d0f3af064fe0e16ddb41773b2fe8c1700a2b4ccab0660dd63f76
+modelo_solicitado: sonnet
+claude_code: 2.1.289 (Claude Code)
+commit_base: 9a90098
+fecha_fin: 2026-10-04T10:27:05-06:00
+exit_code: 0
+modelos_usados: claude-sonnet-5-5
+turnos: 16
+es_error: false

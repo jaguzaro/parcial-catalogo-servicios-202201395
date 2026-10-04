@@ -10,6 +10,8 @@ import (
 	"path"
 	"strings"
 	"time"
+
+	"catalogo/internal/auth"
 )
 
 // Salud comprueba que la base responde.
@@ -18,12 +20,22 @@ type Salud interface {
 }
 
 // Nuevo arma el enrutador: /healthz, /api/ y la interfaz embebida.
-func Nuevo(salud Salud, ui fs.FS) http.Handler {
-	mux := http.NewServeMux()
-	mux.HandleFunc("GET /healthz", healthz(salud))
-	mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
+func Nuevo(salud Salud, sesiones *auth.Servicio, ui fs.FS) http.Handler {
+	conSesion := func(h http.HandlerFunc) http.Handler {
+		return sesiones.RequerirSesion(EscribirError, h)
+	}
+
+	api := http.NewServeMux()
+	api.Handle("POST /api/auth/login", login(sesiones))
+	api.Handle("POST /api/auth/logout", conSesion(logout(sesiones)))
+	api.Handle("GET /api/auth/me", conSesion(quienSoy(sesiones)))
+	api.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
 		EscribirError(w, http.StatusNotFound, "NO_ENCONTRADO", "La ruta "+r.URL.Path+" no existe.")
 	})
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("GET /healthz", healthz(salud))
+	mux.Handle("/api/", exigirJSON(api))
 	mux.Handle("/", interfaz(ui))
 	return mux
 }

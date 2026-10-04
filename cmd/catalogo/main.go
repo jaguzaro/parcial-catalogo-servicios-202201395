@@ -13,8 +13,10 @@ import (
 	"syscall"
 	"time"
 
+	"catalogo/internal/auth"
 	"catalogo/internal/config"
 	"catalogo/internal/db"
+	"catalogo/internal/demo"
 	apihttp "catalogo/internal/http"
 	"catalogo/internal/web"
 )
@@ -37,7 +39,9 @@ func main() {
 		err = migrar()
 	case "salud":
 		err = salud()
-	case "importar", "sembrar-demo":
+	case "sembrar-demo":
+		err = sembrarDemo()
+	case "importar":
 		fmt.Fprintf(os.Stderr, "el subcomando %q todavia no esta implementado\n", os.Args[1])
 		os.Exit(3)
 	default:
@@ -98,7 +102,7 @@ func servir() error {
 
 	srv := &http.Server{
 		Addr:              direccion,
-		Handler:           apihttp.Nuevo(pool, web.Archivos()),
+		Handler:           apihttp.Nuevo(pool, auth.Nuevo(pool.Pool, cfg.SessionTTL, cfg.CookieSecure), web.Archivos()),
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 	errs := make(chan error, 1)
@@ -116,6 +120,33 @@ func servir() error {
 	if err := srv.Shutdown(cierre); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		return err
 	}
+	return nil
+}
+
+// sembrarDemo crea la estructura DEMO y las cuentas de evaluacion. Las migraciones se
+// aplican antes, para que funcione tambien sobre una base recien creada.
+func sembrarDemo() error {
+	cfg, err := cargarConfig()
+	if err != nil {
+		return err
+	}
+	cuentas, err := demo.CargarCuentas(os.LookupEnv)
+	if err != nil {
+		return err
+	}
+	ctx := context.Background()
+	if err := aplicarMigraciones(ctx, cfg.DatabaseURL); err != nil {
+		return err
+	}
+	pool, err := db.Abrir(ctx, cfg.DatabaseURL)
+	if err != nil {
+		return err
+	}
+	defer pool.Close()
+	if err := demo.Sembrar(ctx, pool.Pool, cuentas, os.Stdout); err != nil {
+		return err
+	}
+	fmt.Println("sembrar-demo: terminado")
 	return nil
 }
 
