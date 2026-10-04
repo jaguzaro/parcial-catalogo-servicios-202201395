@@ -1,0 +1,28 @@
+# Secretos y configuración local (el enunciado exige no subir .env reales)
+.env
+.env.*
+!.env.example
+
+# Dependencias instaladas
+node_modules/
+web/node_modules/
+vendor/
+
+# Artefactos de construcción
+web/dist/
+bin/
+*.exe
+
+# Basura del sistema operativo / editores
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Salidas temporales de ejecución (los logs de hooks SÍ se versionan: ver logs/README.md)
+tmp/
+*.tmp
+
+# Respaldos locales de configuracion
+.claude/*.bak

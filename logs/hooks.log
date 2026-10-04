@@ -1,0 +1,9 @@
+{"ts":"2026-10-04T06:08:59Z","tool":"Bash","command":"git commit --allow-empty -m prueba","file":"","decision":"blocked","reason":"las operaciones git de escritura las realiza solo Joel"}
+{"ts":"2026-10-04T06:09:00Z","tool":"Bash","command":"cat .env","file":"","decision":"blocked","reason":"acceso a archivo de secretos (.env); usar .env.example o los targets del Makefile"}
+{"ts":"2026-10-04T06:09:01Z","tool":"Bash","command":"printf 'x' >> data/CatalogoServicios.xlsx","file":"","decision":"blocked","reason":"el Excel original es de solo lectura"}
+{"ts":"2026-10-04T06:09:06Z","tool":"Bash","command":"ls /etc","file":"","decision":"blocked","reason":"ruta absoluta fuera del proyecto: /etc"}
+{"ts":"2026-10-04T06:21:48Z","tool":"Bash","command":"git commit --allow-empty -m prueba; echo \"exit=$?\"","file":"","decision":"blocked","reason":"las operaciones git de escritura las realiza solo Joel"}
+{"ts":"2026-10-04T06:21:50Z","tool":"Bash","command":"cat .env; echo \"exit=$?\"","file":"","decision":"blocked","reason":"acceso a archivo de secretos (.env); usar .env.example o los targets del Makefile"}
+{"ts":"2026-10-04T06:21:51Z","tool":"Bash","command":"printf 'x' >> data/CatalogoServicios.xlsx; echo \"exit=$?\"","file":"","decision":"blocked","reason":"el Excel original es de solo lectura"}
+{"ts":"2026-10-04T06:21:53Z","tool":"Write","command":"","file":"/Users/joelguzaro/Documents/GitHub/parcial-catalogo-servicios-202201395/data/CatalogoServicios.xlsx","decision":"blocked","reason":"el Excel original es de solo lectura"}
+{"ts":"2026-10-04T06:21:54Z","tool":"Bash","command":"ls /etc; echo \"exit=$?\"","file":"","decision":"blocked","reason":"ruta absoluta fuera del proyecto: /etc"}
