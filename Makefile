@@ -64,8 +64,8 @@ reset-dev: ## Destruye los datos de desarrollo (exige CONFIRMAR=si)
 	@if [ "$(CONFIRMAR)" != "si" ]; then echo "reset-dev borra el volumen de desarrollo. Repita con: make reset-dev CONFIRMAR=si"; exit 1; fi
 	$(COMPOSE) down -v
 
-import: ## (pendiente) Importa el Excel
-	@echo "make import: todavia no esta implementado"; exit 1
+import: setup ## Importa data/CatalogoServicios.xlsx (montado :ro). Repetible sin duplicar
+	$(COMPOSE) run --rm --build app importar
 
 seed-demo: setup ## Crea la estructura DEMO y las cuentas de evaluacion (idempotente)
 	$(COMPOSE) run --rm --build app sembrar-demo

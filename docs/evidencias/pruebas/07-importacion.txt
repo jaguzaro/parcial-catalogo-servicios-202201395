@@ -1,0 +1,47 @@
+# Dos corridas seguidas de "catalogo importar" sobre el proyecto catalogo-test, base recien migrada.
+# Comando: docker compose -p catalogo-test -f compose.yaml -f compose.test.yaml run --rm --build app importar
+# (make import hace lo mismo sobre el proyecto de evaluacion). Despues se ejecuto make reset-test.
+
+##### corrida 1 (exit=0)
+migraciones: la base ya estaba en la version 4, nada que aplicar
+importacion 13 completada
+  archivo: /app/data/CatalogoServicios.xlsx
+  sha256:  de3b478a5faeeeaebce1aa7726e0e3321188a68e41bbb656e1d17b0c5b74dcf0
+  hoja:    Servicios Externos
+  creados: 76  actualizados: 0  omitidos: 2  observados: 6
+  clase_servicio  creados   2  actualizados   0  sin cambios   0  rechazados   0
+  criticidad      creados   5  actualizados   0  sin cambios   0  rechazados   0
+  tipo_servicio   creados  11  actualizados   0  sin cambios   0  rechazados   0
+  servicio_n1     creados  12  actualizados   0  sin cambios   0  rechazados   0
+  servicio_n2     creados  46  actualizados   0  sin cambios   0  rechazados   0
+  filas no importables: 2
+  controles: nivel 1 distintos 12 (en 13 celdas), nivel 2 distintos 46 (en 46 celdas)
+  incidencias:
+    N1_HEREDADO_DE_FILA_ANTERIOR   1
+    N1_NOMBRE_CONFLICTO            1
+    CODIGO_FORMATO_NO_ESTANDAR     3
+    ATRIBUTOS_AUSENTES             3
+    FILA_SIN_CODIGO                2
+    total                          10
+
+##### corrida 2 (exit=0)
+migraciones: la base ya estaba en la version 4, nada que aplicar
+importacion 14 completada
+  archivo: /app/data/CatalogoServicios.xlsx
+  sha256:  de3b478a5faeeeaebce1aa7726e0e3321188a68e41bbb656e1d17b0c5b74dcf0
+  hoja:    Servicios Externos
+  creados: 0  actualizados: 0  omitidos: 78  observados: 6
+  clase_servicio  creados   0  actualizados   0  sin cambios   2  rechazados   0
+  criticidad      creados   0  actualizados   0  sin cambios   5  rechazados   0
+  tipo_servicio   creados   0  actualizados   0  sin cambios  11  rechazados   0
+  servicio_n1     creados   0  actualizados   0  sin cambios  12  rechazados   0
+  servicio_n2     creados   0  actualizados   0  sin cambios  46  rechazados   0
+  filas no importables: 2
+  controles: nivel 1 distintos 12 (en 13 celdas), nivel 2 distintos 46 (en 46 celdas)
+  incidencias:
+    N1_HEREDADO_DE_FILA_ANTERIOR   1
+    N1_NOMBRE_CONFLICTO            1
+    CODIGO_FORMATO_NO_ESTANDAR     3
+    ATRIBUTOS_AUSENTES             3
+    FILA_SIN_CODIGO                2
+    total                          10

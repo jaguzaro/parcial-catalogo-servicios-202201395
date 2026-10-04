@@ -24,3 +24,4 @@ importacion y pruebas.
 | 04 | [`04-esquema-migraciones.md`](04-esquema-migraciones.md) | Las 14 tablas y las restricciones puestas en la base | sonnet | 0 | Aceptado |
 | 05 | [`05-autenticacion.md`](05-autenticacion.md) y [`05-autenticacion.v2.md`](05-autenticacion.v2.md) | Autenticacion, sesiones y cuentas de evaluacion. P01 y P02 | opus, luego sonnet | **1** | v1 rechazada, v2 aceptada |
 | 06 | [`06-organizacion-usuarios.md`](06-organizacion-usuarios.md) | Jerarquia organizacional y usuarios. P03, P04 y P05 | opus | 0 | Aceptado |
+| 07 | [`07-importador.md`](07-importador.md) | Importador del Excel. P06, P07 y P08 | opus | 0 | Aceptado |

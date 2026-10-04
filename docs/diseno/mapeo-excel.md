@@ -122,7 +122,8 @@ original. Para que el formato distinto quede a la vista, cada codigo de nivel 2 
 siga `^SE\.[0-9]{2}\.[0-9]{2}$` deja una incidencia `CODIGO_FORMATO_NO_ESTANDAR`, con
 `valor_original` = `valor_aplicado` = el codigo. Hoy son 3.
 
-**Respaldo:** D13. La importacion es idempotente por codigo, y eso solo funciona si el
+**Respaldo:** D20, que se registro despues de este diseno a partir de este mismo hueco.
+La importacion es idempotente por codigo, y eso solo funciona si el
 codigo se guarda exactamente como esta en el archivo: si se normalizara, la segunda corrida
 tendria que repetir la misma transformacion para encontrar el registro. La regla "texto,
 sin normalizar" esta tambien en AGENTS.md, seccion 6. Ninguna decision de D08 a D13 trata
@@ -181,8 +182,8 @@ todos los casos.
   [agrupacion](#agrupacion-de-filas-a-servicios)), pero la regla queda escrita y tiene que tener su prueba con un archivo de ensayo.
 - La ficha del servicio muestra su origen y las incidencias de la ultima corrida.
 
-**Respaldo:** D13. La regla concreta para el conflicto entre filas de un mismo servicio la
-propone este diseno; no esta en D08 a D13.
+**Respaldo:** D21, que recogio despues la regla que este diseno propuso para el conflicto
+entre filas de un mismo servicio.
 
 ## Incidencias
 
@@ -197,7 +198,7 @@ Lista cerrada de tipos (es el `CHECK` de `incidencia.tipo`):
 |---|---|---|---|
 | `N1_HEREDADO_DE_FILA_ANTERIOR` | Paso 3 de la resolucion del codigo de nivel 1. | D08 | 1 (fila 101) |
 | `N1_NOMBRE_CONFLICTO` | Un codigo de nivel 1 con mas de un nombre en B. | D09 | 1 (`B99`/`B100`) |
-| `CODIGO_FORMATO_NO_ESTANDAR` | Codigo de nivel 2 fuera de `SE.NN.NN`. | D13 | 3 (`C99:C101`) |
+| `CODIGO_FORMATO_NO_ESTANDAR` | Codigo de nivel 2 fuera de `SE.NN.NN`. | D20 | 3 (`C99:C101`) |
 | `ATRIBUTOS_AUSENTES` | Falta alguno de E, F, G o H. | D11 | 3 (filas 99 a 101) |
 | `FILA_SIN_CODIGO` | Fila de datos sin C propia y fuera de todo rango de C. | D10 | 2 (filas 42 y 67) |
 | `VALOR_FUERA_DE_DOMINIO` | E distinto de `S`, `N` o vacio. | D11 | 0 |

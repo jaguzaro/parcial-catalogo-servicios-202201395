@@ -1,6 +1,6 @@
 # AGENTS.md - Contexto del proyecto para asistentes de IA
 
-> Version del contexto: v6. Las secciones marcadas como pendientes se completan cuando el
+> Version del contexto: v7. Las secciones marcadas como pendientes se completan cuando el
 > trabajo produce el hallazgo o la decision que les toca. Cada cambio queda anotado en
 > "Historial del contexto" y en `docs/contexto/registro.md`.
 
@@ -177,8 +177,12 @@ Un cambio esta terminado cuando `make check` da 0. No antes.
 | `make reset-test` | Destruye y recrea **solo** `catalogo-test` |
 
 | `make seed-demo` | Crea la estructura minima y las dos cuentas de evaluacion. Idempotente |
+| `make import` | Importa el Excel. Idempotente: la segunda corrida no crea nada |
 
-Pendientes, hoy avisan y salen distinto de 0: `make import` y `make test-persistence`.
+Pendiente, hoy avisa y sale distinto de 0: `make test-persistence`.
+
+Tras importar, la base queda con 12 servicios de nivel 1, 46 de nivel 2, 2 clases, 5
+criticidades, 11 tipos y 10 incidencias por corrida.
 
 `make reset-dev` borra los datos de evaluacion y exige `CONFIRMAR=si`. **No lo ejecutes
 nunca**: lo corre Joel.
@@ -196,3 +200,4 @@ Si el 8080 esta ocupado, se cambia `APP_PORT` en el archivo de entorno.
 | v4 | 2026-10-04 | Ya existe `make check`. Pasa a ser el comando con el que se comprueba cualquier cambio, asi que tenia que estar en el contexto. |
 | v5 | 2026-10-04 | El guardian bloqueo escribir una migracion porque su seccion de bajada dice `DROP TABLE`. Hacia falta distinguir en el contexto entre escribir y ejecutar, para que cada sesion no lo resuelva a su criterio. |
 | v6 | 2026-10-04 | Correccion: `make seed-demo` ya esta implementado y la seccion 9 seguia diciendo que faltaba. |
+| v7 | 2026-10-04 | `make import` ya funciona. Se anotan los conteos que deja en la base, para que cualquier trabajo posterior pueda comprobar que no los rompio. |

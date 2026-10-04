@@ -18,6 +18,7 @@ import (
 	"catalogo/internal/db"
 	"catalogo/internal/demo"
 	apihttp "catalogo/internal/http"
+	"catalogo/internal/importador"
 	"catalogo/internal/organizacion"
 	"catalogo/internal/usuarios"
 	"catalogo/internal/web"
@@ -44,14 +45,16 @@ func main() {
 	case "sembrar-demo":
 		err = sembrarDemo()
 	case "importar":
-		fmt.Fprintf(os.Stderr, "el subcomando %q todavia no esta implementado\n", os.Args[1])
-		os.Exit(3)
+		err = importar()
 	default:
 		uso()
 		os.Exit(2)
 	}
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "error:", err)
+		if errors.Is(err, importador.ErrEnCurso) {
+			os.Exit(2) // docs/diseno/arquitectura.md: 2 = IMPORTACION_EN_CURSO
+		}
 		os.Exit(1)
 	}
 }
@@ -155,6 +158,30 @@ func sembrarDemo() error {
 		return err
 	}
 	fmt.Println("sembrar-demo: terminado")
+	return nil
+}
+
+// importar lee el Excel de EXCEL_PATH y lo lleva a la base. Las migraciones se aplican
+// antes, igual que en sembrar-demo.
+func importar() error {
+	cfg, err := cargarConfig()
+	if err != nil {
+		return err
+	}
+	ctx := context.Background()
+	if err := aplicarMigraciones(ctx, cfg.DatabaseURL); err != nil {
+		return err
+	}
+	pool, err := db.Abrir(ctx, cfg.DatabaseURL)
+	if err != nil {
+		return err
+	}
+	defer pool.Close()
+	resumen, err := importador.Importar(ctx, pool.Pool, cfg.ExcelPath)
+	if err != nil {
+		return err
+	}
+	resumen.Escribir(os.Stdout)
 	return nil
 }
 
