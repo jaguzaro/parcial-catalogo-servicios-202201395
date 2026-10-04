@@ -19,3 +19,4 @@ importacion y pruebas.
 | 00 | [`00-verificacion-harness.md`](00-verificacion-harness.md) | Limites del harness sin supervision humana | sonnet | 0 (dos corridas del mismo texto, cambio el entorno) | Aceptado |
 | 01 | [`01-analisis-excel.md`](01-analisis-excel.md) | Que contiene de verdad el archivo original | sonnet | 0 | Aceptado |
 | 01b | [`01b-correccion-conteo-lineas.md`](01b-correccion-conteo-lineas.md) | Correccion de un defecto visto al revisar el 01 | sonnet | 0 | Aceptado |
+| 02 | [`02-diseno-modelo.md`](02-diseno-modelo.md) | Modelo de datos, mapeo, reglas de negocio y arquitectura | opus | 0 | Aceptado |
