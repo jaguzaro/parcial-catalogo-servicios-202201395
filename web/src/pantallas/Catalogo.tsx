@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { api, type FiltrosServicios, type NombreCatalogo } from '../api'
 import { Estado, useConsulta, Valor } from './comunes'
+import { SoloAdministrador } from './formularios'
 
 const TAMANO = 20
 
@@ -68,6 +69,9 @@ export default function Catalogo() {
   return (
     <section>
       <h1>Servicios de nivel 2</h1>
+      <SoloAdministrador>
+        <p><Link className="boton" to="/servicios/nuevo">Nuevo servicio</Link></p>
+      </SoloAdministrador>
 
       <form className="filtros" onSubmit={buscar} role="search">
         <label className="busqueda">

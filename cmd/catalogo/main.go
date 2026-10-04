@@ -107,11 +107,12 @@ func servir() error {
 	defer pool.Close()
 
 	servicios := apihttp.Servicios{
-		Salud:        pool,
-		Sesiones:     auth.Nuevo(pool.Pool, cfg.SessionTTL, cfg.CookieSecure),
-		Organizacion: organizacion.Nuevo(pool.Pool),
-		Usuarios:     usuarios.Nuevo(pool.Pool),
-		Catalogo:     catalogo.Nuevo(pool.Pool),
+		Salud:         pool,
+		Sesiones:      auth.Nuevo(pool.Pool, cfg.SessionTTL, cfg.CookieSecure),
+		Organizacion:  organizacion.Nuevo(pool.Pool),
+		Usuarios:      usuarios.Nuevo(pool.Pool),
+		Catalogo:      catalogo.Nuevo(pool.Pool),
+		Importaciones: importador.NuevoLector(pool.Pool),
 	}
 	srv := &http.Server{
 		Addr:              direccion,

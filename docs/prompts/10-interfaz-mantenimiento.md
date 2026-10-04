@@ -6,7 +6,7 @@
 | Herramienta | Claude Code `2.1.289`, modo headless `claude -p` |
 | Modelo | `sonnet` |
 | Ejecucion | `docs/evidencias/sesiones/<archivo>.json` y `.meta.txt` |
-| Commit base | (el del commit de la interfaz de catalogo) |
+| Commit base | `542002d` |
 
 ## Objetivo
 
@@ -84,4 +84,41 @@ que, las rutas nuevas, los comandos con su codigo de salida y lo pendiente.
 
 ## Resultado
 
-Pendiente de ejecucion.
+**Aceptado.** Sesion: [`20261004-161821-10-interfaz-mantenimiento.json`](../evidencias/sesiones/20261004-161821-10-interfaz-mantenimiento.json), 57 turnos.
+
+No quedo ninguna pantalla fuera: importaciones con sus incidencias, usuarios, las cinco
+entidades de la estructura, formularios de servicios de los dos niveles y asignacion de
+responsable.
+
+### Comprobado por el orquestador
+
+```
+make check                        exit 0
+listado de importaciones          total 2, la ultima completada con 0 creados y 6 observados
+ficha de una importacion          10 incidencias
+los dos endpoints sin sesion      401
+rutas de la interfaz probadas     importaciones, usuarios, organizacion, servicios-n1,
+                                  servicios/nuevo: 200 todas
+P01 a P11                         siguen pasando
+```
+
+### Lo que mas importa de estas pantallas
+
+Una baja rechazada **lista los dependientes que devuelve el servidor**, no un mensaje
+generico, y con "y N mas" cuando vienen truncados. Y los errores de validacion se muestran
+junto al campo que el servidor nombra. No hay textos inventados en el cliente: si el
+servidor cambia un mensaje, la pantalla cambia con el.
+
+### Desviacion del diseno
+
+`arquitectura.md` lista un endpoint para lanzar la importacion desde la aplicacion, que no
+existe: el prompt pedia solo los dos de consulta. La importacion se ejecuta por comando, que
+es lo que el enunciado admite ("por comando o desde la aplicacion"). La pantalla de
+importaciones solo consulta.
+
+### Pendiente
+
+- El mantenimiento de clases, criticidades y tipos no se hizo: hoy solo se usan como listas
+  de opciones. El enunciado pide mantenerlos, asi que queda como hueco conocido.
+- **Sigue sin probarse en un navegador.** Ningun formulario se ejecuto contra el servidor.
+  Lo cierra la tarea siguiente.

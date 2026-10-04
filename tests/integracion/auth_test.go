@@ -18,6 +18,7 @@ import (
 	"catalogo/internal/catalogo"
 	"catalogo/internal/db"
 	apihttp "catalogo/internal/http"
+	"catalogo/internal/importador"
 	"catalogo/internal/organizacion"
 	"catalogo/internal/usuarios"
 )
@@ -113,11 +114,12 @@ func servidorCatalogo(t *testing.T, conn catalogo.Conexion) *httptest.Server {
 	t.Helper()
 	ui := fstest.MapFS{"index.html": {Data: []byte("<html></html>")}}
 	srv := httptest.NewServer(apihttp.Nuevo(apihttp.Servicios{
-		Salud:        &db.Pool{Pool: pool},
-		Sesiones:     auth.Nuevo(pool, time.Hour, false),
-		Organizacion: organizacion.Nuevo(pool),
-		Usuarios:     usuarios.Nuevo(pool),
-		Catalogo:     catalogo.Nuevo(conn),
+		Salud:         &db.Pool{Pool: pool},
+		Sesiones:      auth.Nuevo(pool, time.Hour, false),
+		Organizacion:  organizacion.Nuevo(pool),
+		Usuarios:      usuarios.Nuevo(pool),
+		Catalogo:      catalogo.Nuevo(conn),
+		Importaciones: importador.NuevoLector(conn),
 	}, ui))
 	t.Cleanup(srv.Close)
 	return srv

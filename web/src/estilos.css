@@ -53,3 +53,38 @@ th { background: #e4e7eb; }
 .ficha dt { font-weight: 600; color: #52606d; }
 .ficha dd { margin: 0; }
 .incidencias li { margin-bottom: .6rem; }
+
+.barra .menu { display: flex; gap: 1rem; margin-right: auto; }
+.barra .menu a { color: #bcccdc; text-decoration: none; }
+.barra .menu a.active { color: #fff; font-weight: 600; text-decoration: underline; }
+.barra .marca { margin-right: 0; }
+
+a.boton { display: inline-block; padding: .45rem .9rem; border: 1px solid var(--acento); background: var(--acento); color: #fff; border-radius: 4px; text-decoration: none; }
+
+.pestanas { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
+.pestanas a { padding: .35rem .8rem; border: 1px solid var(--borde); border-radius: 4px; background: #fff; text-decoration: none; }
+.pestanas a[aria-current='page'] { background: var(--acento); border-color: var(--acento); color: #fff; }
+
+.panel { background: #fff; border: 1px solid var(--borde); border-radius: 4px; padding: 1rem; margin-bottom: 1rem; }
+.panel h2 { margin-top: 0; }
+.rejilla-form { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: .75rem 1rem; margin-bottom: .75rem; }
+.rejilla-form textarea { font: inherit; padding: .4rem; border: 1px solid var(--borde); border-radius: 4px; }
+.acciones { display: flex; align-items: center; gap: .75rem; margin: .75rem 0; }
+.acciones-fila { white-space: nowrap; }
+.acciones-fila button { margin-right: .35rem; padding: .25rem .6rem; font-size: .85rem; }
+label.casilla { flex-direction: row; align-items: center; gap: .5rem; }
+.campo-invalido input, .campo-invalido select, .campo-invalido textarea { border-color: #9b1c1c; }
+.error-campo { color: #9b1c1c; font-size: .85rem; }
+.error p { margin: 0; }
+.dependencias { margin: .5rem 0 0; padding-left: 1.25rem; }
+.exito { background: #d6f0dd; padding: .5rem .75rem; border-radius: 4px; }
+
+.resumen { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; }
+.resumen div { background: #fff; border: 1px solid var(--borde); border-radius: 4px; padding: .6rem 1.2rem; min-width: 8rem; }
+.resumen dt { color: #52606d; font-size: .85rem; }
+.resumen dd { margin: 0; font-size: 1.6rem; font-weight: 600; }
+.filtro-tipo { max-width: 28rem; margin-bottom: .75rem; }
+.estado-corrida-completada { background: #d6f0dd; }
+.estado-corrida-fallida { background: #f8d7d7; }
+.estado-corrida-en_curso { background: #fdeebd; }
+code { word-break: break-all; font-size: .85rem; }

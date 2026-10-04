@@ -13,6 +13,7 @@ import (
 
 	"catalogo/internal/auth"
 	"catalogo/internal/catalogo"
+	"catalogo/internal/importador"
 	"catalogo/internal/organizacion"
 	"catalogo/internal/usuarios"
 )
@@ -24,11 +25,12 @@ type Salud interface {
 
 // Servicios son las dependencias del enrutador.
 type Servicios struct {
-	Salud        Salud
-	Sesiones     *auth.Servicio
-	Organizacion *organizacion.Servicio
-	Usuarios     *usuarios.Servicio
-	Catalogo     *catalogo.Servicio
+	Salud         Salud
+	Sesiones      *auth.Servicio
+	Organizacion  *organizacion.Servicio
+	Usuarios      *usuarios.Servicio
+	Catalogo      *catalogo.Servicio
+	Importaciones *importador.Lector
 }
 
 // Ruta es una ruta registrada de la API.
@@ -146,6 +148,9 @@ func rutasAPI(s Servicios) (*http.ServeMux, []Ruta) {
 		})))
 	rg.handle("POST /api/servicios/{id}/activar", escritura(cambiarEstado("activar servicio",
 		func(r *http.Request, id int64) (*catalogo.ServicioN2, error) { return cat.ActivarN2(r.Context(), id) })))
+
+	rg.handle("GET /api/importaciones", lectura(listarImportaciones(s.Importaciones)))
+	rg.handle("GET /api/importaciones/{id}", lectura(obtenerImportacion(s.Importaciones)))
 
 	rg.mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
 		EscribirError(w, http.StatusNotFound, "NO_ENCONTRADO", "La ruta "+r.URL.Path+" no existe.")

@@ -1,7 +1,8 @@
-import type { ReactNode } from 'react'
+import { useState, type FormEvent, type ReactNode } from 'react'
 import { Link, useParams } from 'react-router'
 import { api, type Servicio } from '../api'
 import { Estado, useConsulta, Valor } from './comunes'
+import { CampoForm, ErrorForm, ErrorServidor, SoloAdministrador, useAccion } from './formularios'
 
 function Campo({ nombre, children }: { nombre: string; children: ReactNode }) {
   return (
@@ -42,10 +43,88 @@ function Responsable({ s }: { s: Servicio }) {
   )
 }
 
+/**
+ * Asignacion del responsable. La lista de usuarios se limita a los de la seccion elegida y
+ * se vuelve a pedir cada vez que la seccion cambia; la regla la comprueba el servidor.
+ */
+function FormularioResponsable({ s, alTerminar }: { s: Servicio; alTerminar: () => void }) {
+  const [seccionId, setSeccionId] = useState(s.seccion_responsable ? String(s.seccion_responsable.id) : '')
+  const [usuarioId, setUsuarioId] = useState(s.usuario_responsable ? String(s.usuario_responsable.id) : '')
+  const accion = useAccion()
+
+  const secciones = useConsulta(() => api.org.listar('secciones', { activo: 'true', tamano: 100 }), 'secciones-activas')
+  const usuarios = useConsulta(
+    () => (seccionId ? api.usuarios({ seccion_id: seccionId, activo: 'true', tamano: 100 }) : Promise.resolve(null)),
+    `usuarios-de-${seccionId}`,
+  )
+
+  const listaSecciones = secciones.datos?.items ?? []
+  const actual = s.seccion_responsable
+  const faltaSeccion = actual && !listaSecciones.some((x) => x.id === actual.id)
+  const listaUsuarios = usuarios.datos?.items ?? []
+  const actualUsuario = s.usuario_responsable
+  const faltaUsuario =
+    actualUsuario && String(s.seccion_responsable?.id) === seccionId && !listaUsuarios.some((u) => u.id === actualUsuario.id)
+
+  async function enviar(e: FormEvent) {
+    e.preventDefault()
+    const r = await accion.ejecutar(() =>
+      api.servicioResponsable(s.id, seccionId ? Number(seccionId) : null, usuarioId ? Number(usuarioId) : null),
+    )
+    if (r) alTerminar()
+  }
+
+  return (
+    <form className="panel" onSubmit={(e) => void enviar(e)}>
+      <h2>Asignar responsable</h2>
+      <div className="rejilla-form">
+        <CampoForm etiqueta="Sección responsable" campo="seccion_id" error={accion.error}>
+          <select
+            value={seccionId}
+            onChange={(e) => {
+              setSeccionId(e.target.value)
+              setUsuarioId('') // el usuario tiene que ser de la seccion elegida
+            }}
+          >
+            <option value="">Sin sección</option>
+            {faltaSeccion && <option value={actual.id}>{actual.codigo} · {actual.nombre} (inactiva)</option>}
+            {listaSecciones.map((x) => (
+              <option key={x.id} value={x.id}>{x.codigo} · {x.nombre}{x.padre ? ` (${x.padre.codigo})` : ''}</option>
+            ))}
+          </select>
+        </CampoForm>
+        <CampoForm etiqueta="Usuario responsable" campo="usuario_id" error={accion.error}>
+          <select value={usuarioId} onChange={(e) => setUsuarioId(e.target.value)} disabled={!seccionId}>
+            <option value="">Sin usuario</option>
+            {faltaUsuario && <option value={actualUsuario.id}>{actualUsuario.nombre} ({actualUsuario.usuario}) (inactivo)</option>}
+            {listaUsuarios.map((u) => (
+              <option key={u.id} value={u.id}>{u.nombre} ({u.usuario})</option>
+            ))}
+          </select>
+        </CampoForm>
+      </div>
+      {secciones.error && <p className="error" role="alert">{secciones.error}</p>}
+      {usuarios.error && <p className="error" role="alert">{usuarios.error}</p>}
+      <ErrorForm error={accion.error} campos={['seccion_id', 'usuario_id']} />
+      <div className="acciones">
+        <button type="submit" disabled={accion.ocupado}>Guardar responsable</button>
+      </div>
+    </form>
+  )
+}
+
 export default function Ficha() {
   const { id } = useParams()
   const numero = Number(id)
-  const { datos: s, error, cargando } = useConsulta(() => api.servicio(numero), String(numero))
+  const [version, setVersion] = useState(0)
+  const [asignando, setAsignando] = useState(false)
+  const accion = useAccion()
+  const { datos: s, error, cargando } = useConsulta(() => api.servicio(numero), `${numero}|${version}`)
+
+  async function cambiarEstado(desactivar: boolean) {
+    const r = await accion.ejecutar(() => (desactivar ? api.servicioDesactivar(numero) : api.servicioActivar(numero)))
+    if (r) setVersion((v) => v + 1)
+  }
 
   return (
     <section>
@@ -58,6 +137,37 @@ export default function Ficha() {
           {s.requiere_revision && (
             <p className="aviso-revision">Este servicio está marcado para revisión: puede tener datos ausentes.</p>
           )}
+
+          <SoloAdministrador>
+            <div className="acciones">
+              <Link className="boton" to={`/servicios/${s.id}/editar`}>Editar</Link>
+              <button type="button" className="secundario" onClick={() => setAsignando((a) => !a)}>
+                {asignando ? 'Cerrar asignación' : 'Asignar responsable'}
+              </button>
+              {s.activo !== 'N' && (
+                <button type="button" className="secundario" disabled={accion.ocupado} onClick={() => void cambiarEstado(true)}>
+                  Dar de baja
+                </button>
+              )}
+              {s.activo !== 'S' && (
+                <button type="button" className="secundario" disabled={accion.ocupado} onClick={() => void cambiarEstado(false)}>
+                  Dar de alta
+                </button>
+              )}
+            </div>
+          </SoloAdministrador>
+          {accion.error && <ErrorServidor error={accion.error} />}
+          {asignando && (
+            <FormularioResponsable
+              key={version}
+              s={s}
+              alTerminar={() => {
+                setAsignando(false)
+                setVersion((v) => v + 1)
+              }}
+            />
+          )}
+
           <dl className="ficha">
             <Campo nombre="Código">{s.codigo}</Campo>
             <Campo nombre="Nombre">{s.nombre}</Campo>
