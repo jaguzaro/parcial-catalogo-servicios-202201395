@@ -12,6 +12,8 @@ import (
 	"time"
 
 	"catalogo/internal/auth"
+	"catalogo/internal/organizacion"
+	"catalogo/internal/usuarios"
 )
 
 // Salud comprueba que la base responde.
@@ -19,25 +21,97 @@ type Salud interface {
 	Salud(ctx context.Context) error
 }
 
-// Nuevo arma el enrutador: /healthz, /api/ y la interfaz embebida.
-func Nuevo(salud Salud, sesiones *auth.Servicio, ui fs.FS) http.Handler {
-	conSesion := func(h http.HandlerFunc) http.Handler {
-		return sesiones.RequerirSesion(EscribirError, h)
+// Servicios son las dependencias del enrutador.
+type Servicios struct {
+	Salud        Salud
+	Sesiones     *auth.Servicio
+	Organizacion *organizacion.Servicio
+	Usuarios     *usuarios.Servicio
+}
+
+// Ruta es una ruta registrada de la API.
+type Ruta struct {
+	Metodo string
+	Patron string
+}
+
+// registro registra rutas en el mux y las anota, para que las pruebas recorran las rutas
+// reales y no una copia escrita a mano.
+type registro struct {
+	mux   *http.ServeMux
+	rutas []Ruta
+}
+
+func (rg *registro) handle(patron string, h http.Handler) {
+	metodo, ruta, ok := strings.Cut(patron, " ")
+	if !ok {
+		panic("ruta sin metodo: " + patron)
 	}
+	rg.mux.Handle(patron, h)
+	rg.rutas = append(rg.rutas, Ruta{Metodo: metodo, Patron: ruta})
+}
 
-	api := http.NewServeMux()
-	api.Handle("POST /api/auth/login", login(sesiones))
-	api.Handle("POST /api/auth/logout", conSesion(logout(sesiones)))
-	api.Handle("GET /api/auth/me", conSesion(quienSoy(sesiones)))
-	api.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
-		EscribirError(w, http.StatusNotFound, "NO_ENCONTRADO", "La ruta "+r.URL.Path+" no existe.")
-	})
-
+// Nuevo arma el enrutador: /healthz, /api/ y la interfaz embebida.
+func Nuevo(s Servicios, ui fs.FS) http.Handler {
+	api, _ := rutasAPI(s)
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /healthz", healthz(salud))
+	mux.HandleFunc("GET /healthz", healthz(s.Salud))
 	mux.Handle("/api/", exigirJSON(api))
 	mux.Handle("/", interfaz(ui))
 	return mux
+}
+
+// RutasAPI devuelve las rutas de la API tal como las registra Nuevo.
+func RutasAPI() []Ruta {
+	_, rutas := rutasAPI(Servicios{})
+	return rutas
+}
+
+// rutasAPI registra todas las rutas de /api/. Lectura pide sesion; escritura pide sesion y
+// rol administrador. Ver docs/diseno/reglas.md, "Autorizacion por rol".
+func rutasAPI(s Servicios) (*http.ServeMux, []Ruta) {
+	lectura := func(h http.HandlerFunc) http.Handler {
+		return s.Sesiones.RequerirSesion(EscribirError, h)
+	}
+	escritura := func(h http.HandlerFunc) http.Handler {
+		return s.Sesiones.RequerirSesion(EscribirError, auth.RequerirRol(EscribirError, h, auth.RolAdministrador))
+	}
+
+	rg := &registro{mux: http.NewServeMux()}
+	rg.handle("POST /api/auth/login", login(s.Sesiones))
+	rg.handle("POST /api/auth/logout", lectura(logout(s.Sesiones)))
+	rg.handle("GET /api/auth/me", lectura(quienSoy(s.Sesiones)))
+
+	org := s.Organizacion
+	for _, n := range organizacion.Niveles {
+		base := "/api/" + n.Recurso
+		rg.handle("GET "+base, lectura(listarUnidades(org, n)))
+		rg.handle("GET "+base+"/{id}", lectura(obtenerUnidad(org, n)))
+		rg.handle("POST "+base, escritura(crearUnidad(org, n)))
+		rg.handle("PUT "+base+"/{id}", escritura(actualizarUnidad(org, n)))
+		rg.handle("POST "+base+"/{id}/desactivar", escritura(cambiarEstadoUnidad(n,
+			func(r *http.Request, n *organizacion.Nivel, id int64) (*organizacion.Registro, error) {
+				return org.Desactivar(r.Context(), n, id)
+			})))
+		rg.handle("POST "+base+"/{id}/activar", escritura(cambiarEstadoUnidad(n,
+			func(r *http.Request, n *organizacion.Nivel, id int64) (*organizacion.Registro, error) {
+				return org.Activar(r.Context(), n, id)
+			})))
+	}
+
+	u := s.Usuarios
+	rg.handle("GET /api/usuarios", lectura(listarUsuarios(u)))
+	rg.handle("GET /api/usuarios/{id}", lectura(obtenerUsuario(u)))
+	rg.handle("POST /api/usuarios", escritura(crearUsuario(u)))
+	rg.handle("PUT /api/usuarios/{id}", escritura(actualizarUsuario(u)))
+	rg.handle("PUT /api/usuarios/{id}/contrasena", escritura(fijarContrasena(u)))
+	rg.handle("POST /api/usuarios/{id}/desactivar", escritura(desactivarUsuario(u)))
+	rg.handle("POST /api/usuarios/{id}/activar", escritura(activarUsuario(u)))
+
+	rg.mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
+		EscribirError(w, http.StatusNotFound, "NO_ENCONTRADO", "La ruta "+r.URL.Path+" no existe.")
+	})
+	return rg.mux, rg.rutas
 }
 
 func healthz(salud Salud) http.HandlerFunc {

@@ -1,0 +1,167 @@
+ Container catalogo-test-db-1  Running
+#1 [internal] load local bake definitions
+#1 reading from stdin 636B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 815B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:24.21.0-alpine
+#3 DONE 0.0s
+
+#4 [internal] load metadata for docker.io/library/golang:1.26.8-alpine
+#4 DONE 0.0s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 166B done
+#5 DONE 0.0s
+
+#6 [web 1/6] FROM docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#6 resolve docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 done
+#6 DONE 0.0s
+
+#7 [build 1/7] FROM docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c
+#7 resolve docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c 0.0s done
+#7 DONE 0.0s
+
+#8 [internal] load build context
+#8 transferring context: 7.95kB done
+#8 DONE 0.0s
+
+#9 [build 2/7] WORKDIR /src
+#9 CACHED
+
+#10 [build 3/7] COPY go.mod go.sum ./
+#10 CACHED
+
+#11 [web 4/6] RUN npm ci
+#11 CACHED
+
+#12 [web 3/6] COPY web/package.json web/package-lock.json ./
+#12 CACHED
+
+#13 [web 2/6] WORKDIR /web
+#13 CACHED
+
+#14 [web 5/6] COPY web/ ./
+#14 CACHED
+
+#15 [build 4/7] RUN go mod download
+#15 CACHED
+
+#16 [web 6/6] RUN npm run build
+#16 CACHED
+
+#17 [build 5/7] COPY . .
+#17 DONE 0.0s
+
+#18 [build 6/7] COPY --from=web /web/dist ./internal/web/dist
+#18 DONE 0.0s
+
+#19 [build 7/7] RUN CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o /out/catalogo ./cmd/catalogo
+#19 DONE 7.0s
+
+#20 exporting to image
+#20 exporting layers
+#20 exporting layers 2.7s done
+#20 exporting manifest sha256:723701ffc42c0f15fb1de91ac923f70b158a60ccece3303db18de03318c0fb42 done
+#20 exporting config sha256:0d2b213ed15f7b0782448ca261f8ad67adb82401099f1e2beb614391d67d8b1d done
+#20 exporting attestation manifest sha256:d3f039f8791f187c8ec79d495c82a7b197b05d3867e7becb389341186648f10d done
+#20 exporting manifest list sha256:22c7ee21850ad82f05ba81dbcd361b27cdc6694e3122548e4f4d3ba04ffba986 done
+#20 naming to docker.io/library/catalogo-test-pruebas:latest done
+#20 unpacking to docker.io/library/catalogo-test-pruebas:latest
+#20 unpacking to docker.io/library/catalogo-test-pruebas:latest 0.5s done
+#20 DONE 3.2s
+
+#21 resolving provenance for metadata file
+#21 DONE 0.0s
+2026/10/04 16:51:45 goose: no migrations to run. current version: 4
+=== RUN   TestP03_ConsultaNoPuedeEscribir
+    organizacion_test.go:239: rutas de escritura recorridas: 25 (de estructura y usuarios: 25)
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/empresas
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/empresas/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/empresas/{id}/desactivar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/empresas/{id}/activar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/areas
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/areas/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/areas/{id}/desactivar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/areas/{id}/activar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/departamentos
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/departamentos/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/departamentos/{id}/desactivar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/departamentos/{id}/activar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/secciones
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/secciones/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/secciones/{id}/desactivar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/secciones/{id}/activar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/puestos
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/puestos/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/puestos/{id}/desactivar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/puestos/{id}/activar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/usuarios
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/usuarios/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/usuarios/{id}/contrasena
+    organizacion_test.go:246: estado = 422, se esperaba 403; cuerpo {"error":{"codigo":"VALIDACION","mensaje":"La contrasena debe tener entre 8 y 256 caracteres.","campos":["contrasena"]}}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/usuarios/{id}/desactivar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/usuarios/{id}/activar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/auth/me
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/empresas
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/empresas/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/areas
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/areas/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/departamentos
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/departamentos/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/secciones
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/secciones/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/puestos
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/puestos/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/usuarios
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/usuarios/{id}
+=== NAME  TestP03_ConsultaNoPuedeEscribir
+    organizacion_test.go:267: rutas de lectura recorridas con consulta: 13
+=== RUN   TestP03_ConsultaNoPuedeEscribir/crear_empresa_da_403_y_listarlas_da_200
+--- FAIL: TestP03_ConsultaNoPuedeEscribir (0.22s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/empresas (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/empresas/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/empresas/{id}/desactivar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/empresas/{id}/activar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/areas (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/areas/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/areas/{id}/desactivar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/areas/{id}/activar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/departamentos (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/departamentos/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/departamentos/{id}/desactivar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/departamentos/{id}/activar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/secciones (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/secciones/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/secciones/{id}/desactivar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/secciones/{id}/activar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/puestos (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/puestos/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/puestos/{id}/desactivar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/puestos/{id}/activar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/usuarios (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/usuarios/{id} (0.00s)
+    --- FAIL: TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/usuarios/{id}/contrasena (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/usuarios/{id}/desactivar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/usuarios/{id}/activar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/auth/me (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/empresas (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/empresas/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/areas (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/areas/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/departamentos (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/departamentos/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/secciones (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/secciones/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/puestos (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/puestos/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/usuarios (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/usuarios/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/crear_empresa_da_403_y_listarlas_da_200 (0.00s)
+FAIL
+FAIL	catalogo/tests/integracion	0.249s
+FAIL
+

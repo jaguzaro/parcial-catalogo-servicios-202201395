@@ -27,7 +27,7 @@ var uiPrueba = fstest.MapFS{
 // nuevoSinBase arma el enrutador con un servicio de sesiones sin pool: sirve para los casos
 // que se resuelven antes de llegar a la base.
 func nuevoSinBase(salud Salud) http.Handler {
-	return Nuevo(salud, auth.Nuevo(nil, time.Hour, false), uiPrueba)
+	return Nuevo(Servicios{Salud: salud, Sesiones: auth.Nuevo(nil, time.Hour, false)}, uiPrueba)
 }
 
 func pedir(h http.Handler, metodo, ruta string) *httptest.ResponseRecorder {

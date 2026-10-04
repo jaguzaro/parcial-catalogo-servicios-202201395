@@ -17,6 +17,8 @@ import (
 	"catalogo/internal/auth"
 	"catalogo/internal/db"
 	apihttp "catalogo/internal/http"
+	"catalogo/internal/organizacion"
+	"catalogo/internal/usuarios"
 )
 
 // ---------- ayudas ----------
@@ -100,7 +102,12 @@ func crearUsuario(t *testing.T, rol, contrasena string) usuarioPrueba {
 func servidor(t *testing.T) *httptest.Server {
 	t.Helper()
 	ui := fstest.MapFS{"index.html": {Data: []byte("<html></html>")}}
-	srv := httptest.NewServer(apihttp.Nuevo(&db.Pool{Pool: pool}, auth.Nuevo(pool, time.Hour, false), ui))
+	srv := httptest.NewServer(apihttp.Nuevo(apihttp.Servicios{
+		Salud:        &db.Pool{Pool: pool},
+		Sesiones:     auth.Nuevo(pool, time.Hour, false),
+		Organizacion: organizacion.Nuevo(pool),
+		Usuarios:     usuarios.Nuevo(pool),
+	}, ui))
 	t.Cleanup(srv.Close)
 	return srv
 }

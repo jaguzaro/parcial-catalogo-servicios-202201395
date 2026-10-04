@@ -18,6 +18,8 @@ import (
 	"catalogo/internal/db"
 	"catalogo/internal/demo"
 	apihttp "catalogo/internal/http"
+	"catalogo/internal/organizacion"
+	"catalogo/internal/usuarios"
 	"catalogo/internal/web"
 )
 
@@ -100,9 +102,15 @@ func servir() error {
 	}
 	defer pool.Close()
 
+	servicios := apihttp.Servicios{
+		Salud:        pool,
+		Sesiones:     auth.Nuevo(pool.Pool, cfg.SessionTTL, cfg.CookieSecure),
+		Organizacion: organizacion.Nuevo(pool.Pool),
+		Usuarios:     usuarios.Nuevo(pool.Pool),
+	}
 	srv := &http.Server{
 		Addr:              direccion,
-		Handler:           apihttp.Nuevo(pool, auth.Nuevo(pool.Pool, cfg.SessionTTL, cfg.CookieSecure), web.Archivos()),
+		Handler:           apihttp.Nuevo(servicios, web.Archivos()),
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 	errs := make(chan error, 1)
