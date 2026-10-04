@@ -1,0 +1,233 @@
+ Container catalogo-test-db-1  Running
+2026/10/04 21:18:42 goose: no migrations to run. current version: 4
+=== RUN   TestP09_MinimoMayorQueMaximo
+=== RUN   TestP09_MinimoMayorQueMaximo/alta_con_minimo_24_y_maximo_12_se_rechaza_y_no_guarda_nada
+=== RUN   TestP09_MinimoMayorQueMaximo/alta_con_minimo_12_y_maximo_12_se_acepta
+=== RUN   TestP09_MinimoMayorQueMaximo/alta_solo_con_minimo:_el_maximo_queda_nulo,_no_cero
+=== RUN   TestP09_MinimoMayorQueMaximo/alta_solo_con_maximo,_o_con_maximo_null_explicito:_el_minimo_queda_nulo
+=== RUN   TestP09_MinimoMayorQueMaximo/cero_es_un_dato_y_se_distingue_de_null
+=== RUN   TestP09_MinimoMayorQueMaximo/una_cadena_vacia_no_se_toma_como_cero
+=== RUN   TestP09_MinimoMayorQueMaximo/edicion_de_un_importado:_el_minimo_se_compara_con_el_maximo_guardado
+=== RUN   TestP09_MinimoMayorQueMaximo/edicion_de_uno_creado:_menor_rechazado,_ausente_aceptado
+--- PASS: TestP09_MinimoMayorQueMaximo (0.21s)
+    --- PASS: TestP09_MinimoMayorQueMaximo/alta_con_minimo_24_y_maximo_12_se_rechaza_y_no_guarda_nada (0.00s)
+    --- PASS: TestP09_MinimoMayorQueMaximo/alta_con_minimo_12_y_maximo_12_se_acepta (0.00s)
+    --- PASS: TestP09_MinimoMayorQueMaximo/alta_solo_con_minimo:_el_maximo_queda_nulo,_no_cero (0.00s)
+    --- PASS: TestP09_MinimoMayorQueMaximo/alta_solo_con_maximo,_o_con_maximo_null_explicito:_el_minimo_queda_nulo (0.00s)
+    --- PASS: TestP09_MinimoMayorQueMaximo/cero_es_un_dato_y_se_distingue_de_null (0.00s)
+    --- PASS: TestP09_MinimoMayorQueMaximo/una_cadena_vacia_no_se_toma_como_cero (0.00s)
+    --- PASS: TestP09_MinimoMayorQueMaximo/edicion_de_un_importado:_el_minimo_se_compara_con_el_maximo_guardado (0.00s)
+    --- PASS: TestP09_MinimoMayorQueMaximo/edicion_de_uno_creado:_menor_rechazado,_ausente_aceptado (0.00s)
+=== RUN   TestP10_BusquedaYFiltros
+=== RUN   TestP10_BusquedaYFiltros/filtrar_por_cada_nivel_1_devuelve_solo_sus_hijos_y_el_total_coincide
+=== RUN   TestP10_BusquedaYFiltros/buscar_un_codigo_que_existe_devuelve_ese_servicio
+=== RUN   TestP10_BusquedaYFiltros/buscar_por_nombre,_sin_distinguir_mayusculas
+=== RUN   TestP10_BusquedaYFiltros/buscar_un_texto_que_no_existe_devuelve_cero_resultados,_no_un_error
+=== RUN   TestP10_BusquedaYFiltros/por_estado
+=== RUN   TestP10_BusquedaYFiltros/por_clase,_criticidad_y_tipo
+=== RUN   TestP10_BusquedaYFiltros/combinaciones_de_filtros_se_aplican_con_Y
+=== RUN   TestP10_BusquedaYFiltros/paginacion_recorre_los_46_sin_repetir,_en_orden_de_codigo
+=== RUN   TestP10_BusquedaYFiltros/un_filtro_con_valor_fuera_de_dominio_es_422
+--- PASS: TestP10_BusquedaYFiltros (0.21s)
+    --- PASS: TestP10_BusquedaYFiltros/filtrar_por_cada_nivel_1_devuelve_solo_sus_hijos_y_el_total_coincide (0.01s)
+    --- PASS: TestP10_BusquedaYFiltros/buscar_un_codigo_que_existe_devuelve_ese_servicio (0.00s)
+    --- PASS: TestP10_BusquedaYFiltros/buscar_por_nombre,_sin_distinguir_mayusculas (0.00s)
+    --- PASS: TestP10_BusquedaYFiltros/buscar_un_texto_que_no_existe_devuelve_cero_resultados,_no_un_error (0.01s)
+    --- PASS: TestP10_BusquedaYFiltros/por_estado (0.01s)
+    --- PASS: TestP10_BusquedaYFiltros/por_clase,_criticidad_y_tipo (0.01s)
+    --- PASS: TestP10_BusquedaYFiltros/combinaciones_de_filtros_se_aplican_con_Y (0.01s)
+    --- PASS: TestP10_BusquedaYFiltros/paginacion_recorre_los_46_sin_repetir,_en_orden_de_codigo (0.02s)
+    --- PASS: TestP10_BusquedaYFiltros/un_filtro_con_valor_fuera_de_dominio_es_422 (0.00s)
+=== RUN   TestP11_ResponsableDeOtraSeccion
+=== RUN   TestP11_ResponsableDeOtraSeccion/usuario_de_otra_seccion_se_rechaza_y_el_mensaje_dice_por_que
+=== RUN   TestP11_ResponsableDeOtraSeccion/usuario_de_la_misma_seccion_se_acepta_y_la_ficha_lo_muestra
+=== RUN   TestP11_ResponsableDeOtraSeccion/pasar_a_la_otra_seccion_con_el_mismo_usuario_tambien_se_rechaza
+=== RUN   TestP11_ResponsableDeOtraSeccion/solo_seccion,_sin_usuario,_se_acepta
+=== RUN   TestP11_ResponsableDeOtraSeccion/usuario_sin_seccion,_seccion_inexistente_y_quitar_la_asignacion
+=== RUN   TestP11_ResponsableDeOtraSeccion/a_un_servicio_dado_de_baja_no_se_le_asigna_responsable
+--- PASS: TestP11_ResponsableDeOtraSeccion (0.13s)
+    --- PASS: TestP11_ResponsableDeOtraSeccion/usuario_de_otra_seccion_se_rechaza_y_el_mensaje_dice_por_que (0.00s)
+    --- PASS: TestP11_ResponsableDeOtraSeccion/usuario_de_la_misma_seccion_se_acepta_y_la_ficha_lo_muestra (0.00s)
+    --- PASS: TestP11_ResponsableDeOtraSeccion/pasar_a_la_otra_seccion_con_el_mismo_usuario_tambien_se_rechaza (0.00s)
+    --- PASS: TestP11_ResponsableDeOtraSeccion/solo_seccion,_sin_usuario,_se_acepta (0.00s)
+    --- PASS: TestP11_ResponsableDeOtraSeccion/usuario_sin_seccion,_seccion_inexistente_y_quitar_la_asignacion (0.00s)
+    --- PASS: TestP11_ResponsableDeOtraSeccion/a_un_servicio_dado_de_baja_no_se_le_asigna_responsable (0.00s)
+=== RUN   TestCatalogo_ReferenciasBajasYCodigos
+=== RUN   TestCatalogo_ReferenciasBajasYCodigos/codigo_duplicado_por_nivel_y_referencias_inexistentes
+=== RUN   TestCatalogo_ReferenciasBajasYCodigos/baja_del_nivel_1_y_de_la_opcion_con_un_hijo_DESCONOCIDO_se_rechaza
+=== RUN   TestCatalogo_ReferenciasBajasYCodigos/de_abajo_hacia_arriba_si,_y_nada_se_reactiva_bajo_un_padre_inactivo
+=== RUN   TestCatalogo_ReferenciasBajasYCodigos/una_opcion_inactiva_no_se_asigna,_pero_se_conserva_donde_ya_estaba
+--- PASS: TestCatalogo_ReferenciasBajasYCodigos (0.08s)
+    --- PASS: TestCatalogo_ReferenciasBajasYCodigos/codigo_duplicado_por_nivel_y_referencias_inexistentes (0.00s)
+    --- PASS: TestCatalogo_ReferenciasBajasYCodigos/baja_del_nivel_1_y_de_la_opcion_con_un_hijo_DESCONOCIDO_se_rechaza (0.00s)
+    --- PASS: TestCatalogo_ReferenciasBajasYCodigos/de_abajo_hacia_arriba_si,_y_nada_se_reactiva_bajo_un_padre_inactivo (0.00s)
+    --- PASS: TestCatalogo_ReferenciasBajasYCodigos/una_opcion_inactiva_no_se_asigna,_pero_se_conserva_donde_ya_estaba (0.00s)
+=== RUN   TestCatalogo_FichaConOrigenEIncidencias
+--- PASS: TestCatalogo_FichaConOrigenEIncidencias (0.14s)
+=== RUN   TestDemo_SembrarEsIdempotente
+--- PASS: TestDemo_SembrarEsIdempotente (0.13s)
+=== RUN   TestDemo_SinServiciosAvisaYFalla
+--- PASS: TestDemo_SinServiciosAvisaYFalla (0.07s)
+=== RUN   TestDemo_SinContrasenaFalla
+--- PASS: TestDemo_SinContrasenaFalla (0.00s)
+=== RUN   TestP06_ImportarArchivoOriginal
+--- PASS: TestP06_ImportarArchivoOriginal (0.06s)
+=== RUN   TestP07_RepetirImportacionNoDuplica
+--- PASS: TestP07_RepetirImportacionNoDuplica (0.15s)
+=== RUN   TestP08_SE12YAtributosAusentes
+--- PASS: TestP08_SE12YAtributosAusentes (0.06s)
+=== RUN   TestP03_ConsultaNoPuedeEscribir
+    organizacion_test.go:266: rutas de escritura recorridas: 38 (de estructura y usuarios: 25; de catalogo: 13)
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/empresas
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/empresas/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/empresas/{id}/desactivar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/empresas/{id}/activar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/areas
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/areas/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/areas/{id}/desactivar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/areas/{id}/activar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/departamentos
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/departamentos/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/departamentos/{id}/desactivar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/departamentos/{id}/activar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/secciones
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/secciones/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/secciones/{id}/desactivar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/secciones/{id}/activar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/puestos
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/puestos/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/puestos/{id}/desactivar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/puestos/{id}/activar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/usuarios
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/usuarios/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/usuarios/{id}/contrasena
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/usuarios/{id}/desactivar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/usuarios/{id}/activar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/catalogos/{c}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/catalogos/{c}/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/catalogos/{c}/{id}/desactivar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/catalogos/{c}/{id}/activar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/servicios-n1
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/servicios-n1/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/servicios-n1/{id}/desactivar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/servicios-n1/{id}/activar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/servicios
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/servicios/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/servicios/{id}/responsable
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/servicios/{id}/desactivar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/servicios/{id}/activar
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/auth/me
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/empresas
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/empresas/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/areas
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/areas/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/departamentos
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/departamentos/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/secciones
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/secciones/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/puestos
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/puestos/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/usuarios
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/usuarios/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/catalogos/mapeo
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/catalogos/{c}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/servicios-n1
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/servicios-n1/{id}
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/servicios
+=== RUN   TestP03_ConsultaNoPuedeEscribir/lectura_/api/servicios/{id}
+=== NAME  TestP03_ConsultaNoPuedeEscribir
+    organizacion_test.go:295: rutas de lectura recorridas con consulta: 19
+=== RUN   TestP03_ConsultaNoPuedeEscribir/crear_empresa_da_403_y_listarlas_da_200
+--- PASS: TestP03_ConsultaNoPuedeEscribir (0.17s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/empresas (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/empresas/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/empresas/{id}/desactivar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/empresas/{id}/activar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/areas (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/areas/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/areas/{id}/desactivar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/areas/{id}/activar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/departamentos (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/departamentos/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/departamentos/{id}/desactivar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/departamentos/{id}/activar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/secciones (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/secciones/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/secciones/{id}/desactivar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/secciones/{id}/activar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/puestos (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/puestos/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/puestos/{id}/desactivar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/puestos/{id}/activar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/usuarios (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/usuarios/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/usuarios/{id}/contrasena (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/usuarios/{id}/desactivar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/usuarios/{id}/activar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/catalogos/{c} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/catalogos/{c}/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/catalogos/{c}/{id}/desactivar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/catalogos/{c}/{id}/activar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/servicios-n1 (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/servicios-n1/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/servicios-n1/{id}/desactivar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/servicios-n1/{id}/activar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/servicios (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/servicios/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_PUT_/api/servicios/{id}/responsable (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/servicios/{id}/desactivar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/escritura_POST_/api/servicios/{id}/activar (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/auth/me (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/empresas (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/empresas/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/areas (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/areas/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/departamentos (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/departamentos/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/secciones (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/secciones/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/puestos (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/puestos/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/usuarios (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/usuarios/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/catalogos/mapeo (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/catalogos/{c} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/servicios-n1 (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/servicios-n1/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/servicios (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/lectura_/api/servicios/{id} (0.00s)
+    --- PASS: TestP03_ConsultaNoPuedeEscribir/crear_empresa_da_403_y_listarlas_da_200 (0.00s)
+=== RUN   TestP04_JerarquiaCompletaYUsuario
+=== RUN   TestP04_JerarquiaCompletaYUsuario/el_usuario_se_recupera_con_su_jerarquia
+=== RUN   TestP04_JerarquiaCompletaYUsuario/el_puesto_se_recupera_con_la_ruta_de_ancestros
+=== RUN   TestP04_JerarquiaCompletaYUsuario/los_listados_filtran_por_padre_y_traen_al_padre
+=== RUN   TestP04_JerarquiaCompletaYUsuario/el_usuario_creado_inicia_sesion_y_ve_su_jerarquia
+--- PASS: TestP04_JerarquiaCompletaYUsuario (0.15s)
+    --- PASS: TestP04_JerarquiaCompletaYUsuario/el_usuario_se_recupera_con_su_jerarquia (0.00s)
+    --- PASS: TestP04_JerarquiaCompletaYUsuario/el_puesto_se_recupera_con_la_ruta_de_ancestros (0.00s)
+    --- PASS: TestP04_JerarquiaCompletaYUsuario/los_listados_filtran_por_padre_y_traen_al_padre (0.00s)
+    --- PASS: TestP04_JerarquiaCompletaYUsuario/el_usuario_creado_inicia_sesion_y_ve_su_jerarquia (0.03s)
+=== RUN   TestP05_CodigoDuplicadoYReferenciaInexistente
+=== RUN   TestP05_CodigoDuplicadoYReferenciaInexistente/dos_areas_con_el_mismo_codigo_en_la_misma_empresa
+=== RUN   TestP05_CodigoDuplicadoYReferenciaInexistente/el_mismo_codigo_en_otra_empresa_si_se_acepta
+=== RUN   TestP05_CodigoDuplicadoYReferenciaInexistente/codigo_de_empresa_duplicado
+=== RUN   TestP05_CodigoDuplicadoYReferenciaInexistente/modificar_a_un_codigo_que_ya_existe_en_el_padre
+=== RUN   TestP05_CodigoDuplicadoYReferenciaInexistente/departamento_con_un_area_que_no_existe
+=== RUN   TestP05_CodigoDuplicadoYReferenciaInexistente/departamento_sin_area
+=== RUN   TestP05_CodigoDuplicadoYReferenciaInexistente/usuario_con_un_puesto_que_no_existe
+=== RUN   TestP05_CodigoDuplicadoYReferenciaInexistente/usuario_y_correo_repetidos_sin_distinguir_mayusculas
+=== RUN   TestP05_CodigoDuplicadoYReferenciaInexistente/codigo_con_espacios_y_campos_mal_formados
+=== RUN   TestP05_CodigoDuplicadoYReferenciaInexistente/id_inexistente_en_la_ruta
+--- PASS: TestP05_CodigoDuplicadoYReferenciaInexistente (0.22s)
+    --- PASS: TestP05_CodigoDuplicadoYReferenciaInexistente/dos_areas_con_el_mismo_codigo_en_la_misma_empresa (0.00s)
+    --- PASS: TestP05_CodigoDuplicadoYReferenciaInexistente/el_mismo_codigo_en_otra_empresa_si_se_acepta (0.00s)
+    --- PASS: TestP05_CodigoDuplicadoYReferenciaInexistente/codigo_de_empresa_duplicado (0.00s)
+    --- PASS: TestP05_CodigoDuplicadoYReferenciaInexistente/modificar_a_un_codigo_que_ya_existe_en_el_padre (0.00s)
+    --- PASS: TestP05_CodigoDuplicadoYReferenciaInexistente/departamento_con_un_area_que_no_existe (0.00s)
+    --- PASS: TestP05_CodigoDuplicadoYReferenciaInexistente/departamento_sin_area (0.00s)
+    --- PASS: TestP05_CodigoDuplicadoYReferenciaInexistente/usuario_con_un_puesto_que_no_existe (0.04s)
+    --- PASS: TestP05_CodigoDuplicadoYReferenciaInexistente/usuario_y_correo_repetidos_sin_distinguir_mayusculas (0.10s)
+    --- PASS: TestP05_CodigoDuplicadoYReferenciaInexistente/codigo_con_espacios_y_campos_mal_formados (0.00s)
+    --- PASS: TestP05_CodigoDuplicadoYReferenciaInexistente/id_inexistente_en_la_ruta (0.00s)
+PASS
+ok  	catalogo/tests/integracion	1.800s

@@ -21,6 +21,9 @@ const (
 	ErrDependenciasActivas   = "DEPENDENCIAS_ACTIVAS"
 	ErrAsignacionesAfectadas = "ASIGNACIONES_AFECTADAS"
 	ErrUltimoAdministrador   = "ULTIMO_ADMINISTRADOR"
+	ErrServicioInactivo      = "SERVICIO_INACTIVO"
+	ErrMinimoMayorQueMaximo  = "MINIMO_MAYOR_QUE_MAXIMO"
+	ErrFueraDeSeccion        = "RESPONSABLE_FUERA_DE_SECCION"
 )
 
 // MaxDependencias es cuantos dependientes se listan como mucho en un error.

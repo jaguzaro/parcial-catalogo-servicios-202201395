@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"catalogo/internal/auth"
+	"catalogo/internal/catalogo"
 	"catalogo/internal/config"
 	"catalogo/internal/db"
 	"catalogo/internal/demo"
@@ -110,6 +111,7 @@ func servir() error {
 		Sesiones:     auth.Nuevo(pool.Pool, cfg.SessionTTL, cfg.CookieSecure),
 		Organizacion: organizacion.Nuevo(pool.Pool),
 		Usuarios:     usuarios.Nuevo(pool.Pool),
+		Catalogo:     catalogo.Nuevo(pool.Pool),
 	}
 	srv := &http.Server{
 		Addr:              direccion,

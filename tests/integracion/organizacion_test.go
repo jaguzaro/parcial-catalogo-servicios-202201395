@@ -18,7 +18,13 @@ import (
 var tablaDe = map[string]string{
 	"empresas": "empresa", "areas": "area", "departamentos": "departamento",
 	"secciones": "seccion", "puestos": "puesto", "usuarios": "usuario",
+	"servicios-n1": "servicio_n1", "servicios": "servicio_n2",
+	"catalogos": "clase_servicio", "catalogos/clases": "clase_servicio",
 }
+
+// recursosP03 son los recursos cuyo registro P03 intenta modificar.
+var recursosP03 = []string{"empresas", "areas", "departamentos", "secciones", "puestos", "usuarios",
+	"servicios-n1", "servicios", "catalogos"}
 
 // limpiarAlTerminar borra el registro al final de la prueba. t.Cleanup corre en orden
 // inverso, asi que los hijos, creados despues, se borran antes que sus padres.
@@ -79,7 +85,7 @@ func crearJerarquia(t *testing.T, srv *httptest.Server, token string) jerarquiaP
 }
 
 // crearServicio inserta un servicio N1 y uno N2 a cargo de la seccion (y del usuario, si
-// no es 0). El mantenimiento del catalogo no existe todavia, asi que va directo a la base.
+// no es 0). Va directo a la base para fijar estados, como DESCONOCIDO, sin pasar por la API.
 func crearServicio(t *testing.T, seccionID, usuarioID int64, activo string) (int64, string) {
 	t.Helper()
 	ctx := context.Background()
@@ -155,14 +161,17 @@ func activoEnBase(t *testing.T, tabla string, id int64) bool {
 
 var parametroRuta = regexp.MustCompile(`\{[^}]+\}`)
 
-// concretar reemplaza los parametros de un patron. {id} toma el id real del recurso; si el
-// recurso no es de estructura ni de usuarios, cualquier parametro vale "1": el rol se
-// revisa antes de mirarlo.
+// concretar reemplaza los parametros de un patron. {id} toma el id real del recurso y {c}
+// el catalogo de clases, al que pertenece el id de "catalogos". Cualquier otro parametro
+// vale "1": el rol se revisa antes de mirarlo.
 func concretar(patron string, ids map[string]int64) string {
 	recurso := strings.Split(strings.TrimPrefix(patron, "/api/"), "/")[0]
 	return parametroRuta.ReplaceAllStringFunc(patron, func(p string) string {
 		if id, ok := ids[recurso]; ok && p == "{id}" {
 			return fmt.Sprint(id)
+		}
+		if p == "{c}" {
+			return "clases"
 		}
 		return "1"
 	})
@@ -172,7 +181,7 @@ func concretar(patron string, ids map[string]int64) string {
 func fotoDatos(t *testing.T, ids map[string]int64) string {
 	t.Helper()
 	var partes []string
-	for _, recurso := range []string{"empresas", "areas", "departamentos", "secciones", "puestos", "usuarios"} {
+	for _, recurso := range recursosP03 {
 		var fila string
 		tabla := tablaDe[recurso]
 		if err := pool.QueryRow(context.Background(),
@@ -181,7 +190,8 @@ func fotoDatos(t *testing.T, ids map[string]int64) string {
 		}
 		partes = append(partes, fila)
 	}
-	for _, tabla := range []string{"empresa", "area", "departamento", "seccion", "puesto", "usuario"} {
+	for _, tabla := range []string{"empresa", "area", "departamento", "seccion", "puesto", "usuario",
+		"servicio_n1", "servicio_n2", "clase_servicio", "criticidad", "tipo_servicio"} {
 		var n int
 		if err := pool.QueryRow(context.Background(), `SELECT count(*) FROM `+tabla).Scan(&n); err != nil {
 			t.Fatal(err)
@@ -200,9 +210,16 @@ func TestP03_ConsultaNoPuedeEscribir(t *testing.T) {
 		"nombre": "Consulta P03", "usuario": "c" + suf, "contrasena": clave, "rol": auth.RolConsulta, "puesto_id": j.puesto,
 	})
 	consulta := iniciarOK(t, srv, usuarioPrueba{usuario: "c" + suf, contrasena: clave})
+	n1 := crearAPI(t, srv, admin, "servicios-n1", map[string]any{"codigo": "P03" + suf, "nombre": "Servicio N1 de P03"})
+	clase := crearAPI(t, srv, admin, "catalogos/clases", map[string]any{"nombre": "Clase P03 " + suf, "orden": 90})
+	n2 := crearAPI(t, srv, admin, "servicios", map[string]any{
+		"servicio_n1_id": n1, "codigo": "P03" + suf + ".1", "nombre": "Servicio N2 de P03", "clase_id": clase,
+		"minimo": 1, "maximo": 2,
+	})
 	ids := map[string]int64{
 		"empresas": j.empresa, "areas": j.area, "departamentos": j.depto,
 		"secciones": j.seccion, "puestos": j.puesto, "usuarios": consultaID,
+		"servicios-n1": n1, "servicios": n2, "catalogos": clase,
 	}
 
 	// La lista sale de las rutas que registra el enrutador. Toda ruta que no sea GET es de
@@ -231,12 +248,23 @@ func TestP03_ConsultaNoPuedeEscribir(t *testing.T) {
 	}
 	esperadas = append(esperadas, "POST /api/usuarios", "PUT /api/usuarios/{id}", "PUT /api/usuarios/{id}/contrasena",
 		"POST /api/usuarios/{id}/desactivar", "POST /api/usuarios/{id}/activar")
+	deEstructura := len(esperadas)
+	// Las del catalogo: servicios de los dos niveles, responsable y catalogos de opciones.
+	esperadas = append(esperadas,
+		"POST /api/servicios-n1", "PUT /api/servicios-n1/{id}", "POST /api/servicios-n1/{id}/desactivar", "POST /api/servicios-n1/{id}/activar",
+		"POST /api/servicios", "PUT /api/servicios/{id}", "PUT /api/servicios/{id}/responsable",
+		"POST /api/servicios/{id}/desactivar", "POST /api/servicios/{id}/activar",
+		"POST /api/catalogos/{c}", "PUT /api/catalogos/{c}/{id}", "POST /api/catalogos/{c}/{id}/desactivar", "POST /api/catalogos/{c}/{id}/activar")
 	for _, e := range esperadas {
 		if !registradas[e] {
 			t.Errorf("la ruta de escritura %s no esta registrada", e)
 		}
 	}
-	t.Logf("rutas de escritura recorridas: %d (de estructura y usuarios: %d)", len(escrituras), len(esperadas))
+	if len(escrituras) != len(esperadas) {
+		t.Errorf("hay %d rutas de escritura registradas y %d en la lista de control: agregue las nuevas", len(escrituras), len(esperadas))
+	}
+	t.Logf("rutas de escritura recorridas: %d (de estructura y usuarios: %d; de catalogo: %d)",
+		len(escrituras), deEstructura, len(esperadas)-deEstructura)
 
 	antes := fotoDatos(t, ids)
 

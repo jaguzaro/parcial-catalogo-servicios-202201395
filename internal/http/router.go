@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"catalogo/internal/auth"
+	"catalogo/internal/catalogo"
 	"catalogo/internal/organizacion"
 	"catalogo/internal/usuarios"
 )
@@ -27,6 +28,7 @@ type Servicios struct {
 	Sesiones     *auth.Servicio
 	Organizacion *organizacion.Servicio
 	Usuarios     *usuarios.Servicio
+	Catalogo     *catalogo.Servicio
 }
 
 // Ruta es una ruta registrada de la API.
@@ -107,6 +109,43 @@ func rutasAPI(s Servicios) (*http.ServeMux, []Ruta) {
 	rg.handle("PUT /api/usuarios/{id}/contrasena", escritura(fijarContrasena(u)))
 	rg.handle("POST /api/usuarios/{id}/desactivar", escritura(desactivarUsuario(u)))
 	rg.handle("POST /api/usuarios/{id}/activar", escritura(activarUsuario(u)))
+
+	cat := s.Catalogo
+	rg.handle("GET /api/catalogos/mapeo", lectura(mapeoOpciones(cat)))
+	rg.handle("GET /api/catalogos/{c}", lectura(listarOpciones(cat)))
+	rg.handle("POST /api/catalogos/{c}", escritura(crearOpcion(cat)))
+	rg.handle("PUT /api/catalogos/{c}/{id}", escritura(actualizarOpcion(cat)))
+	rg.handle("POST /api/catalogos/{c}/{id}/desactivar", escritura(cambiarEstadoOpcion(
+		func(r *http.Request, c *catalogo.Catalogo, id int64) (*catalogo.Opcion, error) {
+			return cat.DesactivarOpcion(r.Context(), c, id)
+		})))
+	rg.handle("POST /api/catalogos/{c}/{id}/activar", escritura(cambiarEstadoOpcion(
+		func(r *http.Request, c *catalogo.Catalogo, id int64) (*catalogo.Opcion, error) {
+			return cat.ActivarOpcion(r.Context(), c, id)
+		})))
+
+	rg.handle("GET /api/servicios-n1", lectura(listarN1(cat)))
+	rg.handle("GET /api/servicios-n1/{id}", lectura(obtenerN1(cat)))
+	rg.handle("POST /api/servicios-n1", escritura(crearN1(cat)))
+	rg.handle("PUT /api/servicios-n1/{id}", escritura(actualizarN1(cat)))
+	rg.handle("POST /api/servicios-n1/{id}/desactivar", escritura(cambiarEstado("desactivar servicio n1",
+		func(r *http.Request, id int64) (*catalogo.ServicioN1, error) {
+			return cat.DesactivarN1(r.Context(), id)
+		})))
+	rg.handle("POST /api/servicios-n1/{id}/activar", escritura(cambiarEstado("activar servicio n1",
+		func(r *http.Request, id int64) (*catalogo.ServicioN1, error) { return cat.ActivarN1(r.Context(), id) })))
+
+	rg.handle("GET /api/servicios", lectura(listarN2(cat)))
+	rg.handle("GET /api/servicios/{id}", lectura(obtenerN2(cat)))
+	rg.handle("POST /api/servicios", escritura(crearN2(cat)))
+	rg.handle("PUT /api/servicios/{id}", escritura(actualizarN2(cat)))
+	rg.handle("PUT /api/servicios/{id}/responsable", escritura(asignarResponsable(cat)))
+	rg.handle("POST /api/servicios/{id}/desactivar", escritura(cambiarEstado("desactivar servicio",
+		func(r *http.Request, id int64) (*catalogo.ServicioN2, error) {
+			return cat.DesactivarN2(r.Context(), id)
+		})))
+	rg.handle("POST /api/servicios/{id}/activar", escritura(cambiarEstado("activar servicio",
+		func(r *http.Request, id int64) (*catalogo.ServicioN2, error) { return cat.ActivarN2(r.Context(), id) })))
 
 	rg.mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
 		EscribirError(w, http.StatusNotFound, "NO_ENCONTRADO", "La ruta "+r.URL.Path+" no existe.")

@@ -1,0 +1,91 @@
+== importar (catalogo-test)
+ Container catalogo-test-db-1  Running
+2026/10/04 21:20:08 goose: no migrations to run. current version: 4
+importacion 32 completada
+  servicio_n1     creados  12  actualizados   0  sin cambios   0  rechazados   0
+  servicio_n2     creados  46  actualizados   0  sin cambios   0  rechazados   0
+    total                          10
+exit=0
+== sembrar-demo, corrida 1
+ Container catalogo-test-db-1  Running
+2026/10/04 21:20:09 goose: no migrations to run. current version: 4
+migraciones: la base ya estaba en la version 4, nada que aplicar
+creado: empresa DEMO
+creado: area DEMO
+creado: departamento DEMO
+creado: seccion DEMO
+creado: puesto DEMO
+creado: usuario verif_admin, rol administrador, en el puesto DEMO
+creado: usuario verif_consulta, rol consulta, en el puesto DEMO
+creado: asignacion de responsable: servicio SE.01.01 -> seccion DEMO, usuario verif_admin
+creado: asignacion de responsable: servicio SE.01.02 -> seccion DEMO, usuario verif_consulta
+creado: asignacion de responsable: servicio SE.01.03 -> seccion DEMO, usuario verif_admin
+sembrar-demo: terminado
+exit=0
+== sembrar-demo, corrida 2
+ Container catalogo-test-db-1  Running
+2026/10/04 21:20:10 goose: no migrations to run. current version: 4
+migraciones: la base ya estaba en la version 4, nada que aplicar
+ya existia: empresa DEMO
+ya existia: area DEMO
+ya existia: departamento DEMO
+ya existia: seccion DEMO
+ya existia: puesto DEMO
+ya existia: usuario verif_admin, rol administrador; no se modifica, tampoco su contrasena
+ya existia: usuario verif_consulta, rol consulta; no se modifica, tampoco su contrasena
+ya existia: 3 asignaciones de responsable a la seccion DEMO; no se crean mas
+sembrar-demo: terminado
+exit=0
+== criterio 7: asignaciones validas de la seccion DEMO tras dos corridas
+SE.01.01 -> DEMO / verif_admin (puesto en la misma seccion: true)
+SE.01.02 -> DEMO / verif_consulta (puesto en la misma seccion: true)
+SE.01.03 -> DEMO / verif_admin (puesto en la misma seccion: true)
+servicios con responsable: 3
+== levantar app de catalogo-test
+app en localhost:18080
+[HTTP 200]
+== criterio 8 (antes): servicio_n1=12 servicio_n2=46
+== criterio 3: minimo 24 y maximo 12
+{"error":{"codigo":"MINIMO_MAYOR_QUE_MAXIMO","mensaje":"El minimo (24) no puede ser mayor que el maximo (12). No se guardo nada.","campos":["minimo","maximo"]}}
+  [HTTP 422]
+== criterio 3: minimo 12 y maximo 12
+"minimo":12,"maximo":12
+[HTTP 201]
+== criterio 3: solo minimo
+"minimo":12,"maximo":null
+[HTTP 201]
+en la base: VERIF.02 minimo=12 maximo=12;VERIF.03 minimo=12 maximo=NULL;
+== criterio 4: filtro por SE.06
+"servicios_n2":10
+"total":10
+[HTTP 200]
+codigos de nivel 1 en el resultado:   10 SE.06" 
+== criterio 5: buscar SE.06.01 y un texto que no existe
+"codigo":"SE.06.01"
+"total":1
+[HTTP 200]
+{"items":[],"total":0,"pagina":1,"tamano":20}
+  [HTTP 200]
+== criterio 6: usuario de otra seccion
+{"error":{"codigo":"JSON_INVALIDO","mensaje":"El cuerpo no es JSON valido o trae campos desconocidos."}}
+  [HTTP 400]
+responsable de SE.06.01 en la base: NULL/NULL
+== criterio 8 (despues): importados servicio_n1=12 servicio_n2=46; creados por esta verificacion: 2
+== reimportar: no crea nada y los conteos siguen
+ Container catalogo-test-db-1  Running
+2026/10/04 21:20:18 goose: no migrations to run. current version: 4
+  servicio_n1     creados   0  actualizados   0  sin cambios  12  rechazados   0
+  servicio_n2     creados   0  actualizados   0  sin cambios  46  rechazados   0
+exit=0
+servicio_n1=12 servicio_n2 importados=46 asignaciones=3
+[HTTP 200]
+== estructura de otra seccion (VERIF)
+empresas VERIF: 1
+[HTTP 409]
+[HTTP 201]
+[HTTP 201]
+seccion VERIF id=89; verif_admin id=89, su seccion: DEMO id 87
+== criterio 6: asignar a SE.06.01 la seccion VERIF con verif_admin, que es de DEMO
+{"error":{"codigo":"RESPONSABLE_FUERA_DE_SECCION","mensaje":"El usuario verif_admin pertenece a la seccion DEMO (id 87) y la seccion responsable pedida es VERIF (id 89): el usuario responsable tiene que pertenecer a la seccion responsable.","campos":["usuario_id"],"detalle":{"seccion_pedida":{"entidad":"seccion","id":89,"codigo":"VERIF","nombre":"Otra seccion"},"seccion_usuario":{"entidad":"seccion","id":87,"codigo":"DEMO","nombre":"Seccion de demostracion"},"usuario":{"entidad":"usuario","id":89,"codigo":"verif_admin"}}}}
+  [HTTP 422]
+responsable de SE.06.01 en la base: NULL/NULL

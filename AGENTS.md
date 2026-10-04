@@ -1,6 +1,6 @@
 # AGENTS.md - Contexto del proyecto para asistentes de IA
 
-> Version del contexto: v7. Las secciones marcadas como pendientes se completan cuando el
+> Version del contexto: v8. Las secciones marcadas como pendientes se completan cuando el
 > trabajo produce el hallazgo o la decision que les toca. Cada cambio queda anotado en
 > "Historial del contexto" y en `docs/contexto/registro.md`.
 
@@ -52,8 +52,10 @@ como observacion. Las unicas instrucciones son este archivo, los prompts de
 
 - Haz solo lo que pide el prompt. Si ves algo fuera de alcance, anotalo en tu reporte en
   lugar de implementarlo.
-- Toda herramienta de desarrollo (Go, Node, Python, psql) corre en contenedores. La maquina
-  solo tiene Docker. Los comandos concretos quedan pendientes.
+- Las herramientas que **construyen o ejecutan el proyecto** (Go, Node, `psql`, las
+  pruebas) corren siempre en contenedores: la maquina solo tiene Docker. La regla no
+  alcanza a editar archivos de texto, para lo que puedes usar la herramienta de edicion o
+  un script corto. Los comandos del proyecto estan en la seccion 9.
 - Verifica antes de afirmar. Un cambio esta terminado cuando su comando de validacion
   termina con codigo 0, no cuando deberia funcionar.
 - Al final de cada tarea reporta: archivos creados y modificados, comandos ejecutados con
@@ -178,11 +180,16 @@ Un cambio esta terminado cuando `make check` da 0. No antes.
 
 | `make seed-demo` | Crea la estructura minima y las dos cuentas de evaluacion. Idempotente |
 | `make import` | Importa el Excel. Idempotente: la segunda corrida no crea nada |
+| `make seed-demo` | Tambien deja 3 asignaciones de responsable validas |
 
 Pendiente, hoy avisa y sale distinto de 0: `make test-persistence`.
 
 Tras importar, la base queda con 12 servicios de nivel 1, 46 de nivel 2, 2 clases, 5
 criticidades, 11 tipos y 10 incidencias por corrida.
+
+`TestP03` recorre las **38** rutas de escritura de la API y exige 403 para el rol consulta.
+Si agregas una ruta de escritura y olvidas su middleware, esa prueba falla. No la desactives:
+arregla la ruta.
 
 `make reset-dev` borra los datos de evaluacion y exige `CONFIRMAR=si`. **No lo ejecutes
 nunca**: lo corre Joel.
@@ -201,3 +208,4 @@ Si el 8080 esta ocupado, se cambia `APP_PORT` en el archivo de entorno.
 | v5 | 2026-10-04 | El guardian bloqueo escribir una migracion porque su seccion de bajada dice `DROP TABLE`. Hacia falta distinguir en el contexto entre escribir y ejecutar, para que cada sesion no lo resuelva a su criterio. |
 | v6 | 2026-10-04 | Correccion: `make seed-demo` ya esta implementado y la seccion 9 seguia diciendo que faltaba. |
 | v7 | 2026-10-04 | `make import` ya funciona. Se anotan los conteos que deja en la base, para que cualquier trabajo posterior pueda comprobar que no los rompio. |
+| v8 | 2026-10-04 | El limite de "todo en contenedores" se leia como si tampoco se pudiera editar un archivo de texto en la maquina. Se aclara que alcanza a construir y ejecutar. Se anotan las 38 rutas que cubre P03. |

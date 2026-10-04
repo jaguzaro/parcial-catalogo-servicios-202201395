@@ -3,6 +3,7 @@ package integracion
 import (
 	"bytes"
 	"context"
+	"errors"
 	"strings"
 	"testing"
 
@@ -26,6 +27,8 @@ func TestDemo_SembrarEsIdempotente(t *testing.T) {
 	}
 
 	enTx(t, func(ctx context.Context, tx pgx.Tx) {
+		// Las asignaciones de responsable necesitan servicios importados.
+		importarEnTx(t, ctx, tx)
 		var primera, segunda bytes.Buffer
 		if err := demo.Sembrar(ctx, tx, cuentas, &primera); err != nil {
 			t.Fatalf("primera corrida: %v", err)
@@ -58,6 +61,56 @@ func TestDemo_SembrarEsIdempotente(t *testing.T) {
 			if n := id(t, ctx, tx, c.sql); n != 1 {
 				t.Errorf("%s = %d, se esperaba 1", c.desc, n)
 			}
+		}
+
+		// Tres asignaciones validas: seccion DEMO activa, servicio activo y usuario de esa
+		// misma seccion. La segunda corrida no agrega ninguna.
+		if n := strings.Count(primera.String(), "creado: asignacion de responsable"); n != demo.Asignaciones {
+			t.Errorf("la primera corrida informa %d asignaciones, se esperaban %d:\n%s", n, demo.Asignaciones, primera.String())
+		}
+		validas := id(t, ctx, tx, `
+			SELECT count(*) FROM servicio_n2 sv
+			  JOIN seccion s ON s.id = sv.seccion_responsable_id AND s.codigo = 'DEMO' AND s.activo
+			  JOIN usuario u ON u.id = sv.usuario_responsable_id AND u.activo
+			  JOIN puesto p  ON p.id = u.puesto_id AND p.seccion_id = s.id
+			 WHERE sv.activo = 'S'`)
+		if validas < 3 {
+			t.Errorf("asignaciones validas = %d, se esperaban al menos 3", validas)
+		}
+		if n := id(t, ctx, tx, `SELECT count(*) FROM servicio_n2 WHERE seccion_responsable_id IS NOT NULL`); n != demo.Asignaciones {
+			t.Errorf("servicios con responsable = %d tras dos corridas, se esperaban %d", n, demo.Asignaciones)
+		}
+		if n := id(t, ctx, tx, `SELECT count(*) FROM servicio_n2`); n != 46 {
+			t.Errorf("servicio_n2 = %d tras sembrar, se esperaban 46", n)
+		}
+	})
+}
+
+func TestDemo_SinServiciosAvisaYFalla(t *testing.T) {
+	suf := sufijo(t)
+	entorno := map[string]string{
+		"DEMO_ADMIN_USUARIO": "admin" + suf, "DEMO_ADMIN_CONTRASENA": contrasenaPrueba(),
+		"DEMO_CONSULTA_USUARIO": "consulta" + suf, "DEMO_CONSULTA_CONTRASENA": contrasenaPrueba(),
+	}
+	cuentas, err := demo.CargarCuentas(func(k string) (string, bool) { v, ok := entorno[k]; return v, ok })
+	if err != nil {
+		t.Fatal(err)
+	}
+	enTx(t, func(ctx context.Context, tx pgx.Tx) {
+		if n := id(t, ctx, tx, `SELECT count(*) FROM servicio_n2`); n != 0 {
+			t.Fatalf("precondicion: servicio_n2 tiene %d filas (make reset-test)", n)
+		}
+		var salida bytes.Buffer
+		err := demo.Sembrar(ctx, tx, cuentas, &salida)
+		if !errors.Is(err, demo.ErrSinServicios) {
+			t.Fatalf("sin servicios debia devolver ErrSinServicios; devolvio %v", err)
+		}
+		if !strings.Contains(salida.String(), "AVISO") || !strings.Contains(err.Error(), "make import") {
+			t.Errorf("no dice por que fallo: error %q, salida:\n%s", err, salida.String())
+		}
+		// La estructura y las cuentas si quedan creadas.
+		if n := id(t, ctx, tx, `SELECT count(*) FROM usuario WHERE usuario IN ($1, $2)`, "admin"+suf, "consulta"+suf); n != 2 {
+			t.Errorf("cuentas creadas = %d, se esperaban 2", n)
 		}
 	})
 }

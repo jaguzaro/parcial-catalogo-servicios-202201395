@@ -33,6 +33,9 @@ var estadoPorCodigo = map[string]int{
 	db.ErrDependenciasActivas:   http.StatusConflict,
 	db.ErrAsignacionesAfectadas: http.StatusConflict,
 	db.ErrUltimoAdministrador:   http.StatusConflict,
+	db.ErrServicioInactivo:      http.StatusConflict,
+	db.ErrMinimoMayorQueMaximo:  http.StatusUnprocessableEntity,
+	db.ErrFueraDeSeccion:        http.StatusUnprocessableEntity,
 }
 
 // EscribirJSON responde con un cuerpo JSON y el estado dado.
