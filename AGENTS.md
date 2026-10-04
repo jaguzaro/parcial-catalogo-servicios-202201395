@@ -1,6 +1,6 @@
 # AGENTS.md - Contexto del proyecto para asistentes de IA
 
-> Version del contexto: v8. Las secciones marcadas como pendientes se completan cuando el
+> Version del contexto: v9. Las secciones marcadas como pendientes se completan cuando el
 > trabajo produce el hallazgo o la decision que les toca. Cada cambio queda anotado en
 > "Historial del contexto" y en `docs/contexto/registro.md`.
 
@@ -176,13 +176,14 @@ Un cambio esta terminado cuando `make check` da 0. No antes.
 | `make migrate` | Aplica las migraciones pendientes. Es idempotente |
 | `make test` | Solo las pruebas |
 | `make lint` | Solo el analisis estatico |
+| `make seed-demo` | Crea la estructura minima, las dos cuentas de evaluacion y 3 asignaciones de responsable. Idempotente |
+| `make import` | Importa el Excel. Idempotente: la segunda corrida no crea nada |
+| `make test-persistence` | P12: escribe un dato, reinicia los contenedores **sin borrar el volumen** y comprueba que sigue ahi |
+| `make evidence` | Corre `make check` y guarda la salida en `docs/evidencias/pruebas/<fecha>-<commit>.txt`. La guarda tambien si falla |
+| `make e2e` | Dos pruebas de navegador con Playwright en contenedor: inicio de sesion y un filtro. No entra en `make check` |
 | `make reset-test` | Destruye y recrea **solo** `catalogo-test` |
 
-| `make seed-demo` | Crea la estructura minima y las dos cuentas de evaluacion. Idempotente |
-| `make import` | Importa el Excel. Idempotente: la segunda corrida no crea nada |
-| `make seed-demo` | Tambien deja 3 asignaciones de responsable validas |
-
-Pendiente, hoy avisa y sale distinto de 0: `make test-persistence`.
+Ya no queda ningun objetivo del `Makefile` pendiente de implementar.
 
 Tras importar, la base queda con 12 servicios de nivel 1, 46 de nivel 2, 2 clases, 5
 criticidades, 11 tipos y 10 incidencias por corrida.
@@ -209,3 +210,4 @@ Si el 8080 esta ocupado, se cambia `APP_PORT` en el archivo de entorno.
 | v6 | 2026-10-04 | Correccion: `make seed-demo` ya esta implementado y la seccion 9 seguia diciendo que faltaba. |
 | v7 | 2026-10-04 | `make import` ya funciona. Se anotan los conteos que deja en la base, para que cualquier trabajo posterior pueda comprobar que no los rompio. |
 | v8 | 2026-10-04 | El limite de "todo en contenedores" se leia como si tampoco se pudiera editar un archivo de texto en la maquina. Se aclara que alcanza a construir y ejecutar. Se anotan las 38 rutas que cubre P03. |
+| v9 | 2026-10-04 | Ya existen `make test-persistence`, `make evidence` y `make e2e`, y la tabla de comandos estaba fragmentada por ediciones anteriores. Queda una sola lista, sin objetivos pendientes. |

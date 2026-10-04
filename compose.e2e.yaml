@@ -1,0 +1,14 @@
+# Se usa encima de la pila de pruebas:
+#   docker compose -p catalogo-test -f compose.yaml -f compose.test.yaml -f compose.e2e.yaml ...
+# Playwright corre en su propio contenedor y llega a la app por la red de compose.
+services:
+  e2e:
+    build:
+      context: ./e2e
+    depends_on:
+      app:
+        condition: service_healthy
+    environment:
+      E2E_BASE_URL: http://app:8080
+      DEMO_CONSULTA_USUARIO: ${DEMO_CONSULTA_USUARIO:-}
+      DEMO_CONSULTA_CONTRASENA: ${DEMO_CONSULTA_CONTRASENA:-}

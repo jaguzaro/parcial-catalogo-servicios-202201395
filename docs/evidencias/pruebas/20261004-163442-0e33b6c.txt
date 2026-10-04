@@ -1,0 +1,270 @@
+Fecha:       2026-10-04 16:34:42 -0600
+Commit:      0e33b6c (con cambios sin versionar)
+Herramienta: 2.1.289 (Claude Code) ; Docker version 28.3.2, build 578ccf6
+Comando:     make check
+==========================================================================
+.env ya existe, no se toca
+##### [1/4] lint #####
+== tipos de la interfaz (tsc --noEmit, dentro de la etapa web) ==
+docker build --target web -t catalogo-web-lint .
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 815B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:24.21.0-alpine
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 166B done
+#3 DONE 0.0s
+
+#4 [web 1/6] FROM docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#4 resolve docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 971B done
+#5 DONE 0.0s
+
+#6 [web 2/6] WORKDIR /web
+#6 CACHED
+
+#7 [web 5/6] COPY web/ ./
+#7 CACHED
+
+#8 [web 3/6] COPY web/package.json web/package-lock.json ./
+#8 CACHED
+
+#9 [web 4/6] RUN npm ci
+#9 CACHED
+
+#10 [web 6/6] RUN npm run build
+#10 CACHED
+
+#11 exporting to image
+#11 exporting layers done
+#11 exporting manifest sha256:57dad039a568af91442b0d5d42a4ed859d777f2e2a87fb7babb9b6fbebad4bbf done
+#11 exporting config sha256:3f51c3185b4b72a670d034610c7764240a7fb49a5530439834749c20b4accb51 done
+#11 exporting attestation manifest sha256:6e3704dcd7df9c5710ce1686f8fddca12553eeeea4287dcf4626143f2d9cc5ef done
+#11 exporting manifest list sha256:e2ae27ac7afc8bb772c541a62769ade0fee9a8bd709ecf3495368ec995ec388e done
+#11 naming to docker.io/library/catalogo-web-lint:latest done
+#11 unpacking to docker.io/library/catalogo-web-lint:latest done
+#11 DONE 0.1s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/x2dkcq1jt6ahyh88vjxemzziq
+== gofmt y go vet ==
+docker build --target build -t catalogo-build-lint .
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 815B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/golang:1.26.8-alpine
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:24.21.0-alpine
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 166B done
+#4 DONE 0.0s
+
+#5 [web 1/6] FROM docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#5 resolve docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 done
+#5 DONE 0.0s
+
+#6 [build 1/7] FROM docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c
+#6 resolve docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 407.01kB 0.0s done
+#7 DONE 0.0s
+
+#8 [build 5/7] COPY . .
+#8 CACHED
+
+#9 [build 6/7] COPY --from=web /web/dist ./internal/web/dist
+#9 CACHED
+
+#10 [build 2/7] WORKDIR /src
+#10 CACHED
+
+#11 [build 4/7] RUN go mod download
+#11 CACHED
+
+#12 [web 2/6] WORKDIR /web
+#12 CACHED
+
+#13 [web 5/6] COPY web/ ./
+#13 CACHED
+
+#14 [web 4/6] RUN npm ci
+#14 CACHED
+
+#15 [web 6/6] RUN npm run build
+#15 CACHED
+
+#16 [build 3/7] COPY go.mod go.sum ./
+#16 CACHED
+
+#17 [web 3/6] COPY web/package.json web/package-lock.json ./
+#17 CACHED
+
+#18 [build 7/7] RUN CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o /out/catalogo ./cmd/catalogo
+#18 CACHED
+
+#19 exporting to image
+#19 exporting layers
+#19 exporting layers 3.5s done
+#19 exporting manifest sha256:a328f55c159c6a7ce9e24edbd15e49b0d25159c2994fee79f55e25057d24e33c
+#19 exporting manifest sha256:a328f55c159c6a7ce9e24edbd15e49b0d25159c2994fee79f55e25057d24e33c done
+#19 exporting config sha256:c15d9f1f9bcf54d46f34df1cf7587501f7cc14c4440f60fd570f9a90f0ac18c0 done
+#19 exporting attestation manifest sha256:5d6d18fb6efa9f39052e7a982aa38d823e72bdcff825f05933bb110f3406e179 done
+#19 exporting manifest list sha256:d935d48e6927f37c4ed8baf301bbb7c232fbd457a6e7c5b41f4b5cde86afe010 done
+#19 naming to docker.io/library/catalogo-build-lint:latest done
+#19 unpacking to docker.io/library/catalogo-build-lint:latest
+#19 unpacking to docker.io/library/catalogo-build-lint:latest 1.0s done
+#19 DONE 4.5s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/1tirx675iijp61w4axqztgc3c
+docker run --rm catalogo-build-lint sh -c 'out=$(gofmt -l cmd internal tests 2>/dev/null); if [ -n "$out" ]; then echo "gofmt: archivos sin formato:"; echo "$out"; exit 1; fi; go vet ./...'
+##### [2/4] test #####
+.env ya existe, no se toca
+docker compose -p catalogo-test -f compose.yaml -f compose.test.yaml run --rm --build pruebas
+ Container catalogo-test-db-1  Running
+#1 [internal] load local bake definitions
+#1 reading from stdin 636B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 815B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/golang:1.26.8-alpine
+#3 DONE 0.0s
+
+#4 [internal] load metadata for docker.io/library/node:24.21.0-alpine
+#4 DONE 0.0s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 166B done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 DONE 0.0s
+
+#7 [build 1/7] FROM docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c
+#7 resolve docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c done
+#7 DONE 0.0s
+
+#8 [web 1/6] FROM docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#8 resolve docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#8 resolve docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 done
+#8 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 4.43kB done
+#6 DONE 0.0s
+
+#9 [build 4/7] RUN go mod download
+#9 CACHED
+
+#10 [web 3/6] COPY web/package.json web/package-lock.json ./
+#10 CACHED
+
+#11 [build 2/7] WORKDIR /src
+#11 CACHED
+
+#12 [web 2/6] WORKDIR /web
+#12 CACHED
+
+#13 [web 4/6] RUN npm ci
+#13 CACHED
+
+#14 [web 6/6] RUN npm run build
+#14 CACHED
+
+#15 [build 3/7] COPY go.mod go.sum ./
+#15 CACHED
+
+#16 [web 5/6] COPY web/ ./
+#16 CACHED
+
+#17 [build 6/7] COPY --from=web /web/dist ./internal/web/dist
+#17 CACHED
+
+#18 [build 5/7] COPY . .
+#18 CACHED
+
+#19 [build 7/7] RUN CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o /out/catalogo ./cmd/catalogo
+#19 CACHED
+
+#20 exporting to image
+#20 exporting layers done
+#20 exporting manifest sha256:2755496f74c0f79c48f7d46b4e0241621890b9b2b1c5d3b9fe00a10a3cffdbec done
+#20 exporting config sha256:b8c6b441335ed0bc1b63ef77e46993b211367a92785f964137f2a08fb73add02 done
+#20 exporting attestation manifest sha256:697eac1d519d776493b0845602f081ee055e2448d9146e8980286beda9deb497 0.0s done
+#20 exporting manifest list sha256:a124fbb98dcd8b58fabe5c694b43465cb511d19659347d5f96fa684ec831c2fb done
+#20 naming to docker.io/library/catalogo-test-pruebas:latest done
+#20 unpacking to docker.io/library/catalogo-test-pruebas:latest done
+#20 DONE 0.0s
+
+#21 resolving provenance for metadata file
+#21 DONE 0.0s
+?   	catalogo/cmd/catalogo	[no test files]
+ok  	catalogo/internal/auth	0.407s
+?   	catalogo/internal/catalogo	[no test files]
+ok  	catalogo/internal/config	0.006s
+?   	catalogo/internal/db	[no test files]
+?   	catalogo/internal/demo	[no test files]
+ok  	catalogo/internal/http	0.005s
+ok  	catalogo/internal/importador	0.010s
+?   	catalogo/internal/organizacion	[no test files]
+?   	catalogo/internal/usuarios	[no test files]
+?   	catalogo/internal/web	[no test files]
+2026/10/04 22:35:07 goose: no migrations to run. current version: 4
+--- FAIL: TestP09_MinimoMayorQueMaximo (0.00s)
+    catalogo_test.go:121: precondicion: servicio_n1 tiene 12 filas; la prueba necesita la base sin catalogo (make reset-test)
+--- FAIL: TestP10_BusquedaYFiltros (0.00s)
+    catalogo_test.go:244: precondicion: servicio_n1 tiene 12 filas; la prueba necesita la base sin catalogo (make reset-test)
+--- FAIL: TestCatalogo_FichaConOrigenEIncidencias (0.00s)
+    catalogo_test.go:626: precondicion: servicio_n1 tiene 12 filas; la prueba necesita la base sin catalogo (make reset-test)
+--- FAIL: TestDemo_SembrarEsIdempotente (0.00s)
+    demo_test.go:31: precondicion: servicio_n1 tiene 12 filas; la prueba necesita la base sin catalogo (make reset-test)
+--- FAIL: TestDemo_SinServiciosAvisaYFalla (0.00s)
+    demo_test.go:101: precondicion: servicio_n2 tiene 46 filas (make reset-test)
+--- FAIL: TestEsquema_ServicioN1CodigoDuplicado (0.00s)
+    esquema_test.go:127: preparacion fallo: ERROR: duplicate key value violates unique constraint "servicio_n1_codigo_uk" (SQLSTATE 23505)
+        SQL: INSERT INTO servicio_n1 (codigo, nombre) VALUES ('SE.01', 'Uno')
+--- FAIL: TestEsquema_ServicioN2ActivoValoresValidos (0.00s)
+    esquema_test.go:161: preparacion fallo: ERROR: duplicate key value violates unique constraint "servicio_n1_codigo_uk" (SQLSTATE 23505)
+        SQL: INSERT INTO servicio_n1 (codigo, nombre) VALUES ('SE.01', 'Uno') RETURNING id
+--- FAIL: TestEsquema_ServicioN2ActivoFueraDeDominio (0.00s)
+    esquema_test.go:172: preparacion fallo: ERROR: duplicate key value violates unique constraint "servicio_n1_codigo_uk" (SQLSTATE 23505)
+        SQL: INSERT INTO servicio_n1 (codigo, nombre) VALUES ('SE.01', 'Uno') RETURNING id
+--- FAIL: TestEsquema_MinimoMayorQueMaximo (0.00s)
+    esquema_test.go:183: preparacion fallo: ERROR: duplicate key value violates unique constraint "servicio_n1_codigo_uk" (SQLSTATE 23505)
+        SQL: INSERT INTO servicio_n1 (codigo, nombre) VALUES ('SE.01', 'Uno') RETURNING id
+--- FAIL: TestImportaciones_ListarYVer (0.00s)
+    importaciones_test.go:11: precondicion: servicio_n1 tiene 12 filas; la prueba necesita la base sin catalogo (make reset-test)
+--- FAIL: TestP06_ImportarArchivoOriginal (0.01s)
+    importador_test.go:98: precondicion: servicio_n1 tiene 12 filas; la prueba necesita la base sin catalogo (make reset-test)
+--- FAIL: TestP07_RepetirImportacionNoDuplica (0.00s)
+    importador_test.go:191: precondicion: servicio_n1 tiene 12 filas; la prueba necesita la base sin catalogo (make reset-test)
+--- FAIL: TestP08_SE12YAtributosAusentes (0.00s)
+    importador_test.go:263: precondicion: servicio_n1 tiene 12 filas; la prueba necesita la base sin catalogo (make reset-test)
+--- FAIL: TestImportador_FusionPorCampo (0.00s)
+    importador_test.go:344: precondicion: servicio_n1 tiene 12 filas; la prueba necesita la base sin catalogo (make reset-test)
+FAIL
+FAIL	catalogo/tests/integracion	2.662s
+FAIL
+
+make[2]: *** [test] Error 1
+CHECK FALLO en el paso 2/4: test
+make[1]: *** [check] Error 1
+==========================================================================
+Codigo de salida de make check: 2

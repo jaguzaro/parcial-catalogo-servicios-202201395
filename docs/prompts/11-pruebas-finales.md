@@ -6,7 +6,7 @@
 | Herramienta | Claude Code `2.1.289`, modo headless `claude -p` |
 | Modelo | `sonnet` |
 | Ejecucion | `docs/evidencias/sesiones/<archivo>.json` y `.meta.txt` |
-| Commit base | (el del commit de la interfaz de mantenimiento) |
+| Commit base | `0e33b6c` |
 
 ## Objetivo
 
@@ -94,4 +94,55 @@ extremo a extremo o el motivo de dejarla fuera, y cualquier defecto que hayas en
 
 ## Resultado
 
-Pendiente de ejecucion.
+**Aceptado.** Sesion: [`20261004-163032-11-pruebas-finales.json`](../evidencias/sesiones/20261004-163032-11-pruebas-finales.json), 20 turnos.
+
+Los tres objetivos quedaron hechos, incluido el opcional.
+
+### Comprobado por el orquestador
+
+```
+make test-persistence   exit 0 (ejecutado dos veces)
+make e2e                exit 0, 2 pruebas pasadas
+make check              exit 0
+make evidence           exit 0, genero su archivo con fecha y commit
+```
+
+### P12, persistencia
+
+Escribe un dato con un codigo unico, reinicia y lo vuelve a leer:
+
+```
+escrito antes del reinicio:  P12-...-61997 | Marcador de persistencia P12
+leido despues del reinicio:  P12-...-61997 | Marcador de persistencia P12
+P12 OK: el dato persistio tras el reinicio (mismo volumen, mismo contenido)
+```
+
+Lo importante de como esta hecho: **el reinicio es `stop` y luego `up`, no `down`**.
+Comprobado leyendo `scripts/persistencia.sh`, donde la palabra `down` solo aparece en un
+comentario que explica justamente eso. El script tambien compara el nombre del volumen antes
+y despues, asi que detectaria un reinicio que lo cambiara. Y opera solo sobre
+`catalogo-test`, nunca sobre los datos de evaluacion.
+
+### La prueba de navegador cierra una duda abierta
+
+Las dos tareas de interfaz se entregaron con una limitacion escrita: nadie las habia abierto
+en un navegador. `make e2e` lo cierra. Entra con la cuenta de consulta, llega al catalogo,
+filtra por un nivel 1 y comprueba que la tabla cambia, que todas las filas son de ese nivel
+y que el total mostrado coincide con el que responde la API.
+
+Dos pruebas, no veinte. Playwright corre en su propio contenedor y no entra en `make check`,
+para no volver lento el comando que se usa en cada cambio.
+
+### El fallo de esta tarea, y por que se conserva
+
+La primera version de `make e2e` dejaba el catalogo importado en la base de pruebas, y las
+pruebas de Go exigen esa base sin catalogo: 15 fallaron. Lo detecto `make evidence` y el
+archivo de esa corrida fallida **se conserva a proposito**, porque demuestra que la
+evidencia se guarda tambien cuando el resultado es malo. Una evidencia que solo existe
+cuando todo sale bien no se distingue de no haber corrido nada.
+
+La correccion: `make e2e` limpia su base al terminar, pase o falle. La corrida buena
+inmediatamente posterior termina en 0. Explicado en
+[`pruebas/README.md`](../evidencias/pruebas/README.md).
+
+Con esto **P01 a P12 estan completas**.

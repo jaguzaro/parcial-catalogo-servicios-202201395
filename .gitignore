@@ -26,3 +26,7 @@ tmp/
 
 # Respaldos locales de configuracion
 .claude/*.bak
+
+# Prueba de extremo a extremo
+e2e/node_modules/
+e2e/test-results/

@@ -4,10 +4,11 @@ SHELL := /bin/bash
 # Proyecto de pruebas: volumen y base separados de los de desarrollo y evaluacion.
 COMPOSE      := docker compose
 COMPOSE_TEST := docker compose -p catalogo-test -f compose.yaml -f compose.test.yaml
+COMPOSE_E2E  := docker compose -p catalogo-test -f compose.yaml -f compose.test.yaml -f compose.e2e.yaml
 IMAGEN_BUILD := catalogo-build-lint
 
 .PHONY: help setup up down logs migrate test lint check reset-test reset-dev \
-        import seed-demo test-persistence _lint-web _lint-go _test _guard _excel
+        import seed-demo test-persistence evidence e2e _lint-web _lint-go _test _guard _excel
 
 help: ## Lista los objetivos
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-17s %s\n", $$1, $$2}'
@@ -70,5 +71,22 @@ import: setup ## Importa data/CatalogoServicios.xlsx (montado :ro). Repetible si
 seed-demo: setup ## Crea la estructura DEMO y las cuentas de evaluacion (idempotente)
 	$(COMPOSE) run --rm --build app sembrar-demo
 
-test-persistence: ## (pendiente) Prueba de persistencia
-	@echo "make test-persistence: todavia no esta implementado"; exit 1
+test-persistence: setup ## P12: reinicia contenedores sin borrar volumen y comprueba que el dato persiste (catalogo-test)
+	@bash scripts/persistencia.sh
+
+evidence: setup ## Ejecuta make check y guarda la salida en docs/evidencias/pruebas/<fecha>-<commit>.txt
+	@bash scripts/evidencia.sh
+
+e2e: setup ## Prueba de extremo a extremo (Playwright en contenedor, pila catalogo-test). No entra en check
+	@# Siembra datos en catalogo_test y, pase o falle, al final destruye SOLO ese proyecto
+	@# para dejar la base sin catalogo, que es lo que exigen las pruebas de Go.
+	@$(COMPOSE_E2E) up -d --wait db \
+	  && $(COMPOSE_E2E) run --rm --build app migrar \
+	  && $(COMPOSE_E2E) run --rm app importar \
+	  && $(COMPOSE_E2E) run --rm app sembrar-demo \
+	  && $(COMPOSE_E2E) up -d --build --wait app \
+	  && $(COMPOSE_E2E) run --rm --build e2e; \
+	rc=$$?; \
+	echo "== e2e: limpiando el proyecto catalogo-test =="; \
+	$(COMPOSE_E2E) down -v; \
+	exit $$rc

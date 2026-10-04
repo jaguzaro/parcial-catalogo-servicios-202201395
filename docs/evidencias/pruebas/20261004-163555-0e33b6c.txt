@@ -1,0 +1,239 @@
+Fecha:       2026-10-04 16:35:55 -0600
+Commit:      0e33b6c (con cambios sin versionar)
+Herramienta: 2.1.289 (Claude Code) ; Docker version 28.3.2, build 578ccf6
+Comando:     make check
+==========================================================================
+.env ya existe, no se toca
+##### [1/4] lint #####
+== tipos de la interfaz (tsc --noEmit, dentro de la etapa web) ==
+docker build --target web -t catalogo-web-lint .
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 815B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:24.21.0-alpine
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 166B done
+#3 DONE 0.0s
+
+#4 [web 1/6] FROM docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#4 resolve docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 971B done
+#5 DONE 0.0s
+
+#6 [web 3/6] COPY web/package.json web/package-lock.json ./
+#6 CACHED
+
+#7 [web 4/6] RUN npm ci
+#7 CACHED
+
+#8 [web 5/6] COPY web/ ./
+#8 CACHED
+
+#9 [web 2/6] WORKDIR /web
+#9 CACHED
+
+#10 [web 6/6] RUN npm run build
+#10 CACHED
+
+#11 exporting to image
+#11 exporting layers done
+#11 exporting manifest sha256:57dad039a568af91442b0d5d42a4ed859d777f2e2a87fb7babb9b6fbebad4bbf done
+#11 exporting config sha256:3f51c3185b4b72a670d034610c7764240a7fb49a5530439834749c20b4accb51 done
+#11 exporting attestation manifest sha256:0cbcc93cd344ab1c1412c9c46127f29842feb7b8db16015f7102072dc4837d24 done
+#11 exporting manifest list sha256:3aa34cfea5a8691550a501c41612d79691ac7a72cb8485fc24a5ef1a16f6e52b done
+#11 naming to docker.io/library/catalogo-web-lint:latest done
+#11 unpacking to docker.io/library/catalogo-web-lint:latest done
+#11 DONE 0.0s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/fp5973w8rjlij1spen0f593sq
+== gofmt y go vet ==
+docker build --target build -t catalogo-build-lint .
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 815B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/golang:1.26.8-alpine
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:24.21.0-alpine
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 166B done
+#4 DONE 0.0s
+
+#5 [build 1/7] FROM docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c
+#5 resolve docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c 0.0s done
+#5 DONE 0.0s
+
+#6 [web 1/6] FROM docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#6 resolve docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 407.32kB 0.0s done
+#7 DONE 0.0s
+
+#8 [build 5/7] COPY . .
+#8 CACHED
+
+#9 [web 6/6] RUN npm run build
+#9 CACHED
+
+#10 [build 6/7] COPY --from=web /web/dist ./internal/web/dist
+#10 CACHED
+
+#11 [web 4/6] RUN npm ci
+#11 CACHED
+
+#12 [build 3/7] COPY go.mod go.sum ./
+#12 CACHED
+
+#13 [build 4/7] RUN go mod download
+#13 CACHED
+
+#14 [web 2/6] WORKDIR /web
+#14 CACHED
+
+#15 [web 3/6] COPY web/package.json web/package-lock.json ./
+#15 CACHED
+
+#16 [build 2/7] WORKDIR /src
+#16 CACHED
+
+#17 [web 5/6] COPY web/ ./
+#17 CACHED
+
+#18 [build 7/7] RUN CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o /out/catalogo ./cmd/catalogo
+#18 CACHED
+
+#19 exporting to image
+#19 exporting layers
+#19 exporting layers 3.5s done
+#19 exporting manifest sha256:892d1d96dde266490e0da851cc3fdf9363e3204fc01f9fa26a59a84075a89ff8
+#19 exporting manifest sha256:892d1d96dde266490e0da851cc3fdf9363e3204fc01f9fa26a59a84075a89ff8 done
+#19 exporting config sha256:b8243d165bdc5852e968cfd6f4cdbeb355304800456f157119cf9946c7e1b25d done
+#19 exporting attestation manifest sha256:16cd141118ea9bd47194c384db8ce9dfc636cee05ddde50e7973e463309c4269 done
+#19 exporting manifest list sha256:aac3b3c1ba505c94b7fb8f67234744ce679643c37e89c19c1456ed56a1adab3d done
+#19 naming to docker.io/library/catalogo-build-lint:latest done
+#19 unpacking to docker.io/library/catalogo-build-lint:latest
+#19 unpacking to docker.io/library/catalogo-build-lint:latest 0.5s done
+#19 DONE 4.0s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/jlpj2ex9kwhe0ty0b7if91qdx
+docker run --rm catalogo-build-lint sh -c 'out=$(gofmt -l cmd internal tests 2>/dev/null); if [ -n "$out" ]; then echo "gofmt: archivos sin formato:"; echo "$out"; exit 1; fi; go vet ./...'
+##### [2/4] test #####
+.env ya existe, no se toca
+docker compose -p catalogo-test -f compose.yaml -f compose.test.yaml run --rm --build pruebas
+ Network catalogo-test_default  Creating
+ Network catalogo-test_default  Created
+ Volume "catalogo-test_catalogo_pgdata"  Creating
+ Volume "catalogo-test_catalogo_pgdata"  Created
+ Container catalogo-test-db-1  Creating
+ Container catalogo-test-db-1  Created
+ Container catalogo-test-db-1  Starting
+ Container catalogo-test-db-1  Started
+#1 [internal] load local bake definitions
+#1 reading from stdin 636B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 815B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/golang:1.26.8-alpine
+#3 DONE 0.0s
+
+#4 [internal] load metadata for docker.io/library/node:24.21.0-alpine
+#4 DONE 0.0s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 166B done
+#5 DONE 0.0s
+
+#6 [web 1/6] FROM docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#6 resolve docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 done
+#6 DONE 0.0s
+
+#7 [build 1/7] FROM docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c
+#7 resolve docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c done
+#7 DONE 0.0s
+
+#8 [internal] load build context
+#8 transferring context: 4.43kB done
+#8 DONE 0.0s
+
+#9 [build 4/7] RUN go mod download
+#9 CACHED
+
+#10 [build 5/7] COPY . .
+#10 CACHED
+
+#11 [build 2/7] WORKDIR /src
+#11 CACHED
+
+#12 [web 4/6] RUN npm ci
+#12 CACHED
+
+#13 [web 6/6] RUN npm run build
+#13 CACHED
+
+#14 [build 6/7] COPY --from=web /web/dist ./internal/web/dist
+#14 CACHED
+
+#15 [build 3/7] COPY go.mod go.sum ./
+#15 CACHED
+
+#16 [web 3/6] COPY web/package.json web/package-lock.json ./
+#16 CACHED
+
+#17 [web 5/6] COPY web/ ./
+#17 CACHED
+
+#18 [web 2/6] WORKDIR /web
+#18 CACHED
+
+#19 [build 7/7] RUN CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o /out/catalogo ./cmd/catalogo
+#19 CACHED
+
+#20 exporting to image
+#20 exporting layers done
+#20 exporting manifest sha256:228a75360f816ef05320b9543d58f40dd9c3a5df693f3d4338567bc1c6a80d2d done
+#20 exporting config sha256:9342de826128e10359830b338ca9811c66bfed0cdcebbe13212c2766a5a2fb27 done
+#20 exporting attestation manifest sha256:b523bf8e59dedd595313d635b31a7f6a716805c148d79df082ffcab406df13b8 done
+#20 exporting manifest list sha256:0e1c5a8c1e8bb43729b86f1cf063383245eb8747e28726780d16427ecafb7e8e done
+#20 naming to docker.io/library/catalogo-test-pruebas:latest done
+#20 unpacking to docker.io/library/catalogo-test-pruebas:latest done
+#20 DONE 0.0s
+
+#21 resolving provenance for metadata file
+#21 DONE 0.0s
+?   	catalogo/cmd/catalogo	[no test files]
+ok  	catalogo/internal/auth	0.407s
+?   	catalogo/internal/catalogo	[no test files]
+ok  	catalogo/internal/config	0.004s
+?   	catalogo/internal/db	[no test files]
+?   	catalogo/internal/demo	[no test files]
+ok  	catalogo/internal/http	0.005s
+ok  	catalogo/internal/importador	0.009s
+?   	catalogo/internal/organizacion	[no test files]
+?   	catalogo/internal/usuarios	[no test files]
+?   	catalogo/internal/web	[no test files]
+ok  	catalogo/tests/integracion	4.304s
+##### [3/4] hooks/test-guard.sh #####
+test-guard: 33 OK, 0 fallas
+##### [4/4] SHA-256 del Excel #####
+data/CatalogoServicios.xlsx: OK
+CHECK OK: los cuatro pasos pasaron
+==========================================================================
+Codigo de salida de make check: 0
