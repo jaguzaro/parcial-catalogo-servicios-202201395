@@ -82,44 +82,44 @@ Después:
 
 ---
 
-> El texto de arriba es el que se envió, sin retocar. El SHA-256 registrado en las
-> evidencias (`9a5a2424…d772b`) corresponde a esa versión; lo de aquí abajo se escribió
-> después de ejecutarla, así que el hash del archivo actual ya no coincide.
+> Lo de arriba es el texto que se envio, sin retocar y con sus acentos. El SHA-256 que
+> quedo registrado en las evidencias corresponde a esa version. Lo de abajo se escribio
+> despues, asi que el hash del archivo de hoy ya no coincide.
 
 ## Resultado
 
-**Aceptado** en la segunda ejecución. El prompt se ejecutó dos veces sin cambios; entre una
-y otra se corrigió el entorno, no el prompt.
+Aceptado en la segunda ejecucion. El prompt se ejecuto dos veces sin cambios. Entre una y
+otra se corrigio el entorno, no el prompt.
 
-| Ejecución | Fecha | Sesión | Veredicto del trabajador |
+| Ejecucion | Fecha | Sesion | Veredicto del asistente |
 |---|---|---|---|
-| 1ª | 2026-10-04 00:08 | [`20261004-000853-…json`](../evidencias/sesiones/20261004-000853-00-verificacion-harness.json) | `HARNESS INCOMPLETO: caso 3b (bloqueado por permisos, no por el hook) y caso 5 (el SHA-256 no se pudo calcular)` |
-| 2ª | 2026-10-04 00:21 | [`20261004-002140-…json`](../evidencias/sesiones/20261004-002140-00-verificacion-harness.json) | `HARNESS OK` |
+| 1a | 2026-10-04 00:08 | [`20261004-000853-...json`](../evidencias/sesiones/20261004-000853-00-verificacion-harness.json) | `HARNESS INCOMPLETO: caso 3b (bloqueado por permisos, no por el hook) y caso 5 (el SHA-256 no se pudo calcular)` |
+| 2a | 2026-10-04 00:21 | [`20261004-002140-...json`](../evidencias/sesiones/20261004-002140-00-verificacion-harness.json) | `HARNESS OK` |
 
-Criterios de aceptación en la segunda ejecución:
+Criterios en la segunda ejecucion:
 
-1. ✅ Casos 1, 2, 3a, 3b y 4 bloqueados con `BLOQUEADO por hooks/guard.sh:`.
-2. ✅ Cinco líneas nuevas en `logs/hooks.log` (4 Bash + 1 Write), verificadas aparte y
-   copiadas sin editar a [`00-bloqueos.md`](../evidencias/harness/00-bloqueos.md).
-3. ✅ Caso 5 ejecutado; `shasum -a 256 -c docs/contexto/excel-sha256.txt` → `OK`.
-4. ⚠️ Cumplido, pero el criterio estaba mal planteado: `git status` no detectaría una
-   modificación del Excel, porque los archivos aún no están versionados. Lo observó el
-   propio asistente. La integridad la confirma el hash del criterio 3.
+1. Cumplido. Casos 1, 2, 3a, 3b y 4 bloqueados con `BLOQUEADO por hooks/guard.sh:`.
+2. Cumplido. Cinco lineas nuevas en `logs/hooks.log`, 4 de Bash y 1 de Write, comprobadas
+   aparte y copiadas sin editar a [`00-bloqueos.md`](../evidencias/harness/00-bloqueos.md).
+3. Cumplido. Caso 5 ejecutado y `shasum -a 256 -c docs/contexto/excel-sha256.txt` dio OK.
+4. Cumplido, pero el criterio estaba mal planteado: `git status` no detectaria un cambio en
+   el Excel, porque los archivos todavia no estaban versionados. Lo noto el propio
+   asistente. La integridad la confirma el hash del criterio 3.
 
-De paso destapó dos defectos del entorno —el workspace sin confiar y el `deny`
-adelantándose al hook— que ninguna lectura del harness habría encontrado:
+De paso destapo dos defectos del entorno, el workspace sin confiar y el `deny`
+adelantandose al hook, que ninguna lectura del harness habria encontrado:
 [`00-hallazgo-capas-de-permisos.md`](../evidencias/harness/00-hallazgo-capas-de-permisos.md).
 
-## Iteración
+## Iteracion
 
-Ninguna. El prompt no se modificó: los dos fallos de la primera ejecución fueron del
-entorno y se corrigieron ahí. Se deja dicho para no contarlo como una mejora de prompt,
-que es otra cosa.
+Ninguna. El prompt no se modifico. Los dos fallos de la primera corrida fueron del entorno
+y se corrigieron ahi. Se deja dicho para no contarlo como una mejora de prompt, que es otra
+cosa.
 
-Tres cosas que sí se aplican a los prompts siguientes:
+Tres cosas que si se aplican a los prompts siguientes:
 
-- Pedir siempre un control positivo junto a los negativos. Aquí fue el caso 5, y fue el
-  único que detectó que la lista `allow` se estaba ignorando.
-- Pedir que el asistente diga **qué** rechazó cada acción, no solo que la rechazaron.
-- Escribir los criterios sobre el estado real del repositorio: el criterio 4 daba por
+- Pedir siempre un control positivo junto a los negativos. Aqui fue el caso 5, y fue el
+  unico que detecto que la lista `allow` se estaba ignorando.
+- Pedir que el asistente diga que fue lo que rechazo cada accion, no solo que la rechazaron.
+- Escribir los criterios sobre el estado real del repositorio. El criterio 4 daba por
   versionados archivos que no lo estaban.

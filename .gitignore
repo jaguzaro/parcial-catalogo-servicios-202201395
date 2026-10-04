@@ -1,4 +1,4 @@
-# Secretos y configuración local (el enunciado exige no subir .env reales)
+# Secretos y configuracion local. El enunciado pide no subir archivos de entorno reales
 .env
 .env.*
 !.env.example
@@ -8,19 +8,19 @@ node_modules/
 web/node_modules/
 vendor/
 
-# Artefactos de construcción
+# Artefactos de construccion
 web/dist/
 bin/
 *.exe
 
-# Basura del sistema operativo / editores
+# Basura del sistema operativo y de los editores
 .DS_Store
 Thumbs.db
 *.swp
 .idea/
 .vscode/
 
-# Salidas temporales de ejecución (los logs de hooks SÍ se versionan: ver logs/README.md)
+# Salidas temporales. Los logs de hooks si se versionan, ver logs/README.md
 tmp/
 *.tmp
 
