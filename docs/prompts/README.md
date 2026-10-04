@@ -20,3 +20,4 @@ importacion y pruebas.
 | 01 | [`01-analisis-excel.md`](01-analisis-excel.md) | Que contiene de verdad el archivo original | sonnet | 0 | Aceptado |
 | 01b | [`01b-correccion-conteo-lineas.md`](01b-correccion-conteo-lineas.md) | Correccion de un defecto visto al revisar el 01 | sonnet | 0 | Aceptado |
 | 02 | [`02-diseno-modelo.md`](02-diseno-modelo.md) | Modelo de datos, mapeo, reglas de negocio y arquitectura | opus | 0 | Aceptado |
+| 03 | [`03-esqueleto-docker.md`](03-esqueleto-docker.md) | Esqueleto que arranca, Docker y `make check` | sonnet | 0 (dos corridas: la primera se corto por cuota) | Aceptado |

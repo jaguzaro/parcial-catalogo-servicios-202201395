@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+.git
+.claude
+.gitignore
+node_modules
+web/node_modules
+web/dist
+logs
+docs
+data
+reports
+hooks
+scripts

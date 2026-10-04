@@ -1,6 +1,6 @@
 # AGENTS.md - Contexto del proyecto para asistentes de IA
 
-> Version del contexto: v3. Las secciones marcadas como pendientes se completan cuando el
+> Version del contexto: v4. Las secciones marcadas como pendientes se completan cuando el
 > trabajo produce el hallazgo o la decision que les toca. Cada cambio queda anotado en
 > "Historial del contexto" y en `docs/contexto/registro.md`.
 
@@ -146,10 +146,37 @@ Convenciones:
 
 ## 9. Comandos de validacion
 
-Por ahora hay uno solo. El resto llega con el `Makefile`.
+Todo pasa por el `Makefile` y corre en contenedores. `make help` los lista.
 
-- `bash hooks/test-guard.sh` revisa los limites del harness. Codigo 0 quiere decir que todo
-  esta bien.
+**El comando que importa es `make check`.** Hace cuatro pasos en orden y termina distinto
+de 0 en el primero que falle, diciendo cual fue:
+
+1. `lint`: `gofmt`, `go vet` y revision de tipos de la interfaz.
+2. `test`: pruebas de Go contra el proyecto `catalogo-test` y la base `catalogo_test`.
+3. `bash hooks/test-guard.sh`: los limites del harness, 33 comprobaciones.
+4. El SHA-256 del Excel contra `docs/contexto/excel-sha256.txt`.
+
+Un cambio esta terminado cuando `make check` da 0. No antes.
+
+| Comando | Para que |
+|---|---|
+| `make setup` | Crea el archivo de entorno a partir del ejemplo, si no existe |
+| `make up` | Construye y levanta todo |
+| `make down` | Apaga sin borrar el volumen |
+| `make logs` | Sigue los logs |
+| `make migrate` | Aplica las migraciones pendientes. Es idempotente |
+| `make test` | Solo las pruebas |
+| `make lint` | Solo el analisis estatico |
+| `make reset-test` | Destruye y recrea **solo** `catalogo-test` |
+
+Pendientes, hoy avisan y salen distinto de 0: `make import`, `make seed-demo` y
+`make test-persistence`.
+
+`make reset-dev` borra los datos de evaluacion y exige `CONFIRMAR=si`. **No lo ejecutes
+nunca**: lo corre Joel.
+
+La aplicacion queda en `http://localhost:8080`, y `/healthz` responde `{"estado":"ok"}`.
+Si el 8080 esta ocupado, se cambia `APP_PORT` en el archivo de entorno.
 
 ## 10. Historial del contexto
 
@@ -158,3 +185,4 @@ Por ahora hay uno solo. El resto llega con el `Makefile`.
 | v1 | 2026-10-03 | Contexto inicial: alcance, limites y regla de datos no confiables. |
 | v2 | 2026-10-04 | Analisis del archivo original: estructura real, conteos verificados y reglas para leerlo. |
 | v3 | 2026-10-04 | Diseno terminado: entidades, reglas de negocio que se aplican en el servidor y arquitectura. Hacia falta antes de escribir migraciones y codigo. |
+| v4 | 2026-10-04 | Ya existe `make check`. Pasa a ser el comando con el que se comprueba cualquier cambio, asi que tenia que estar en el contexto. |
