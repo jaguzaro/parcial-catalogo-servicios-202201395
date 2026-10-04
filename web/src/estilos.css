@@ -1,0 +1,55 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #1f2933;
+  background: #f5f7fa;
+  --borde: #cbd2d9;
+  --acento: #1f5fa8;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem 3rem; }
+a { color: var(--acento); }
+h1 { font-size: 1.4rem; }
+h2 { font-size: 1.1rem; margin-top: 2rem; }
+
+button {
+  font: inherit; padding: .45rem .9rem; border: 1px solid var(--acento);
+  background: var(--acento); color: #fff; border-radius: 4px; cursor: pointer;
+}
+button.secundario { background: #fff; color: var(--acento); }
+button:disabled { opacity: .5; cursor: default; }
+input, select { font: inherit; padding: .4rem; border: 1px solid var(--borde); border-radius: 4px; background: #fff; }
+label { display: flex; flex-direction: column; gap: .25rem; font-size: .85rem; }
+
+.barra { display: flex; align-items: center; gap: 1rem; padding: .6rem 1.5rem; background: #102a43; color: #fff; }
+.barra .marca { color: #fff; font-weight: 600; text-decoration: none; margin-right: auto; }
+.barra button { background: transparent; border-color: #9fb3c8; }
+
+.login { max-width: 360px; margin-top: 4rem; }
+.login form { display: flex; flex-direction: column; gap: 1rem; }
+
+.filtros { display: flex; flex-wrap: wrap; align-items: flex-end; gap: .75rem; margin-bottom: 1rem; }
+.filtros .busqueda { min-width: 240px; }
+
+.tabla-contenedor { overflow-x: auto; background: #fff; border: 1px solid var(--borde); border-radius: 4px; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid #e4e7eb; }
+th { background: #e4e7eb; }
+
+.paginacion { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; }
+.total { color: #52606d; }
+
+.estado { font-size: .8rem; padding: .1rem .5rem; border-radius: 10px; background: #e4e7eb; }
+.estado-s { background: #d6f0dd; }
+.estado-n { background: #f8d7d7; }
+.estado-desconocido { background: #fdeebd; }
+.sin-dato { color: #7b8794; font-style: italic; }
+
+.error { color: #9b1c1c; background: #fde8e8; padding: .5rem .75rem; border-radius: 4px; }
+.aviso { padding: 1rem 1.5rem; }
+.aviso-revision { background: #fdeebd; padding: .5rem .75rem; border-radius: 4px; }
+
+.ficha { display: grid; grid-template-columns: 12rem 1fr; gap: .5rem 1rem; background: #fff; border: 1px solid var(--borde); border-radius: 4px; padding: 1rem; }
+.ficha dt { font-weight: 600; color: #52606d; }
+.ficha dd { margin: 0; }
+.incidencias li { margin-bottom: .6rem; }

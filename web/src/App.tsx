@@ -1,30 +1,43 @@
-import { useEffect, useState } from 'react'
+import { BrowserRouter, Link, Navigate, Outlet, Route, Routes } from 'react-router'
+import { ProveedorSesion, useSesion } from './sesion'
+import Login from './pantallas/Login'
+import Catalogo from './pantallas/Catalogo'
+import Ficha from './pantallas/Ficha'
 
-type Estado = 'consultando' | 'ok' | 'sin_base' | 'sin_respuesta'
-
-const etiquetas: Record<Estado, string> = {
-  consultando: 'Consultando…',
-  ok: 'Servidor y base de datos operativos',
-  sin_base: 'El servidor responde, pero la base de datos no',
-  sin_respuesta: 'No hay respuesta del servidor',
+// Todo lo que no es el formulario exige sesion; sin ella se va a /login.
+function Protegido() {
+  const { usuario, cerrar } = useSesion()
+  if (usuario === undefined) return <p className="aviso" role="status">Consultando sesión…</p>
+  if (usuario === null) return <Navigate to="/login" replace />
+  return (
+    <>
+      <header className="barra">
+        <Link to="/" className="marca">Catálogo de servicios de TI</Link>
+        <span className="barra-usuario">
+          {usuario.nombre} · <strong>{usuario.rol}</strong>
+        </span>
+        <button type="button" onClick={() => void cerrar()}>Cerrar sesión</button>
+      </header>
+      <main>
+        <Outlet />
+      </main>
+    </>
+  )
 }
 
 export default function App() {
-  const [estado, setEstado] = useState<Estado>('consultando')
-
-  useEffect(() => {
-    fetch('/healthz', { credentials: 'same-origin' })
-      .then(async (resp) => {
-        const cuerpo = (await resp.json()) as { estado?: string }
-        setEstado(cuerpo.estado === 'ok' ? 'ok' : 'sin_base')
-      })
-      .catch(() => setEstado('sin_respuesta'))
-  }, [])
-
   return (
-    <main style={{ fontFamily: 'system-ui, sans-serif', maxWidth: 640, margin: '4rem auto' }}>
-      <h1>Catálogo de servicios de TI</h1>
-      <p role="status">{etiquetas[estado]}</p>
-    </main>
+    <ProveedorSesion>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route element={<Protegido />}>
+            <Route path="/" element={<Catalogo />} />
+            <Route path="/servicios/:id" element={<Ficha />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </ProveedorSesion>
   )
 }
