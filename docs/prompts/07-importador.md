@@ -115,7 +115,7 @@ Los 76 son 12 de nivel 1, 46 de nivel 2, 2 clases, 5 criticidades y 11 tipos. Lo
 omitidos son las filas 42 y 67. Salida completa en
 [`07-importacion.txt`](../evidencias/pruebas/07-importacion.txt).
 
-### Comprobado por el orquestador, consultando la base
+### Comprobacion independiente, consultando la base
 
 No por el reporte del asistente, y contra los conteos que yo mismo saque del archivo al
 principio leyendolo como ZIP con la libreria estandar de Python:
@@ -133,7 +133,7 @@ Excel: data/CatalogoServicios.xlsx: OK
 
 Segunda corrida: 0 creados, 0 actualizados, 78 omitidos, y los conteos siguen en 12 y 46.
 
-### El caso `SE.12`, que es el que mas se puede hacer mal
+### El caso `SE.12`
 
 La incidencia guarda **los dos** nombres con sus celdas, cita la regla y dice cual se
 aplico:
@@ -147,7 +147,7 @@ aplicado={"nombre": "Suministrar Analitica"}
 Eso es lo que el enunciado pide: elegir un nombre canonico y **conservar evidencia de ambos
 valores**, no quedarse con uno y perder el otro.
 
-### Las ausencias se conservan como ausencias
+### Las ausencias
 
 ```
 SE.12.1  activo=DESCONOCIDO  clase=NULL crit=NULL tipo=NULL metrica=NULL min=NULL max=NULL  revision=true
@@ -174,7 +174,7 @@ FILA_SIN_CODIGO fila=42  La fila 42 no tiene codigo de nivel 2 y esta fuera de t
 combinado de C. No se importa ni se asigna a otro servicio.
 ```
 
-### Por que hay 20 incidencias en la base tras dos corridas
+### Las incidencias se guardan por corrida
 
 Se guardan **por importacion**, ligadas a su corrida: 10 cada vez. No es duplicacion, es el
 registro de lo que observo cada ejecucion, que es justamente lo que pide la seccion 3.4 del

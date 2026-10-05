@@ -25,7 +25,7 @@ repetible del Excel con trazabilidad, y todo ejecutable con Docker desde un clon
 Cada decision esta numerada en [`contexto/decisiones.md`](contexto/decisiones.md), con su
 alternativa descartada y quien la tomo.
 
-## 2. Arquitectura y por que
+## 2. Arquitectura y justificacion de tecnologias
 
 Un solo binario de Go sirve la API y la interfaz ya compilada, desde el mismo origen.
 PostgreSQL 17 en su contenedor, con volumen con nombre y `healthcheck`.
@@ -197,7 +197,7 @@ La aplicacion terminada no necesita ninguna suscripcion ni clave de IA para func
 | Docker desde clon limpio | `Dockerfile`, `compose.yaml` | `make check` | `evidencias/pruebas/<fecha>-<commit>.txt` |
 | Excel sin modificar | `hooks/guard.sh`, paso 4 de `make check` | `shasum -c` | `contexto/excel-sha256.txt` |
 
-## 8. Resultados reales y los fallos que hubo
+## 8. Resultados de pruebas, fallos y correcciones
 
 Las salidas crudas estan en [`evidencias/pruebas/`](evidencias/pruebas/), con fecha y
 commit en el nombre. `make evidence` las genera, y **las guarda tambien cuando el resultado
@@ -207,7 +207,7 @@ carpeta.
 Estado al cierre: `make check` en 0, `make test-persistence` en 0, `make e2e` con sus dos
 pruebas pasando, y los conteos del catalogo en 12 y 46.
 
-### Fallo 1: cerrar sesion no cerraba la sesion
+### El cierre de sesion no invalidaba la sesion
 
 El mas importante, y el unico que afectaba a la seguridad.
 
@@ -227,7 +227,7 @@ cerrar sesion devuelve 204 y la misma cookie da 401.
 
 **Esta es la iteracion de prompt numero 1.**
 
-### Fallo 2: el prompt se salto una pantalla obligatoria
+### Una pantalla obligatoria quedo fuera del prompt
 
 Al enumerar las pantallas de mantenimiento me salte los catalogos de clase, criticidad y
 tipo. La seccion 3.3 del enunciado pide **mantenerlos**, no solo usarlos como listas de
@@ -244,7 +244,7 @@ clase en uso rechazada con sus 19 servicios.
 
 **Esta es la iteracion de prompt numero 2.**
 
-### Fallo 3: el hook no estaba conectado
+### El hook no estaba conectado
 
 Antes de escribir una linea de aplicacion, una sonda mostro que `hooks/guard.sh` existia
 pero no se ejecutaba: la accion se rechazaba por el permiso generico de la herramienta,
@@ -252,7 +252,7 @@ sin dejar registro. Al copiar el kit de arranque se habian perdido las carpetas 
 con ellas los subagentes de la auditoria.
 [Detalle](evidencias/harness/00-hallazgo-hook-no-registrado.md).
 
-### Fallo 4: una evidencia que bloqueaba otra
+### Una prueba dejaba la base en un estado que rompia otras
 
 La primera version de `make e2e` dejaba el catalogo importado en la base de pruebas, y las
 pruebas de Go exigen esa base vacia: 15 fallaron. Lo detecto `make evidence`, y esa corrida
@@ -306,7 +306,7 @@ Lo esencial:
 - `hooks/guard.sh` no protege `.claude/agents/`; hoy eso lo cubre solo una regla de
   permisos.
 
-### Como se trabajo
+### Aportes y forma de trabajo
 
 El trabajo se condujo con un **orquestador de IA**: un asistente que planifico, redacto los
 prompts, los ejecuto contra un segundo asistente en modo headless, verifico los resultados
@@ -315,7 +315,7 @@ necesitaban una persona (confianza del entorno, restaurar las carpetas ocultas) 
 al orquestador cuando hizo falta. En `contexto/decisiones.md` cada decision dice su origen
 real.
 
-### Sobre los errores de la IA
+### Errores de la IA y decisiones humanas
 
 Lo que mas se aprendio no es que la IA se equivoque, sino **como**.
 
@@ -338,3 +338,19 @@ Y la tercera: el asistente reporto varias cosas que nadie le pregunto — una co
 entre el diseno y el prompt, que habia escrito fuera de la carpeta del proyecto, que no
 podia verificar algo por no tener las credenciales. Esos reportes valieron mas que varios
 aciertos, porque son lo unico que permite confiar en el resto de lo que dice.
+
+## 11. Entrega
+
+- Rama entregada: `main`. Etiqueta: `parcial-v2.0`, sobre el commit entregado.
+- El repositorio es privado.
+- **El usuario `maldanap-usac` tiene la invitacion de colaborador enviada y pendiente de
+  aceptacion** al momento de entregar, comprobado con:
+
+  ```bash
+  gh api repos/<usuario>/parcial-catalogo-servicios-202201395/invitations -q '.[].invitee.login'
+  ```
+
+  Aparece en la lista de invitaciones y no en la de colaboradores, lo que significa que la
+  invitacion existe pero todavia no se ha aceptado. Se informa aqui porque la seccion 7 del
+  enunciado lo pide expresamente.
+

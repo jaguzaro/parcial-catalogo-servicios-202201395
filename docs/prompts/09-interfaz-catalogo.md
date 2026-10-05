@@ -96,7 +96,7 @@ Pantallas: inicio de sesion, catalogo con busqueda, cinco filtros combinables, p
 total a la vista, y ficha de servicio. Los filtros y la pagina quedan en la direccion del
 navegador, asi que recargar o compartir el enlace no los pierde.
 
-### Comprobado por el orquestador
+### Comprobacion independiente
 
 ```
 make check                        exit 0 (incluye la revision de tipos de la interfaz)
@@ -110,7 +110,7 @@ P01 a P11                         siguen pasando
 Que una direccion honda como la ficha devuelva 200 importa: significa que recargar ahi no
 da 404, que es el fallo tipico de una interfaz de una sola pagina mal servida.
 
-### La limitacion
+### Limitacion
 
 **Nadie ha abierto esta interfaz en un navegador.** El asistente lo dijo por su cuenta: lo
 que esta comprobado es el HTML servido, los tipos y que las rutas que llama existen de
@@ -121,7 +121,7 @@ Se cierra mas adelante con una prueba de extremo a extremo en contenedor, de ini
 sesion y de un filtro. Hasta entonces, esta parte queda declarada como no verificada en
 comportamiento.
 
-### Lo que hizo mejor de lo pedido
+### Mas alla de lo pedido
 
 `TestWeb_RutasUsadasExisten` no solo compara las rutas declaradas en el modulo de la API:
 tambien falla si cualquier otro archivo de la interfaz escribe una ruta suelta. Eso cierra

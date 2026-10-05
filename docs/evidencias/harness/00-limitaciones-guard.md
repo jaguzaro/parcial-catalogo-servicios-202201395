@@ -51,7 +51,7 @@ cp docs/a.md docs/b.md
 ls -l data/CatalogoServicios.xlsx
 ```
 
-## Que no significan
+## Alcance de estas limitaciones
 
 Ninguna de las dos deja pasar algo prohibido. Fallan bloqueando de mas, nunca de menos. El
 costo es incomodidad al escribir comandos, no un agujero. Las 33 comprobaciones de

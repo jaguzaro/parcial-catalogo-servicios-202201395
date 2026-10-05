@@ -90,7 +90,7 @@ No quedo ninguna pantalla fuera: importaciones con sus incidencias, usuarios, la
 entidades de la estructura, formularios de servicios de los dos niveles y asignacion de
 responsable.
 
-### Comprobado por el orquestador
+### Comprobacion independiente
 
 ```
 make check                        exit 0
@@ -102,7 +102,7 @@ rutas de la interfaz probadas     importaciones, usuarios, organizacion, servici
 P01 a P11                         siguen pasando
 ```
 
-### Lo que mas importa de estas pantallas
+### Tratamiento de los errores del servidor
 
 Una baja rechazada **lista los dependientes que devuelve el servidor**, no un mensaje
 generico, y con "y N mas" cuando vienen truncados. Y los errores de validacion se muestran

@@ -1,4 +1,4 @@
-# Ciclo completo: tarea, cambio, control, fallo, correccion y nueva comprobacion
+# Ciclo completo de tarea, control, fallo y correccion
 
 2026-10-04
 
@@ -14,7 +14,7 @@ Ninguno de los **fallos** se introdujo a proposito: todos aparecieron solos dura
 trabajo. Si hay dos comprobaciones hechas a proposito, que son otra cosa: quitar un control
 para ver si su prueba falla. Van al final, separadas y etiquetadas como lo que son.
 
-## El ciclo: cerrar sesion no cerraba la sesion
+## El cierre de sesion no invalidaba la sesion
 
 ### 1. La tarea
 
@@ -96,7 +96,7 @@ make check:                            exit 0
 Comprobado por el orquestador contra el sistema levantado, no leyendo el reporte del
 asistente.
 
-### Que se aprende
+### Lo que se aprende
 
 - **Un criterio de aceptacion puede ser cierto y util y aun asi esconder el fallo.** El
   criterio decia que la cookie debia dar 401, pero no decia como se hace la llamada.

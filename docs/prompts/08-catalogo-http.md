@@ -99,7 +99,7 @@ salida, el resultado de P09, P10 y P11, y lo pendiente.
 13 rutas nuevas de escritura, asi que `TestP03` cubre ahora **38** y sigue pasando. P01 a
 P11 completas y en verde.
 
-### Comprobado en vivo por el orquestador
+### Comprobacion independiente con el sistema levantado
 
 Sobre la base de evaluacion, con la cuenta de administrador:
 
@@ -129,7 +129,7 @@ proposito. Los registros que cree para probar P11 quedaron dados de baja.
 Los mensajes de error no solo dan un codigo: nombran el dato, los dos lados del conflicto y
 sus identificadores. Eso es lo que el enunciado pide cuando dice "mensaje comprensible".
 
-### Decisiones suyas que conviene mirar
+### Decisiones del asistente, revisadas
 
 - **Negativos rechazados.** `reglas.md` dice "No se admiten negativos ni se pide entero: el
   enunciado no lo dice", que se puede leer de dos maneras. Lo tomo literal: un negativo da
@@ -139,7 +139,7 @@ sus identificadores. Eso es lo que el enunciado pide cuando dice "mensaje compre
 - **Quitar responsable** a un servicio dado de baja si se permite; asignarselo no.
 - **La ficha** muestra las incidencias de la ultima importacion completada.
 
-### Cosas del proceso que reporto el propio asistente
+### Lo que el asistente reporto por su cuenta
 
 Las tres las reporto sin que se le preguntara:
 

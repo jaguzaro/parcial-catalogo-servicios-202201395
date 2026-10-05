@@ -105,7 +105,7 @@ pendiente.
 Las rutas se registran recorriendo los cinco niveles, y `RutasAPI()` devuelve el mismo
 registro que usa el enrutador.
 
-### Criterios, comprobados por el orquestador
+### Criterios, comprobados de forma independiente
 
 | # | Criterio | Resultado |
 |---|---|---|
@@ -118,7 +118,7 @@ registro que usa el enrutador.
 | 7 | Baja con dependientes activos, 409 con la lista | Cumplido en vivo |
 | 8 | Ningun campo de hash en las respuestas | Cumplido, `grep` sin coincidencias |
 
-### Por que P03 vale
+### Alcance de P03
 
 El error clasico de autorizacion no es olvidar el middleware: es olvidarlo en **una sola
 ruta** de veinticinco. Una prueba que comprueba "el usuario de consulta no puede crear una
@@ -140,7 +140,7 @@ ejemplo. Evidencia completa en
 [`06-p03-sin-middleware.txt`](../evidencias/pruebas/06-p03-sin-middleware.txt). El
 middleware quedo restaurado y `make check` volvio a 0.
 
-### Comprobacion en vivo con las cuentas de evaluacion
+### Comprobacion con las cuentas de evaluacion
 
 Con la cuenta de consulta: crear empresa 403, desactivar un puesto 403, cambiar la
 contrasena de otro usuario 403. Listar empresas y usuarios 200, y el listado sin ningun
@@ -162,7 +162,7 @@ Desactivelos primero, de abajo hacia arriba.
 Nombran el dato y el padre, no solo el codigo de error. Los registros creados para esta
 comprobacion quedaron dados de baja.
 
-### Decisiones suyas, revisadas y aceptadas
+### Decisiones del asistente, revisadas y aceptadas
 
 D28 (limites de longitud), D29 (correo vacio se rechaza en vez de convertirse en nulo) y
 D30 (forma del aviso al dar de baja a un responsable).

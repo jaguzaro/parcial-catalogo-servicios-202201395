@@ -48,7 +48,7 @@ caso 3b frente a cinco con el, es la prueba de que la correccion sirvio.
 Los mensajes que recibio el asistente, escritos por el mismo durante la ejecucion, estan en
 [`00-intentos-trabajador.md`](00-intentos-trabajador.md).
 
-## Dos observaciones del asistente
+## Observaciones del asistente
 
 - En los casos 1 a 4 el comando no llego a ejecutarse. El hook actua antes, asi que ni
   siquiera corrio el `echo "exit=$?"` que habia encadenado. No hay codigo de salida.
@@ -56,7 +56,7 @@ Los mensajes que recibio el asistente, escritos por el mismo durante la ejecucio
   estaban versionados. Quien confirma la integridad es el SHA-256 del caso 5. La
   observacion corrige un criterio de aceptacion que estaba mal planteado en el prompt.
 
-## Comprobacion aparte
+## Comprobacion independiente
 
 Hecha sin confiar en el reporte del asistente:
 

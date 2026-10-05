@@ -1,4 +1,4 @@
-# Que capa bloquea, y por que importa cual
+# Capas de permisos y registro de los bloqueos
 
 2026-10-04
 

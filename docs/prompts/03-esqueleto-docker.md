@@ -135,7 +135,7 @@ estado en que habia quedado el trabajo. Ese texto formaba parte del prompt que l
 segunda, y le sirvio para saber que faltaba. **No es una iteracion de mejora:** no se
 corrigio ninguna instruccion, solo se dejo constancia de lo ya hecho.
 
-### Criterios, comprobados por el orquestador y no por el reporte
+### Criterios, comprobados de forma independiente
 
 | # | Criterio | Resultado |
 |---|---|---|
@@ -162,7 +162,7 @@ CHECK OK: los cuatro pasos pasaron
 Comprobado tambien, sin que lo pidiera el prompt: `/api/x` devuelve 404 con el formato de
 error del diseno, `{"error":{"codigo":"NO_ENCONTRADO",...}}`.
 
-### El puerto 8080 estaba ocupado
+### El puerto 8080 ocupado
 
 En la maquina de Joel el 8080 lo atiende `exe_1-adminer-1`, un contenedor de otro proyecto,
 asi que `docker compose up` fallaba con "port is already allocated". El trabajador no lo

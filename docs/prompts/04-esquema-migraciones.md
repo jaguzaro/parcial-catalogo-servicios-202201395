@@ -103,7 +103,7 @@ departamento, seccion, puesto, usuario y sesion), `00003_importacion.sql` y
 `00004_catalogo.sql` (los tres catalogos, los dos niveles de servicio e incidencia). Mas
 `tests/integracion/esquema_test.go` con siete pruebas.
 
-### Criterios, comprobados por el orquestador
+### Criterios, comprobados de forma independiente
 
 | # | Criterio | Resultado |
 |---|---|---|
@@ -114,7 +114,7 @@ departamento, seccion, puesto, usuario y sesion), `00003_importacion.sql` y
 | 5 | Las 14 tablas | La prueba `TestEsquema_CatorceTablas` exige que existan las 14 y que no haya ninguna mas |
 | 6 | Ninguna migracion con `INSERT` | `grep -i insert` sin coincidencias |
 
-### Por que estas pruebas valen
+### Alcance de las pruebas
 
 Lo facil al escribir pruebas de esquema es comprobar que la operacion devuelve error, lo
 que pasaria igual si fallara por cualquier otro motivo. Estas exigen el SQLSTATE y el
@@ -129,7 +129,7 @@ El trabajador quito a proposito esa restriccion y la prueba fallo con "la base a
 operacion". Despues la restauro; el orquestador comprobo que aparece una sola vez en
 `00004_catalogo.sql`.
 
-### El guardian bloqueo escribir una migracion
+### Bloqueo del guardian al escribir una migracion
 
 `goose` exige una seccion de bajada, y la de estas tablas dice `DROP TABLE`. El guardian
 bloqueo el `heredoc` por ese texto. El trabajador escribio los mismos archivos con la

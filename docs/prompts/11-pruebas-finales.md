@@ -98,7 +98,7 @@ extremo a extremo o el motivo de dejarla fuera, y cualquier defecto que hayas en
 
 Los tres objetivos quedaron hechos, incluido el opcional.
 
-### Comprobado por el orquestador
+### Comprobacion independiente
 
 ```
 make test-persistence   exit 0 (ejecutado dos veces)
@@ -123,7 +123,7 @@ comentario que explica justamente eso. El script tambien compara el nombre del v
 y despues, asi que detectaria un reinicio que lo cambiara. Y opera solo sobre
 `catalogo-test`, nunca sobre los datos de evaluacion.
 
-### La prueba de navegador cierra una duda abierta
+### La prueba de navegador
 
 Las dos tareas de interfaz se entregaron con una limitacion escrita: nadie las habia abierto
 en un navegador. `make e2e` lo cierra. Entra con la cuenta de consulta, llega al catalogo,
@@ -133,7 +133,7 @@ y que el total mostrado coincide con el que responde la API.
 Dos pruebas, no veinte. Playwright corre en su propio contenedor y no entra en `make check`,
 para no volver lento el comando que se usa en cada cambio.
 
-### El fallo de esta tarea, y por que se conserva
+### El fallo de esta tarea
 
 La primera version de `make e2e` dejaba el catalogo importado en la base de pruebas, y las
 pruebas de Go exigen esa base sin catalogo: 15 fallaron. Lo detecto `make evidence` y el

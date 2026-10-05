@@ -11,7 +11,7 @@ Salidas reales de comandos, sin editar. Los nombres con fecha y commit los gener
 | `07-importacion.txt` | Las dos primeras importaciones seguidas, con sus resumenes y sus incidencias |
 | `08-verificacion-criterios.txt` | Comprobacion de los criterios del catalogo contra la API levantada |
 
-## Sobre la corrida de `make check` que aparece fallida
+## La corrida de `make check` que aparece fallida
 
 `20261004-163442-0e33b6c.txt` termina con codigo 2 y 15 pruebas en rojo. **Se conserva a
 proposito**, por dos motivos.
