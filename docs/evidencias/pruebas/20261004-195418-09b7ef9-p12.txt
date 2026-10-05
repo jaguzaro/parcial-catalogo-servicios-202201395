@@ -1,0 +1,118 @@
+Fecha:       2026-10-04 19:54:18 -0600
+Commit:      09b7ef9
+Comando:     make test-persistence
+==========================================================================
+.env ya existe, no se toca
+== P12 [1/5] levantar la base y aplicar migraciones (proyecto catalogo-test) ==
+ Container catalogo-test-db-1  Running
+ Container catalogo-test-db-1  Waiting
+ Container catalogo-test-db-1  Healthy
+ Container catalogo-test-db-1  Running
+#1 [internal] load local bake definitions
+#1 reading from stdin 620B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 815B 0.0s done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:24.21.0-alpine
+#3 DONE 0.3s
+
+#4 [internal] load metadata for gcr.io/distroless/static-debian12:nonroot
+#4 DONE 0.3s
+
+#5 [internal] load metadata for docker.io/library/golang:1.26.8-alpine
+#5 DONE 0.3s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 166B done
+#6 DONE 0.0s
+
+#7 [web 1/6] FROM docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#7 resolve docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 done
+#7 DONE 0.0s
+
+#8 [final 1/3] FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+#8 resolve gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab 0.0s done
+#8 DONE 0.0s
+
+#9 [build 1/7] FROM docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c
+#9 resolve docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c 0.0s done
+#9 DONE 0.0s
+
+#10 [internal] load build context
+#10 transferring context: 17.07kB 0.0s done
+#10 DONE 0.0s
+
+#11 [build 2/7] WORKDIR /src
+#11 CACHED
+
+#12 [build 3/7] COPY go.mod go.sum ./
+#12 CACHED
+
+#13 [web 2/6] WORKDIR /web
+#13 CACHED
+
+#14 [web 3/6] COPY web/package.json web/package-lock.json ./
+#14 CACHED
+
+#15 [web 4/6] RUN npm ci
+#15 CACHED
+
+#16 [web 5/6] COPY web/ ./
+#16 CACHED
+
+#17 [build 4/7] RUN go mod download
+#17 CACHED
+
+#18 [web 6/6] RUN npm run build
+#18 CACHED
+
+#19 [build 5/7] COPY . .
+#19 DONE 0.2s
+
+#20 [build 6/7] COPY --from=web /web/dist ./internal/web/dist
+#20 DONE 0.1s
+
+#21 [build 7/7] RUN CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o /out/catalogo ./cmd/catalogo
+#21 DONE 11.5s
+
+#22 [final 2/3] WORKDIR /app
+#22 CACHED
+
+#23 [final 3/3] COPY --from=build /out/catalogo /app/catalogo
+#23 CACHED
+
+#24 exporting to image
+#24 exporting layers done
+#24 exporting manifest sha256:f1c5684b6eba1ab8ed712e0be3cc58814e02d0026b0605c29659c040957652a9 done
+#24 exporting config sha256:45b63c96afac69dbf0d06c049e7c5ef9b63478208c1ac6d2556d0b50f3c81352 done
+#24 exporting attestation manifest sha256:616def62bb7dbf579c0e12bc5d7314beed1b240f33abc0c3714633aa16d0a6dd 0.0s done
+#24 exporting manifest list sha256:ea0e7610966a3ba540bc0983f2fb8f112305b0a31d1866c933bcdaeab7d0a90f done
+#24 naming to docker.io/library/catalogo-test-app:latest done
+#24 unpacking to docker.io/library/catalogo-test-app:latest 0.0s done
+#24 DONE 0.1s
+
+#25 resolving provenance for metadata file
+#25 DONE 0.0s
+migraciones: la base ya estaba en la version 4, nada que aplicar
+2026/10/05 01:54:33 goose: no migrations to run. current version: 4
+volumen antes del reinicio: catalogo-test_catalogo_pgdata
+== P12 [2/5] escribir un dato reconocible ==
+INSERT 0 1
+escrito antes del reinicio: P12-20261004195418-87194 | Marcador de persistencia P12
+== P12 [3/5] reiniciar los contenedores SIN borrar el volumen ==
+comando: docker compose -p catalogo-test -f compose.yaml -f compose.test.yaml stop   y luego   docker compose -p catalogo-test -f compose.yaml -f compose.test.yaml up -d --wait db
+ Container catalogo-test-db-1  Stopping
+ Container catalogo-test-db-1  Stopped
+ Container catalogo-test-db-1  Starting
+ Container catalogo-test-db-1  Started
+ Container catalogo-test-db-1  Waiting
+ Container catalogo-test-db-1  Healthy
+== P12 [4/5] comprobar que el dato sigue ahi ==
+volumen despues del reinicio: catalogo-test_catalogo_pgdata
+leido despues del reinicio: P12-20261004195418-87194 | Marcador de persistencia P12
+== P12 [5/5] resultado ==
+P12 OK: el dato persistio tras el reinicio (mismo volumen, mismo contenido)
+exit_code: 0

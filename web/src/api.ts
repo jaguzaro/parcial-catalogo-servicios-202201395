@@ -24,6 +24,10 @@ export const RUTAS = {
   servicioN1Activar: { metodo: 'POST', ruta: '/api/servicios-n1/{id}/activar' },
 
   catalogo: { metodo: 'GET', ruta: '/api/catalogos/{c}' },
+  catalogoCrear: { metodo: 'POST', ruta: '/api/catalogos/{c}' },
+  catalogoActualizar: { metodo: 'PUT', ruta: '/api/catalogos/{c}/{id}' },
+  catalogoDesactivar: { metodo: 'POST', ruta: '/api/catalogos/{c}/{id}/desactivar' },
+  catalogoActivar: { metodo: 'POST', ruta: '/api/catalogos/{c}/{id}/activar' },
 
   usuarios: { metodo: 'GET', ruta: '/api/usuarios' },
   usuarioCrear: { metodo: 'POST', ruta: '/api/usuarios' },
@@ -136,6 +140,14 @@ export interface Listado<T> {
 }
 
 export interface OpcionCatalogo extends Opcion {
+  orden: number
+  /** Texto tal como vino del Excel; null en las opciones creadas desde la aplicacion. No se edita. */
+  valor_origen: string | null
+  origen_celda: string | null
+}
+
+export interface EntradaOpcion {
+  nombre: string
   orden: number
 }
 
@@ -454,6 +466,14 @@ export const api = {
 
   catalogo: (c: NombreCatalogo) =>
     pedir<{ items: OpcionCatalogo[]; total: number }>(RUTAS.catalogo, { params: { c } }).then((r) => r.items),
+  catalogoCrear: (c: NombreCatalogo, e: EntradaOpcion) =>
+    pedir<OpcionCatalogo>(RUTAS.catalogoCrear, { params: { c }, cuerpo: e }),
+  catalogoActualizar: (c: NombreCatalogo, id: number, e: EntradaOpcion) =>
+    pedir<OpcionCatalogo>(RUTAS.catalogoActualizar, { params: { c, id }, cuerpo: e }),
+  catalogoDesactivar: (c: NombreCatalogo, id: number) =>
+    pedir<OpcionCatalogo>(RUTAS.catalogoDesactivar, { params: { c, id } }),
+  catalogoActivar: (c: NombreCatalogo, id: number) =>
+    pedir<OpcionCatalogo>(RUTAS.catalogoActivar, { params: { c, id } }),
 
   org,
 

@@ -1,6 +1,6 @@
 # AGENTS.md - Contexto del proyecto para asistentes de IA
 
-> Version del contexto: v9. Las secciones marcadas como pendientes se completan cuando el
+> Version del contexto: v10. Las secciones marcadas como pendientes se completan cuando el
 > trabajo produce el hallazgo o la decision que les toca. Cada cambio queda anotado en
 > "Historial del contexto" y en `docs/contexto/registro.md`.
 
@@ -148,7 +148,10 @@ auth, http, organizacion, usuarios, catalogo, importador, demo, web),
 Convenciones:
 
 - Rutas de la API bajo `/api/`, con el formato de error unico de `arquitectura.md`.
-- Las pruebas de integracion se llaman por su escenario, `TestP01_...` hasta `TestP12_...`.
+- Las pruebas de integracion se llaman por su escenario, de `TestP01_...` a `TestP11_...`.
+  **P12 es la excepcion**: la persistencia exige reiniciar contenedores, asi que vive en
+  `make test-persistence` y no en una prueba de Go. Por eso tampoco esta dentro de
+  `make check`, que tiene que seguir siendo rapido.
 - Las migraciones son archivos de `goose` embebidos en el binario.
 - El Excel se lee siempre de `EXCEL_PATH`, montado de solo lectura. No se aceptan archivos
   subidos.
@@ -211,3 +214,4 @@ Si el 8080 esta ocupado, se cambia `APP_PORT` en el archivo de entorno.
 | v7 | 2026-10-04 | `make import` ya funciona. Se anotan los conteos que deja en la base, para que cualquier trabajo posterior pueda comprobar que no los rompio. |
 | v8 | 2026-10-04 | El limite de "todo en contenedores" se leia como si tampoco se pudiera editar un archivo de texto en la maquina. Se aclara que alcanza a construir y ejecutar. Se anotan las 38 rutas que cubre P03. |
 | v9 | 2026-10-04 | Ya existen `make test-persistence`, `make evidence` y `make e2e`, y la tabla de comandos estaba fragmentada por ediciones anteriores. Queda una sola lista, sin objetivos pendientes. |
+| v10 | 2026-10-04 | La auditoria encontro que el contexto prometia una prueba `TestP12_` que no existe ni puede existir igual que las demas. Se dice donde vive P12 y por que. |

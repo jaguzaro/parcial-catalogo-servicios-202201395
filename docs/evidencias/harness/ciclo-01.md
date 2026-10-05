@@ -10,7 +10,9 @@ Hubo varios. Aqui va el que mejor muestra para que sirve el harness, porque el f
 seguridad, lo encontro un control y **no lo vio ninguna prueba automatica**. Al final se
 listan los otros, que tambien son reales.
 
-Ninguno se introdujo a proposito.
+Ninguno de los **fallos** se introdujo a proposito: todos aparecieron solos durante el
+trabajo. Si hay dos comprobaciones hechas a proposito, que son otra cosa: quitar un control
+para ver si su prueba falla. Van al final, separadas y etiquetadas como lo que son.
 
 ## El ciclo: cerrar sesion no cerraba la sesion
 
@@ -113,6 +115,7 @@ asistente.
 | Autorizacion por rol | Quitar a proposito el middleware de una ruta | `TestP03` fallo **solo** en esa ruta, mientras la subprueba generica seguia pasando | Confirmo que la prueba sirve. El middleware se restauro. [Salida](../pruebas/06-p03-sin-middleware.txt) |
 | Esquema | Quitar a proposito una restriccion de la migracion | Su prueba fallo con «la base acepto la operacion» | Confirmo que la restriccion es la que rechaza. Se restauro |
 
-Los dos ultimos no son fallos: son comprobaciones de que las pruebas detectan lo que dicen
+Las dos ultimas filas no son fallos encontrados sino **comprobaciones deliberadas**: se quito
+el control para ver si su prueba fallaba, y se restauro. Sirven para saber que las pruebas detectan lo que dicen
 detectar. Se incluyen porque una prueba que pasa igual con y sin el control que vigila no
 prueba nada, y eso es facil de escribir sin darse cuenta.

@@ -1,4 +1,4 @@
-# 10 - Interfaz: mantenimiento y resultado de importacion
+# 10 - Interfaz: mantenimiento y resultado de importacion (v2)
 
 | Campo | Valor |
 |---|---|
@@ -7,6 +7,13 @@
 | Modelo | `sonnet` |
 | Ejecucion | `docs/evidencias/sesiones/<archivo>.json` y `.meta.txt` |
 | Commit base | `542002d` |
+
+> **Version revisada.** La v1 se ejecuto y sus seis criterios se cumplieron, pero el
+> prompt tenia un hueco: al enumerar las pantallas me salte los catalogos de clase,
+> criticidad y tipo. La seccion 3.3 del enunciado pide **mantenerlos**, no solo usarlos
+> como listas de opciones. El asistente hizo lo que se le pidio y lo dijo en su reporte;
+> la auditoria lo confirmo como incumplimiento. Partes del codigo que ya existe: lo que
+> falta es esa pantalla.
 
 ## Objetivo
 
@@ -36,6 +43,15 @@ incidencias.
    formulario y sus acciones de baja y alta. Que se vea de quien depende cada registro.
 4. **Usuarios:** listado, alta, edicion, cambio de contrasena, baja y alta. Nunca se muestra
    ningun hash, porque la API no lo manda.
+
+4bis. **Catalogos de clase, criticidad y tipo** (lo que faltaba): una pantalla con las tres
+   listas, con alta, edicion, baja y reactivacion. La API ya lo soporta. Dos cosas que
+   importan ahi:
+   - cada opcion muestra su **valor de origen**, el que vino del Excel, que no se edita, y
+     su nombre, que si. Esa pareja es el mapeo verificable que pide el enunciado cuando
+     dice que cualquier correccion de etiquetas quede registrada;
+   - dar de baja una opcion que algun servicio activo este usando se rechaza, y la pantalla
+     **lista esos servicios**, como ya hace con las dependencias de la organizacion.
 5. **Errores del servidor, mostrados tal como vienen.** En particular:
    - cuando la baja se rechaza por dependencias, **la pantalla lista los dependientes** que
      devuelve el servidor, no un mensaje generico;
@@ -77,82 +93,11 @@ que, las rutas nuevas, los comandos con su codigo de salida y lo pendiente.
    devuelven 200.
 5. `grep -riE 'contrasena.*=.*"|password.*=.*"' web/src` sin coincidencias.
 6. Ninguna ruta de la API usada por la interfaz falta en el servidor.
+7. La pantalla de catalogos existe y muestra las tres listas con sus opciones reales:
+   2 clases, 5 criticidades y 11 tipos, incluida la grafia `Demostration` tal cual.
+8. Cada opcion muestra su valor de origen junto a su nombre.
+9. Intentar dar de baja una opcion en uso devuelve el error del servidor con la lista de
+   servicios que la usan, y la pantalla la muestra.
 
 ---
 
-> Lo de arriba es el texto que se envio, sin retocar. Lo de abajo se escribio despues.
-
-## Resultado
-
-**Aceptado.** Sesion: [`20261004-161821-10-interfaz-mantenimiento.json`](../evidencias/sesiones/20261004-161821-10-interfaz-mantenimiento.json), 57 turnos.
-
-No quedo ninguna pantalla fuera: importaciones con sus incidencias, usuarios, las cinco
-entidades de la estructura, formularios de servicios de los dos niveles y asignacion de
-responsable.
-
-### Comprobado por el orquestador
-
-```
-make check                        exit 0
-listado de importaciones          total 2, la ultima completada con 0 creados y 6 observados
-ficha de una importacion          10 incidencias
-los dos endpoints sin sesion      401
-rutas de la interfaz probadas     importaciones, usuarios, organizacion, servicios-n1,
-                                  servicios/nuevo: 200 todas
-P01 a P11                         siguen pasando
-```
-
-### Lo que mas importa de estas pantallas
-
-Una baja rechazada **lista los dependientes que devuelve el servidor**, no un mensaje
-generico, y con "y N mas" cuando vienen truncados. Y los errores de validacion se muestran
-junto al campo que el servidor nombra. No hay textos inventados en el cliente: si el
-servidor cambia un mensaje, la pantalla cambia con el.
-
-### Desviacion del diseno
-
-`arquitectura.md` lista un endpoint para lanzar la importacion desde la aplicacion, que no
-existe: el prompt pedia solo los dos de consulta. La importacion se ejecuta por comando, que
-es lo que el enunciado admite ("por comando o desde la aplicacion"). La pantalla de
-importaciones solo consulta.
-
-### Pendiente
-
-- El mantenimiento de clases, criticidades y tipos no se hizo: hoy solo se usan como listas
-  de opciones. El enunciado pide mantenerlos, asi que queda como hueco conocido.
-- **Sigue sin probarse en un navegador.** Ningun formulario se ejecuto contra el servidor.
-  Lo cierra la tarea siguiente.
-
-## Iteracion
-
-**Problema observado.** Los seis criterios de la v1 se cumplieron, pero el prompt tenia un
-hueco: al enumerar las pantallas me salte los catalogos de clase, criticidad y tipo. La
-seccion 3.3 del enunciado pide **mantenerlos**, no solo usarlos como listas de opciones.
-
-El asistente hizo exactamente lo que se le pidio, y lo dijo en su reporte: «el mantenimiento
-de clases, criticidades y tipos no esta en el alcance de este prompt». La auditoria lo
-confirmo despues como incumplimiento del enunciado. El defecto era del prompt, no del
-trabajo.
-
-**Cambio en el prompt.** Version revisada en
-[`10-interfaz-mantenimiento.v2.md`](10-interfaz-mantenimiento.v2.md), que agrega la pantalla
-y dos exigencias que el enunciado implica y la v1 no pedia:
-
-- cada opcion muestra su **valor de origen**, el que vino del Excel y no se edita, junto a
-  su nombre, que si. Esa pareja es el mapeo verificable que el enunciado pide cuando dice
-  que cualquier correccion de etiquetas quede registrada;
-- dar de baja una opcion en uso se rechaza y la pantalla lista los servicios que la usan.
-
-**Resultado comprobado.** Comprobado por el orquestador contra la API que alimenta la
-pantalla:
-
-```
-clases         total 2    muestra: valor_origen "A DEMANDA",  nombre "A DEMANDA"
-criticidades   total 5    muestra: valor_origen "Very Low",   nombre "Very Low"
-tipos          total 11   la grafia "Demostration" se conserva tal cual
-baja de una clase en uso:
-  409 DEPENDENCIAS_ACTIVAS
-  "No se puede desactivar clase A DEMANDA: la usan 19 servicios activos."
-  con los 19 servicios listados
-make check: exit 0
-```

@@ -62,7 +62,28 @@ func Nuevo(s Servicios, ui fs.FS) http.Handler {
 	mux.HandleFunc("GET /healthz", healthz(s.Salud))
 	mux.Handle("/api/", exigirJSON(api))
 	mux.Handle("/", interfaz(ui))
-	return mux
+	return cabecerasSeguridad(mux)
+}
+
+// politicaContenido limita todo al propio origen, que es como se sirve la interfaz compilada:
+// un solo binario, sin CDN, sin fuentes externas y sin scripts ni estilos en linea (Vite
+// emite el script y la hoja de estilos como archivos). data: se permite solo en img-src porque
+// Vite inserta como data URI los recursos pequenos. frame-ancestors reemplaza a X-Frame-Options
+// en los navegadores modernos.
+const politicaContenido = "default-src 'self'; script-src 'self'; style-src 'self'; " +
+	"img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; " +
+	"form-action 'self'; frame-ancestors 'none'"
+
+// cabecerasSeguridad fija las cabeceras de seguridad en todas las respuestas, API e interfaz.
+func cabecerasSeguridad(sig http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		h := w.Header()
+		h.Set("X-Content-Type-Options", "nosniff")
+		h.Set("X-Frame-Options", "DENY")
+		h.Set("Referrer-Policy", "no-referrer")
+		h.Set("Content-Security-Policy", politicaContenido)
+		sig.ServeHTTP(w, r)
+	})
 }
 
 // RutasAPI devuelve las rutas de la API tal como las registra Nuevo.

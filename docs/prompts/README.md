@@ -27,5 +27,7 @@ importacion y pruebas.
 | 07 | [`07-importador.md`](07-importador.md) | Importador del Excel. P06, P07 y P08 | opus | 0 | Aceptado |
 | 08 | [`08-catalogo-http.md`](08-catalogo-http.md) | Catalogo por HTTP: CRUD, busqueda, filtros, ficha y responsables. P09, P10 y P11 | opus | 0 | Aceptado |
 | 09 | [`09-interfaz-catalogo.md`](09-interfaz-catalogo.md) | Interfaz: inicio de sesion y catalogo | sonnet | 0 | Aceptado |
-| 10 | [`10-interfaz-mantenimiento.md`](10-interfaz-mantenimiento.md) | Interfaz: mantenimiento y resultado de importacion | sonnet | 0 | Aceptado |
+| 10 | [`10-interfaz-mantenimiento.md`](10-interfaz-mantenimiento.md) y [`10-interfaz-mantenimiento.v2.md`](10-interfaz-mantenimiento.v2.md) | Interfaz: mantenimiento, catalogos y resultado de importacion | sonnet | **1** | v1 incompleta, v2 aceptada |
 | 11 | [`11-pruebas-finales.md`](11-pruebas-finales.md) | P12, `make evidence` y prueba de navegador | sonnet | 0 | Aceptado |
+| 12 | [`12-auditoria.md`](12-auditoria.md) y [`12b-consolidado.md`](12b-consolidado.md) | Auditoria con tres revisores en paralelo y consolidado | opus, luego sonnet | 0 | Aceptado. La 12 se corto por cuota tras los tres revisores; la 12b cerro el consolidado |
+| 13 | [`13-correcciones-auditoria.md`](13-correcciones-auditoria.md) | Tres correcciones de la auditoria: tiempos limite, indice y cabeceras | sonnet | 0 | Aceptado |

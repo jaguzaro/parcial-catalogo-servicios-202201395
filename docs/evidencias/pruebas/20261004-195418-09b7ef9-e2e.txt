@@ -1,0 +1,490 @@
+Fecha:       2026-10-04 19:54:39 -0600
+Commit:      09b7ef9
+Comando:     make e2e
+==========================================================================
+.env ya existe, no se toca
+ Container catalogo-test-db-1  Running
+ Container catalogo-test-db-1  Waiting
+ Container catalogo-test-db-1  Healthy
+ Container catalogo-test-db-1  Running
+#1 [internal] load local bake definitions
+#1 reading from stdin 620B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 815B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:24.21.0-alpine
+#3 DONE 0.0s
+
+#4 [internal] load metadata for docker.io/library/golang:1.26.8-alpine
+#4 DONE 0.0s
+
+#5 [internal] load metadata for gcr.io/distroless/static-debian12:nonroot
+#5 DONE 0.0s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 166B done
+#6 DONE 0.0s
+
+#7 [final 1/3] FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+#7 resolve gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab 0.0s done
+#7 DONE 0.0s
+
+#8 [web 1/6] FROM docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#8 resolve docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 0.0s done
+#8 DONE 0.0s
+
+#9 [build 1/7] FROM docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c
+#9 resolve docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c 0.0s done
+#9 DONE 0.0s
+
+#10 [internal] load build context
+#10 transferring context: 4.43kB done
+#10 DONE 0.0s
+
+#11 [build 6/7] COPY --from=web /web/dist ./internal/web/dist
+#11 CACHED
+
+#12 [build 5/7] COPY . .
+#12 CACHED
+
+#13 [build 3/7] COPY go.mod go.sum ./
+#13 CACHED
+
+#14 [web 5/6] COPY web/ ./
+#14 CACHED
+
+#15 [web 3/6] COPY web/package.json web/package-lock.json ./
+#15 CACHED
+
+#16 [web 4/6] RUN npm ci
+#16 CACHED
+
+#17 [build 2/7] WORKDIR /src
+#17 CACHED
+
+#18 [web 2/6] WORKDIR /web
+#18 CACHED
+
+#19 [web 6/6] RUN npm run build
+#19 CACHED
+
+#20 [final 2/3] WORKDIR /app
+#20 CACHED
+
+#21 [build 4/7] RUN go mod download
+#21 CACHED
+
+#22 [build 7/7] RUN CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o /out/catalogo ./cmd/catalogo
+#22 CACHED
+
+#23 [final 3/3] COPY --from=build /out/catalogo /app/catalogo
+#23 CACHED
+
+#24 exporting to image
+#24 exporting layers done
+#24 exporting manifest sha256:f1c5684b6eba1ab8ed712e0be3cc58814e02d0026b0605c29659c040957652a9 done
+#24 exporting config sha256:45b63c96afac69dbf0d06c049e7c5ef9b63478208c1ac6d2556d0b50f3c81352 done
+#24 exporting attestation manifest sha256:fd445eac664b01e22bd903e098d727e71b470b21359e9c2b141d2916692893a2 done
+#24 exporting manifest list sha256:9bb84159d8bd6813af70d5e2ee42afd4b109185fcb47469836249a12147c019e done
+#24 naming to docker.io/library/catalogo-test-app:latest done
+#24 unpacking to docker.io/library/catalogo-test-app:latest done
+#24 DONE 0.0s
+
+#25 resolving provenance for metadata file
+#25 DONE 0.0s
+2026/10/05 01:54:41 goose: no migrations to run. current version: 4
+migraciones: la base ya estaba en la version 4, nada que aplicar
+ Container catalogo-test-db-1  Running
+2026/10/05 01:54:42 goose: no migrations to run. current version: 4
+migraciones: la base ya estaba en la version 4, nada que aplicar
+importacion 25 completada
+  archivo: /app/data/CatalogoServicios.xlsx
+  sha256:  de3b478a5faeeeaebce1aa7726e0e3321188a68e41bbb656e1d17b0c5b74dcf0
+  hoja:    Servicios Externos
+  creados: 76  actualizados: 0  omitidos: 2  observados: 6
+  clase_servicio  creados   2  actualizados   0  sin cambios   0  rechazados   0
+  criticidad      creados   5  actualizados   0  sin cambios   0  rechazados   0
+  tipo_servicio   creados  11  actualizados   0  sin cambios   0  rechazados   0
+  servicio_n1     creados  12  actualizados   0  sin cambios   0  rechazados   0
+  servicio_n2     creados  46  actualizados   0  sin cambios   0  rechazados   0
+  filas no importables: 2
+  controles: nivel 1 distintos 12 (en 13 celdas), nivel 2 distintos 46 (en 46 celdas)
+  incidencias:
+    N1_HEREDADO_DE_FILA_ANTERIOR   1
+    N1_NOMBRE_CONFLICTO            1
+    CODIGO_FORMATO_NO_ESTANDAR     3
+    ATRIBUTOS_AUSENTES             3
+    FILA_SIN_CODIGO                2
+    total                          10
+ Container catalogo-test-db-1  Running
+2026/10/05 01:54:44 goose: no migrations to run. current version: 4
+migraciones: la base ya estaba en la version 4, nada que aplicar
+creado: empresa DEMO
+creado: area DEMO
+creado: departamento DEMO
+creado: seccion DEMO
+creado: puesto DEMO
+creado: usuario admin.ejemplo, rol administrador, en el puesto DEMO
+creado: usuario consulta.ejemplo, rol consulta, en el puesto DEMO
+creado: asignacion de responsable: servicio SE.01.01 -> seccion DEMO, usuario admin.ejemplo
+creado: asignacion de responsable: servicio SE.01.02 -> seccion DEMO, usuario consulta.ejemplo
+creado: asignacion de responsable: servicio SE.01.03 -> seccion DEMO, usuario admin.ejemplo
+sembrar-demo: terminado
+#1 [internal] load local bake definitions
+#1 reading from stdin 620B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 815B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:24.21.0-alpine
+#3 DONE 0.0s
+
+#4 [internal] load metadata for docker.io/library/golang:1.26.8-alpine
+#4 DONE 0.0s
+
+#5 [internal] load metadata for gcr.io/distroless/static-debian12:nonroot
+#5 DONE 0.0s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 166B done
+#6 DONE 0.0s
+
+#7 [build 1/7] FROM docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c
+#7 resolve docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c done
+#7 DONE 0.0s
+
+#8 [web 1/6] FROM docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#8 resolve docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 done
+#8 DONE 0.0s
+
+#9 [final 1/3] FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+#9 resolve gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab done
+#9 DONE 0.0s
+
+#10 [internal] load build context
+#10 transferring context: 4.43kB done
+#10 DONE 0.0s
+
+#11 [web 6/6] RUN npm run build
+#11 CACHED
+
+#12 [web 5/6] COPY web/ ./
+#12 CACHED
+
+#13 [build 6/7] COPY --from=web /web/dist ./internal/web/dist
+#13 CACHED
+
+#14 [web 3/6] COPY web/package.json web/package-lock.json ./
+#14 CACHED
+
+#15 [build 2/7] WORKDIR /src
+#15 CACHED
+
+#16 [build 4/7] RUN go mod download
+#16 CACHED
+
+#17 [web 4/6] RUN npm ci
+#17 CACHED
+
+#18 [build 5/7] COPY . .
+#18 CACHED
+
+#19 [build 3/7] COPY go.mod go.sum ./
+#19 CACHED
+
+#20 [web 2/6] WORKDIR /web
+#20 CACHED
+
+#21 [final 2/3] WORKDIR /app
+#21 CACHED
+
+#22 [build 7/7] RUN CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o /out/catalogo ./cmd/catalogo
+#22 CACHED
+
+#23 [final 3/3] COPY --from=build /out/catalogo /app/catalogo
+#23 CACHED
+
+#24 exporting to image
+#24 exporting layers done
+#24 exporting manifest sha256:f1c5684b6eba1ab8ed712e0be3cc58814e02d0026b0605c29659c040957652a9 done
+#24 exporting config sha256:45b63c96afac69dbf0d06c049e7c5ef9b63478208c1ac6d2556d0b50f3c81352 done
+#24 exporting attestation manifest sha256:f109846fbafd66ff2dbf951fc919cde951a27f9187f2c236684243cae633be58 done
+#24 exporting manifest list sha256:d1991c8efbebcfa1573c51a7348dc4f6ebec8ca404b07172f4fa2768097926f6 done
+#24 naming to docker.io/library/catalogo-test-app:latest done
+#24 unpacking to docker.io/library/catalogo-test-app:latest done
+#24 DONE 0.0s
+
+#25 resolving provenance for metadata file
+#25 DONE 0.0s
+ catalogo-test-app  Built
+ Container catalogo-test-db-1  Running
+ Container catalogo-test-app-1  Creating
+ Container catalogo-test-app-1  Created
+ Container catalogo-test-db-1  Waiting
+ Container catalogo-test-db-1  Healthy
+ Container catalogo-test-app-1  Starting
+ Container catalogo-test-app-1  Started
+ Container catalogo-test-db-1  Waiting
+ Container catalogo-test-app-1  Waiting
+ Container catalogo-test-db-1  Healthy
+ Container catalogo-test-app-1  Healthy
+#1 [internal] load local bake definitions
+#1 reading from stdin 620B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 815B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:24.21.0-alpine
+#3 DONE 0.0s
+
+#4 [internal] load metadata for docker.io/library/golang:1.26.8-alpine
+#4 DONE 0.0s
+
+#5 [internal] load metadata for gcr.io/distroless/static-debian12:nonroot
+#5 DONE 0.0s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 166B done
+#6 DONE 0.0s
+
+#7 [web 1/6] FROM docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#7 resolve docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 done
+#7 DONE 0.0s
+
+#8 [build 1/7] FROM docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c
+#8 resolve docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c done
+#8 DONE 0.0s
+
+#9 [final 1/3] FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+#9 resolve gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab 0.0s done
+#9 DONE 0.0s
+
+#10 [internal] load build context
+#10 transferring context: 4.43kB done
+#10 DONE 0.0s
+
+#11 [web 2/6] WORKDIR /web
+#11 CACHED
+
+#12 [web 5/6] COPY web/ ./
+#12 CACHED
+
+#13 [build 6/7] COPY --from=web /web/dist ./internal/web/dist
+#13 CACHED
+
+#14 [web 6/6] RUN npm run build
+#14 CACHED
+
+#15 [build 5/7] COPY . .
+#15 CACHED
+
+#16 [final 2/3] WORKDIR /app
+#16 CACHED
+
+#17 [build 2/7] WORKDIR /src
+#17 CACHED
+
+#18 [web 4/6] RUN npm ci
+#18 CACHED
+
+#19 [build 4/7] RUN go mod download
+#19 CACHED
+
+#20 [build 7/7] RUN CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o /out/catalogo ./cmd/catalogo
+#20 CACHED
+
+#21 [build 3/7] COPY go.mod go.sum ./
+#21 CACHED
+
+#22 [web 3/6] COPY web/package.json web/package-lock.json ./
+#22 CACHED
+
+#23 [final 3/3] COPY --from=build /out/catalogo /app/catalogo
+#23 CACHED
+
+#24 exporting to image
+#24 exporting layers done
+#24 exporting manifest sha256:f1c5684b6eba1ab8ed712e0be3cc58814e02d0026b0605c29659c040957652a9 done
+#24 exporting config sha256:45b63c96afac69dbf0d06c049e7c5ef9b63478208c1ac6d2556d0b50f3c81352 done
+#24 exporting attestation manifest sha256:0543409d44bdfb3bcf936488093796a1d392baba0950a79b1ac050ddf11636a5 done
+#24 exporting manifest list sha256:c7dc92294f206cf3fb653c35e14edc31d9efd95708604aa79769af3fe11ac354 done
+#24 naming to docker.io/library/catalogo-test-app:latest done
+#24 unpacking to docker.io/library/catalogo-test-app:latest done
+#24 DONE 0.0s
+
+#25 resolving provenance for metadata file
+#25 DONE 0.0s
+ catalogo-test-app  Built
+ Container catalogo-test-db-1  Running
+ Container catalogo-test-app-1  Recreate
+ Container catalogo-test-app-1  Recreated
+ Container catalogo-test-db-1  Waiting
+ Container catalogo-test-db-1  Healthy
+ Container catalogo-test-app-1  Starting
+ Container catalogo-test-app-1  Started
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.14kB done
+#1 DONE 0.0s
+
+#2 [app internal] load build definition from Dockerfile
+#2 transferring dockerfile: 815B done
+#2 DONE 0.0s
+
+#3 [e2e internal] load build definition from Dockerfile
+#3 transferring dockerfile: 413B done
+#3 DONE 0.0s
+
+#4 [app internal] load metadata for docker.io/library/node:24.21.0-alpine
+#4 DONE 0.0s
+
+#5 [app internal] load metadata for docker.io/library/golang:1.26.8-alpine
+#5 DONE 0.0s
+
+#6 [app internal] load metadata for gcr.io/distroless/static-debian12:nonroot
+#6 DONE 0.0s
+
+#7 [app internal] load .dockerignore
+#7 transferring context: 166B done
+#7 DONE 0.0s
+
+#8 [app final 1/3] FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+#8 resolve gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab done
+#8 DONE 0.0s
+
+#9 [app build 1/7] FROM docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c
+#9 resolve docker.io/library/golang:1.26.8-alpine@sha256:8ac98ca534ac3f51e1f420a1dd2c15e74c75cfa0f23f3ad27eb5d7236c349a0c done
+#9 DONE 0.0s
+
+#10 [app web 1/6] FROM docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#10 resolve docker.io/library/node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 done
+#10 DONE 0.0s
+
+#11 [app internal] load build context
+#11 transferring context: 4.43kB done
+#11 DONE 0.0s
+
+#12 [app build 6/7] COPY --from=web /web/dist ./internal/web/dist
+#12 CACHED
+
+#13 [app web 6/6] RUN npm run build
+#13 CACHED
+
+#14 [app web 4/6] RUN npm ci
+#14 CACHED
+
+#15 [app build 3/7] COPY go.mod go.sum ./
+#15 CACHED
+
+#16 [app build 4/7] RUN go mod download
+#16 CACHED
+
+#17 [app build 5/7] COPY . .
+#17 CACHED
+
+#18 [app final 2/3] WORKDIR /app
+#18 CACHED
+
+#19 [app web 3/6] COPY web/package.json web/package-lock.json ./
+#19 CACHED
+
+#20 [app build 7/7] RUN CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o /out/catalogo ./cmd/catalogo
+#20 CACHED
+
+#21 [app build 2/7] WORKDIR /src
+#21 CACHED
+
+#22 [app web 2/6] WORKDIR /web
+#22 CACHED
+
+#23 [app web 5/6] COPY web/ ./
+#23 CACHED
+
+#24 [app final 3/3] COPY --from=build /out/catalogo /app/catalogo
+#24 CACHED
+
+#25 [app] exporting to image
+#25 exporting layers done
+#25 exporting manifest sha256:f1c5684b6eba1ab8ed712e0be3cc58814e02d0026b0605c29659c040957652a9 done
+#25 exporting config sha256:45b63c96afac69dbf0d06c049e7c5ef9b63478208c1ac6d2556d0b50f3c81352 done
+#25 exporting attestation manifest sha256:ce494314db84f627199c3ee8d13d5fd0f94f422c9fb1c9a9512e75fa6af04662 done
+#25 exporting manifest list sha256:ff587ad2485380e183afffcb05a299625cd7dff794b76308e6f0da0ef57c1ed8 done
+#25 naming to docker.io/library/catalogo-test-app:latest done
+#25 unpacking to docker.io/library/catalogo-test-app:latest done
+#25 DONE 0.0s
+
+#26 [e2e internal] load metadata for mcr.microsoft.com/playwright:v1.56.1-noble
+#26 ...
+
+#27 [app] resolving provenance for metadata file
+#27 DONE 0.0s
+
+#26 [e2e internal] load metadata for mcr.microsoft.com/playwright:v1.56.1-noble
+#26 DONE 0.4s
+
+#28 [e2e internal] load .dockerignore
+#28 transferring context: 2B done
+#28 DONE 0.0s
+
+#29 [e2e internal] load build context
+#29 transferring context: 141B done
+#29 DONE 0.0s
+
+#30 [e2e 1/6] FROM mcr.microsoft.com/playwright:v1.56.1-noble@sha256:f1e7e01021efd65dd1a2c56064be399f3e4de00fd021ac561325f2bfbb2b837a
+#30 resolve mcr.microsoft.com/playwright:v1.56.1-noble@sha256:f1e7e01021efd65dd1a2c56064be399f3e4de00fd021ac561325f2bfbb2b837a done
+#30 DONE 0.0s
+
+#31 [e2e 2/6] WORKDIR /e2e
+#31 CACHED
+
+#32 [e2e 4/6] RUN npm install --no-audit --no-fund
+#32 CACHED
+
+#33 [e2e 5/6] COPY playwright.config.ts ./
+#33 CACHED
+
+#34 [e2e 3/6] COPY package.json ./
+#34 CACHED
+
+#35 [e2e 6/6] COPY tests ./tests
+#35 CACHED
+
+#36 [e2e] exporting to image
+#36 exporting layers done
+#36 exporting manifest sha256:3d04623630e2d8d08e244d454e0167aa18642cd15b9af09ca6872c9957a17801 done
+#36 exporting config sha256:c679f48cad8b3382444cdf1ccfcc50fe1a6d7cd33c107e59ab2c0a586bf9b30e done
+#36 exporting attestation manifest sha256:3feb6d89afde948c2f733a7b0ae7018dbd8d154338a36e7a43816dd2d0fa7e6f done
+#36 exporting manifest list sha256:4b34f8e42a8faea7d5aa179c75fc4ca7d8ed07aa4b19c555ed5895e7756712ff done
+#36 naming to docker.io/library/catalogo-test-e2e:latest done
+#36 unpacking to docker.io/library/catalogo-test-e2e:latest done
+#36 DONE 0.0s
+
+#37 [e2e] resolving provenance for metadata file
+#37 DONE 0.0s
+
+Running 2 tests using 1 worker
+
+  ✓  1 tests/catalogo.spec.ts:29:5 › inicio de sesion: entrar con una cuenta sembrada y llegar al catalogo (451ms)
+  ✓  2 tests/catalogo.spec.ts:36:5 › filtro: al filtrar por nivel 1 cambian la tabla y el total (363ms)
+
+  2 passed (1.6s)
+== e2e: limpiando el proyecto catalogo-test ==
+ Container catalogo-test-app-1  Stopping
+ Container catalogo-test-app-1  Stopped
+ Container catalogo-test-app-1  Removing
+ Container catalogo-test-app-1  Removed
+ Container catalogo-test-db-1  Stopping
+ Container catalogo-test-db-1  Stopped
+ Container catalogo-test-db-1  Removing
+ Container catalogo-test-db-1  Removed
+ Volume catalogo-test_catalogo_pgdata  Removing
+ Network catalogo-test_default  Removing
+ Volume catalogo-test_catalogo_pgdata  Removed
+ Network catalogo-test_default  Removed
+exit_code: 0

@@ -6,6 +6,7 @@ import Ficha from './pantallas/Ficha'
 import { EditarServicio, NuevoServicio } from './pantallas/ServicioForm'
 import ServiciosN1 from './pantallas/ServiciosN1'
 import Organizacion from './pantallas/Organizacion'
+import Catalogos from './pantallas/Catalogos'
 import Usuarios from './pantallas/Usuarios'
 import { DetalleImportacion, ListaImportaciones } from './pantallas/Importaciones'
 
@@ -22,6 +23,7 @@ function Protegido() {
           <NavLink to="/" end>Servicios</NavLink>
           <NavLink to="/servicios-n1">Nivel 1</NavLink>
           <NavLink to="/organizacion">Organización</NavLink>
+          <NavLink to="/catalogos">Catálogos</NavLink>
           <NavLink to="/usuarios">Usuarios</NavLink>
           <NavLink to="/importaciones">Importaciones</NavLink>
         </nav>
@@ -51,6 +53,7 @@ export default function App() {
             <Route path="/servicios-n1" element={<ServiciosN1 />} />
             <Route path="/organizacion" element={<Navigate to="/organizacion/empresas" replace />} />
             <Route path="/organizacion/:recurso" element={<Organizacion />} />
+            <Route path="/catalogos" element={<Catalogos />} />
             <Route path="/usuarios" element={<Usuarios />} />
             <Route path="/importaciones" element={<ListaImportaciones />} />
             <Route path="/importaciones/:id" element={<DetalleImportacion />} />

@@ -1,0 +1,11 @@
+fecha_inicio: 2026-10-04T16:45:24-06:00
+prompt: docs/prompts/12-auditoria.md
+prompt_sha256: f385634d129d5cb664df93cfb3441497a56a94e698e26985ff9a72602e099684
+modelo_solicitado: opus
+claude_code: 2.1.289 (Claude Code)
+commit_base: 09b7ef9
+fecha_fin: 2026-10-04T16:49:48-06:00
+exit_code: 1
+modelos_usados: claude-opus-5-5, claude-sonnet-5-5
+turnos: 9
+es_error: true

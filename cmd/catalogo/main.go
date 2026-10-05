@@ -114,10 +114,19 @@ func servir() error {
 		Catalogo:      catalogo.Nuevo(pool.Pool),
 		Importaciones: importador.NuevoLector(pool.Pool),
 	}
+	// Los tiempos cubren la peticion completa. Lo mas lento es el login: argon2id con 64 MiB
+	// tarda del orden de 100 ms, y unos segundos si hay varios a la vez. Los cuerpos admitidos
+	// son de hasta 1 MiB, asi que estos margenes sobran. ReadHeaderTimeout: un cliente
+	// legitimo envia las cabeceras de inmediato. ReadTimeout: cabeceras y cuerpo.
+	// WriteTimeout: incluye el hash de argon2id bajo carga. IdleTimeout: conexiones
+	// keep-alive sin uso.
 	srv := &http.Server{
 		Addr:              direccion,
 		Handler:           apihttp.Nuevo(servicios, web.Archivos()),
 		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       15 * time.Second,
+		WriteTimeout:      30 * time.Second,
+		IdleTimeout:       60 * time.Second,
 	}
 	errs := make(chan error, 1)
 	go func() { errs <- srv.ListenAndServe() }()
