@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -106,6 +107,12 @@ func servir() error {
 	}
 	defer pool.Close()
 
+	if cfg.AutoInicio {
+		autoInicio(ctx, cfg, pool.Pool)
+	} else {
+		slog.Info("arranque automatico desactivado (AUTO_INICIO=false): no se importa ni se siembra")
+	}
+
 	servicios := apihttp.Servicios{
 		Salud:         pool,
 		Sesiones:      auth.Nuevo(pool.Pool, cfg.SessionTTL, cfg.CookieSecure),
@@ -144,6 +151,41 @@ func servir() error {
 		return err
 	}
 	return nil
+}
+
+// autoInicio importa el Excel y despues siembra la demostracion, en ese orden: el sembrado
+// asigna responsables sobre servicios ya importados. Ambas operaciones son idempotentes.
+// Nunca devuelve error: si algo falla se registra y el servidor arranca igual.
+func autoInicio(ctx context.Context, cfg *config.Config, pool demo.Conexion) {
+	resumen, err := importador.Importar(ctx, pool, cfg.ExcelPath)
+	switch {
+	case err != nil:
+		slog.Error("arranque automatico: la importacion fallo; se sigue sin importar", "error", err)
+	case resumen.Creados == 0 && resumen.Actualizados == 0:
+		slog.Info("arranque automatico: importacion sin cambios, el catalogo ya estaba cargado",
+			"importacion", resumen.ImportacionID, "omitidos", resumen.Omitidos)
+	default:
+		slog.Info("arranque automatico: importacion aplicada", "importacion", resumen.ImportacionID,
+			"creados", resumen.Creados, "actualizados", resumen.Actualizados, "omitidos", resumen.Omitidos)
+	}
+
+	cuentas, err := demo.CargarCuentas(os.LookupEnv)
+	if err != nil {
+		slog.Error("arranque automatico: no se puede sembrar la demostracion", "error", err)
+		return
+	}
+	var salida strings.Builder
+	err = demo.Sembrar(ctx, pool, cuentas, &salida)
+	for _, linea := range strings.Split(salida.String(), "\n") {
+		if linea = strings.TrimSpace(linea); linea != "" {
+			slog.Info("arranque automatico: sembrar-demo: " + linea)
+		}
+	}
+	if err != nil {
+		slog.Error("arranque automatico: el sembrado fallo; se sigue sin sembrar", "error", err)
+		return
+	}
+	slog.Info("arranque automatico: sembrado terminado")
 }
 
 // sembrarDemo crea la estructura DEMO y las cuentas de evaluacion. Las migraciones se

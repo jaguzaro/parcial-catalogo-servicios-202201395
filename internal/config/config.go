@@ -17,6 +17,8 @@ type Config struct {
 	ExcelPath    string
 	SessionTTL   time.Duration
 	CookieSecure bool
+	// AutoInicio: al servir, importar el Excel y sembrar la demostracion. Por defecto true.
+	AutoInicio bool
 }
 
 // Cargar lee la configuracion con la funcion de busqueda dada (os.LookupEnv en produccion).
@@ -39,6 +41,7 @@ func Cargar(lookup func(string) (string, bool)) (*Config, error) {
 		DatabaseURL: requerida("DATABASE_URL"),
 		ExcelPath:   requerida("EXCEL_PATH"),
 		SessionTTL:  sesionPorDefecto,
+		AutoInicio:  true,
 	}
 
 	if v := obtener("SESSION_TTL"); v != "" {
@@ -55,6 +58,14 @@ func Cargar(lookup func(string) (string, bool)) (*Config, error) {
 			problemas = append(problemas, fmt.Sprintf("COOKIE_SECURE=%q no es true ni false", v))
 		} else {
 			cfg.CookieSecure = b
+		}
+	}
+	if v := obtener("AUTO_INICIO"); v != "" {
+		b, err := strconv.ParseBool(v)
+		if err != nil {
+			problemas = append(problemas, fmt.Sprintf("AUTO_INICIO=%q no es true ni false", v))
+		} else {
+			cfg.AutoInicio = b
 		}
 	}
 

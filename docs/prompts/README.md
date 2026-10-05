@@ -31,3 +31,4 @@ importacion y pruebas.
 | 11 | [`11-pruebas-finales.md`](11-pruebas-finales.md) | P12, `make evidence` y prueba de navegador | sonnet | 0 | Aceptado |
 | 12 | [`12-auditoria.md`](12-auditoria.md) y [`12b-consolidado.md`](12b-consolidado.md) | Auditoria con tres revisores en paralelo y consolidado | opus, luego sonnet | 0 | Aceptado. La 12 se corto por cuota tras los tres revisores; la 12b cerro el consolidado |
 | 13 | [`13-correcciones-auditoria.md`](13-correcciones-auditoria.md) | Tres correcciones de la auditoria: tiempos limite, indice y cabeceras | sonnet | 0 | Aceptado |
+| 14 | [`14-arranque-autonomo.md`](14-arranque-autonomo.md) | Que `docker compose up` deje el sistema usable, tras probar un clon limpio | sonnet | 0 | Aceptado |

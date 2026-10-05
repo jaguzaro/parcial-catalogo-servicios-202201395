@@ -38,14 +38,23 @@ docker compose ps                       # db y app en healthy
 
 La aplicacion queda en **http://localhost:8080**.
 
-Las migraciones se aplican al arrancar. Para cargar los datos:
+Con ese unico comando el sistema queda listo para usar: al arrancar se aplican las
+migraciones, se importa el Excel y se crean las cuentas de evaluacion. En los arranques
+siguientes no se repite nada, porque las dos operaciones son idempotentes.
+
+Las dos tambien se pueden ejecutar a mano, por ejemplo para ver el resumen de la
+importacion:
 
 ```bash
-make seed-demo    # cuentas de evaluacion y 3 asignaciones de responsable
 make import       # importa el Excel: 12 servicios de nivel 1 y 46 de nivel 2
+make seed-demo    # cuentas de evaluacion y 3 asignaciones de responsable
 ```
 
-Los dos comandos son idempotentes: repetirlos no duplica registros.
+En ese caso el orden importa: `seed-demo` crea tres asignaciones de responsable sobre
+servicios ya importados, asi que necesita que `import` haya corrido antes.
+
+Para que el arranque no toque los datos, se pone `AUTO_INICIO=false` en el archivo de
+entorno.
 
 ### Si el puerto 8080 esta ocupado
 
@@ -92,6 +101,7 @@ Todas estan documentadas en `.env.example`.
 | `COOKIE_SECURE` | `false` para `http://localhost`; `true` detras de HTTPS |
 | `EXCEL_PATH` | Ruta del Excel dentro del contenedor, montado de solo lectura |
 | `DEMO_*` | Cuentas de evaluacion |
+| `AUTO_INICIO` | Si el arranque importa el Excel y crea las cuentas. `true` por defecto |
 | `APP_TEST_PORT` | Puerto del entorno de pruebas |
 
 ## Pruebas
